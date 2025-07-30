@@ -11,31 +11,9 @@ const roleConfigs = {
     icon: "🐺",
     color: "#d32f2f",
     description:
-      "Work with your fellow werewolves to eliminate the villagers. Each night, you can choose one player to eliminate.",
+      "Work with your fellow werewolves to eliminate the villagers each night.",
     detailedDescription:
-      "You are a Werewolf! Work with your fellow werewolves to eliminate the villagers. Each night, you can choose one player to eliminate. You must work together to avoid detection and win the game.",
-  },
-  Seer: {
-    icon: "🔮",
-    color: "#1976d2",
-    description: "Each night, investigate one player to learn their true role.",
-    detailedDescription:
-      "You are the Seer! Each night, you can investigate one player to learn their true role. Use this information wisely to help the villagers identify and eliminate the werewolves.",
-  },
-  Doctor: {
-    icon: "🏥",
-    color: "#388e3c",
-    description: "Each night, protect one player from being eliminated.",
-    detailedDescription:
-      "You are the Doctor! Each night, you can protect one player from being eliminated by the werewolves. You cannot protect the same player two nights in a row. Use your healing powers to keep the villagers alive.",
-  },
-  Hunter: {
-    icon: "🏹",
-    color: "#f57c00",
-    description:
-      "If eliminated, immediately eliminate one other player as your final act.",
-    detailedDescription:
-      "You are the Hunter! If you are eliminated, you can immediately eliminate one other player as your final act. Choose wisely - you want to take down a werewolf, not a fellow villager.",
+      "You are a Werewolf! Work with your fellow werewolves to eliminate the villagers. Each night, you can choose one player to eliminate. Avoid detection to win the game with your pack.",
   },
   Villager: {
     icon: "👥",
@@ -43,78 +21,115 @@ const roleConfigs = {
     description:
       "Work with fellow villagers to identify and eliminate werewolves.",
     detailedDescription:
-      "You are a Villager! Work with your fellow villagers to identify and eliminate the werewolves through discussion and voting. You have no special powers, but your voice and vote are crucial to the village's survival.",
+      "You are a Villager! You have no special powers, but your vote and voice are crucial to eliminating the werewolves. Discuss, deduce, and survive.",
+  },
+  Seer: {
+    icon: "🔮",
+    color: "#1976d2",
+    description: "Each night, investigate one player to learn their true role.",
+    detailedDescription:
+      "You are the Seer! Each night, you can investigate one player to learn their true role. Use this information wisely to help the village identify werewolves.",
+  },
+  Doctor: {
+    icon: "🏥",
+    color: "#388e3c",
+    description: "Each night, protect one player from elimination.",
+    detailedDescription:
+      "You are the Doctor! Each night, you can protect one player from elimination by the werewolves. You cannot protect the same player two nights in a row. Use your ability wisely to save the village.",
+  },
+  Hunter: {
+    icon: "🏹",
+    color: "#f57c00",
+    description:
+      "If you are eliminated, you can take one player down with you.",
+    detailedDescription:
+      "You are the Hunter! If you are eliminated, you may immediately eliminate one player as your final act. Choose carefully to maximize your impact.",
   },
   Bodyguard: {
     icon: "🛡️",
     color: "#2e7d32",
     description:
-      "Each night, protect one player from elimination. If you protect someone, you might die instead.",
+      "Each night, protect one player. If attacked, you die in their place.",
     detailedDescription:
-      "You are the Bodyguard! Each night, you can protect one player from elimination. If the werewolves target your protected player, you will die instead of them. You cannot protect the same player two nights in a row.",
+      "You are the Bodyguard! Each night, choose one player to protect. If the werewolves attack them, you die instead. You cannot protect the same player on consecutive nights.",
   },
   Cupid: {
     icon: "💘",
     color: "#e91e63",
-    description:
-      "On the first night, choose two players to fall in love. If one dies, the other dies too.",
+    description: "On the first night, choose two players to fall in love.",
     detailedDescription:
-      "You are Cupid! On the first night, you must choose two players to fall in love. If one of them dies, the other will die of a broken heart. The lovers win together or lose together, regardless of their original roles.",
+      "You are Cupid! On the first night, select two players to become lovers. If one dies, the other dies too. Lovers win together regardless of their original teams.",
   },
   WolfCub: {
     icon: "🐺",
     color: "#d32f2f",
     description:
-      "A young werewolf. If eliminated, the werewolves get an extra kill the next night.",
+      "A young werewolf. If killed, werewolves get an extra kill next night.",
     detailedDescription:
-      "You are the Wolf Cub! You are a young werewolf with a special ability. If you are eliminated, the werewolves will get an extra kill the following night as revenge. Work with your pack to survive.",
+      "You are the Wolf Cub! If you are eliminated, your werewolf pack will be enraged and may eliminate two players the following night.",
   },
   AlphaWolf: {
     icon: "🐺",
     color: "#b71c1c",
-    description:
-      "The leader of the werewolves. You can see who the other werewolves are.",
+    description: "Leader of the werewolves. Knows all fellow werewolves.",
     detailedDescription:
-      "You are the Alpha Wolf! You are the leader of the werewolves and can see who the other werewolves are. Lead your pack to victory by eliminating the villagers. Your leadership is crucial to the werewolves' success.",
+      "You are the Alpha Wolf! You lead the werewolf pack and know your allies. Coordinate attacks and survive to win.",
   },
   Sorceress: {
     icon: "🔮",
     color: "#7b1fa2",
     description:
-      "Each night, you can see if a player is a werewolf, but not who they are.",
+      "Each night, check if a player is a werewolf (without seeing exact role).",
     detailedDescription:
-      "You are the Sorceress! Each night, you can use your magic to see if a player is a werewolf, but you cannot see their identity. Use your powers to help the villagers identify the werewolves.",
+      "You are the Sorceress! Each night, choose one player to sense. You will know if they are a werewolf, but not their exact role.",
   },
   Lycan: {
     icon: "🐺",
     color: "#8d6e63",
-    description: "A werewolf who appears as a villager to the Seer.",
+    description: "A normal villager who appears as a werewolf to the Seer.",
     detailedDescription:
-      "You are the Lycan! You are a werewolf with a special ability - you appear as a villager to the Seer. Use this deception to your advantage and avoid detection while working with your pack.",
+      "You are the Lycan! You are a normal villager with no special powers, but if the Seer investigates you, the moderator will tell them that you are a Werewolf. Use this to mislead the Seer or to create confusion among the players.",
   },
   Witch: {
     icon: "🧙‍♀️",
     color: "#6a1b9a",
     description:
-      "You have two potions: one to save a player, one to kill a player. Each can be used only once.",
+      "You have two potions: one heal, one kill. Each can be used once.",
     detailedDescription:
-      "You are the Witch! You have two powerful potions: one to save a player from elimination, and one to kill a player. Each potion can be used only once during the game. Use them wisely to help your team win.",
+      "You are the Witch! You can save a player once and eliminate a player once during the game. Choose carefully to shift the balance.",
   },
-  Fool: {
-    icon: "🤡",
-    color: "#ff9800",
-    description:
-      "You think you're the Seer, but your visions are always wrong.",
-    detailedDescription:
-      "You are the Fool! You believe you are the Seer and receive visions each night, but your visions are always wrong. You will be told the opposite of the truth. Be careful not to mislead the villagers with your false information.",
-  },
+
   Detective: {
     icon: "🔍",
     color: "#3f51b5",
     description:
-      "Each night, you can investigate one player to learn if they have visited someone.",
+      "Each night, check if a player visited someone during the night.",
     detailedDescription:
-      "You are the Detective! Each night, you can investigate one player to learn if they have visited someone during the night. This can help you track the movements of werewolves and other night-active roles.",
+      "You are the Detective! You can track one player each night to see if they visited anyone. This can help identify night-active roles like werewolves.",
+  },
+  Revealer: {
+    icon: "🔫",
+    color: "#795548",
+    description:
+      "At night, you may shoot a player. If you hit a villager, you die.",
+    detailedDescription:
+      "You are the Revealer! Each night, you may shoot one player. If you hit a Werewolf, they die and you survive. If you hit a Villager or non-Werewolf, they die and you die as punishment. A high-risk, high-reward role for the village.",
+  },
+  PI: {
+    icon: "🧭",
+    color: "#009688",
+    description:
+      "Check one player. Learn if they or their neighbors are Werewolves.",
+    detailedDescription:
+      "You are the Paranormal Investigator! Each night, select one player. You will receive 'YES' if that player OR the players to their left or right are Werewolves. Otherwise, you get 'NO'. Use this info to guide the village.",
+  },
+  Tanner: {
+    icon: "🪓",
+    color: "#9e9e9e",
+    description:
+      "You hate your job and want to die. If lynched, you alone win.",
+    detailedDescription:
+      "You are the Tanner! You are not on the village or werewolf team. Your goal is to get yourself eliminated during the day. If the village votes you out, you win instantly—even if the werewolves survive.",
   },
 };
 
@@ -131,16 +146,42 @@ const alphaWolfCountInput = document.getElementById("alphaWolfCount");
 const sorceressCountInput = document.getElementById("sorceressCount");
 const lycanCountInput = document.getElementById("lycanCount");
 const witchCountInput = document.getElementById("witchCount");
-const foolCountInput = document.getElementById("foolCount");
+
 const detectiveCountInput = document.getElementById("detectiveCount");
+const revealerCountInput = document.getElementById("revealerCount");
+const piCountInput = document.getElementById("piCount");
+const tannerCountInput = document.getElementById("tannerCount");
 const hunterCountInput = document.getElementById("hunterCount");
 const usePlayerNamesCheckbox = document.getElementById("usePlayerNames");
 const playerNamesContainer = document.getElementById("playerNamesContainer");
 const playerNamesList = document.getElementById("playerNamesList");
 const gameResults = document.getElementById("gameResults");
 const playerLinks = document.getElementById("playerLinks");
+
+// Timer elements
+const timerMinutesInput = document.getElementById("timerMinutes");
+const timerSecondsInput = document.getElementById("timerSeconds");
+const startTimerBtn = document.getElementById("startTimerBtn");
+const pauseTimerBtn = document.getElementById("pauseTimerBtn");
+const resetTimerBtn = document.getElementById("resetTimerBtn");
+const timerDisplay = document.getElementById("timerDisplay");
+const timerTime = document.getElementById("timerTime");
+
+// Notes elements
+const gameNotes = document.getElementById("gameNotes");
+const saveNotesBtn = document.getElementById("saveNotesBtn");
+const clearNotesBtn = document.getElementById("clearNotesBtn");
+
+// Role guide button
+const roleGuideBtn = document.getElementById("roleGuideBtn");
 const gameSummary = document.getElementById("gameSummary");
 const roleAssignments = document.getElementById("roleAssignments");
+
+// Timer state variables (global scope)
+let timerInterval = null;
+let timerRunning = false;
+let timerPaused = false;
+let remainingTime = 0;
 
 // Event listeners
 document.addEventListener("DOMContentLoaded", function () {
@@ -166,6 +207,21 @@ document.addEventListener("DOMContentLoaded", function () {
   if (showRoleAssignmentsBtn) {
     showRoleAssignmentsBtn.addEventListener("click", toggleRoleAssignments);
   }
+
+  // Timer functionality
+  if (startTimerBtn) startTimerBtn.addEventListener("click", startTimer);
+  if (pauseTimerBtn) pauseTimerBtn.addEventListener("click", pauseTimer);
+  if (resetTimerBtn) resetTimerBtn.addEventListener("click", resetTimer);
+
+  // Notes functionality
+  if (saveNotesBtn) saveNotesBtn.addEventListener("click", saveNotes);
+  if (clearNotesBtn) clearNotesBtn.addEventListener("click", clearNotes);
+
+  // Role guide functionality
+  if (roleGuideBtn) roleGuideBtn.addEventListener("click", showRoleGuide);
+
+  // Load saved notes on page load
+  loadNotes();
 
   // Initialize player names
   updatePlayerNames();
@@ -239,8 +295,11 @@ function handleGameSetup(event) {
   const sorceressCount = parseInt(sorceressCountInput.value);
   const lycanCount = parseInt(lycanCountInput.value);
   const witchCount = parseInt(witchCountInput.value);
-  const foolCount = parseInt(foolCountInput.value);
+
   const detectiveCount = parseInt(detectiveCountInput.value);
+  const revealerCount = parseInt(revealerCountInput.value);
+  const piCount = parseInt(piCountInput.value);
+  const tannerCount = parseInt(tannerCountInput.value);
   const hunterCount = parseInt(hunterCountInput.value);
   const usePlayerNames = usePlayerNamesCheckbox.checked;
 
@@ -258,8 +317,10 @@ function handleGameSetup(event) {
       sorceressCount,
       lycanCount,
       witchCount,
-      foolCount,
       detectiveCount,
+      revealerCount,
+      piCount,
+      tannerCount,
       hunterCount
     )
   ) {
@@ -279,8 +340,10 @@ function handleGameSetup(event) {
     sorceressCount,
     lycanCount,
     witchCount,
-    foolCount,
     detectiveCount,
+    revealerCount,
+    piCount,
+    tannerCount,
     hunterCount,
     usePlayerNames
   );
@@ -299,8 +362,10 @@ function validateGameSetup(
   sorceressCount,
   lycanCount,
   witchCount,
-  foolCount,
   detectiveCount,
+  revealerCount,
+  piCount,
+  tannerCount,
   hunterCount
 ) {
   const totalSpecialRoles =
@@ -314,8 +379,10 @@ function validateGameSetup(
     sorceressCount +
     lycanCount +
     witchCount +
-    foolCount +
     detectiveCount +
+    revealerCount +
+    piCount +
+    tannerCount +
     hunterCount;
   const villagerCount = playerCount - totalSpecialRoles;
 
@@ -357,8 +424,10 @@ function generateGame(
   sorceressCount,
   lycanCount,
   witchCount,
-  foolCount,
   detectiveCount,
+  revealerCount,
+  piCount,
+  tannerCount,
   hunterCount,
   usePlayerNames
 ) {
@@ -429,14 +498,24 @@ function generateGame(
     roles.push("Witch");
   }
 
-  // Add fools
-  for (let i = 0; i < foolCount; i++) {
-    roles.push("Fool");
-  }
-
   // Add detectives
   for (let i = 0; i < detectiveCount; i++) {
     roles.push("Detective");
+  }
+
+  // Add revealers
+  for (let i = 0; i < revealerCount; i++) {
+    roles.push("Revealer");
+  }
+
+  // Add PIs
+  for (let i = 0; i < piCount; i++) {
+    roles.push("PI");
+  }
+
+  // Add tanners
+  for (let i = 0; i < tannerCount; i++) {
+    roles.push("Tanner");
   }
 
   // Add hunters
@@ -482,6 +561,9 @@ function shuffleArray(array) {
 
 // Display game results
 function displayGameResults() {
+  // Hide the game setup form since it's no longer needed
+  gameSetupForm.style.display = "none";
+
   // Show results section
   gameResults.style.display = "block";
 
@@ -503,8 +585,11 @@ function generatePlayerLinks() {
   playerLinks.innerHTML = "";
 
   // Get all werewolf players for teammate information
-  const werewolfPlayers = gameState.players.filter(p => p.role === "Werewolf");
-  const werewolfNames = werewolfPlayers.map(p => p.name);
+  const werewolfRoles = ["Werewolf", "WolfCub", "AlphaWolf", "Sorceress"];
+  const werewolfPlayers = gameState.players.filter((p) =>
+    werewolfRoles.includes(p.role)
+  );
+  const werewolfNames = werewolfPlayers.map((p) => p.name);
 
   gameState.players.forEach((player, index) => {
     const playerCard = document.createElement("div");
@@ -516,9 +601,9 @@ function generatePlayerLinks() {
     playerUrl.searchParams.set("player", player.number);
     playerUrl.searchParams.set("name", player.name);
 
-    // Add werewolf teammates if this player is a werewolf
-    if (player.role === "Werewolf") {
-      const teammates = werewolfNames.filter(name => name !== player.name);
+    // Add werewolf teammates if this player is a werewolf role
+    if (werewolfRoles.includes(player.role)) {
+      const teammates = werewolfNames.filter((name) => name !== player.name);
       if (teammates.length > 0) {
         playerUrl.searchParams.set("teammates", teammates.join(","));
       }
@@ -749,6 +834,251 @@ function testQRCode() {
   testUrl.searchParams.set("role", "Werewolf");
   testUrl.searchParams.set("player", "1");
   generateQRCode(testUrl.href, "test-qr-code");
+}
+
+// Timer functions
+function startTimer() {
+  if (!timerRunning) {
+    const minutes = parseInt(timerMinutesInput.value) || 0;
+    const seconds = parseInt(timerSecondsInput.value) || 0;
+    remainingTime = minutes * 60 + seconds;
+
+    if (remainingTime <= 0) {
+      alert("Please set a valid time!");
+      return;
+    }
+
+    timerRunning = true;
+    timerPaused = false;
+    startTimerBtn.style.display = "none";
+    pauseTimerBtn.style.display = "inline-block";
+    timerDisplay.style.display = "block";
+
+    updateTimerDisplay();
+    timerInterval = setInterval(updateTimer, 1000);
+  } else if (timerPaused) {
+    // Resume timer
+    timerPaused = false;
+    startTimerBtn.style.display = "none";
+    pauseTimerBtn.style.display = "inline-block";
+    timerInterval = setInterval(updateTimer, 1000);
+  }
+}
+
+function pauseTimer() {
+  if (timerRunning && !timerPaused) {
+    timerPaused = true;
+    clearInterval(timerInterval);
+    startTimerBtn.style.display = "inline-block";
+    pauseTimerBtn.style.display = "none";
+    startTimerBtn.textContent = "Resume";
+  }
+}
+
+function resetTimer() {
+  clearInterval(timerInterval);
+  timerRunning = false;
+  timerPaused = false;
+  startTimerBtn.style.display = "inline-block";
+  pauseTimerBtn.style.display = "none";
+  startTimerBtn.textContent = "Start Timer";
+  timerDisplay.style.display = "none";
+  timerMinutesInput.value = "15";
+  timerSecondsInput.value = "0";
+}
+
+function updateTimer() {
+  remainingTime--;
+  if (remainingTime <= 0) {
+    clearInterval(timerInterval);
+    timerRunning = false;
+    startTimerBtn.style.display = "inline-block";
+    pauseTimerBtn.style.display = "none";
+    startTimerBtn.textContent = "Start Timer";
+    timerTime.textContent = "00:00";
+
+    // Play notification sound or show alert
+    if (Notification.permission === "granted") {
+      new Notification("Timer Finished!", {
+        body: "Your game timer has finished!",
+        icon: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⏰</text></svg>",
+      });
+    } else {
+      alert("⏰ Timer finished!");
+    }
+  } else {
+    updateTimerDisplay();
+  }
+}
+
+function updateTimerDisplay() {
+  const minutes = Math.floor(remainingTime / 60);
+  const seconds = remainingTime % 60;
+  timerTime.textContent = `${minutes.toString().padStart(2, "0")}:${seconds
+    .toString()
+    .padStart(2, "0")}`;
+}
+
+// Notes functions
+function saveNotes() {
+  const notes = gameNotes.value;
+  localStorage.setItem("werewolfGameNotes", notes);
+
+  // Show save confirmation
+  const originalText = saveNotesBtn.textContent;
+  saveNotesBtn.textContent = "Saved!";
+  saveNotesBtn.style.background = "#4caf50";
+
+  setTimeout(() => {
+    saveNotesBtn.textContent = originalText;
+    saveNotesBtn.style.background = "";
+  }, 2000);
+}
+
+function loadNotes() {
+  const savedNotes = localStorage.getItem("werewolfGameNotes");
+  if (savedNotes) {
+    gameNotes.value = savedNotes;
+  }
+}
+
+function clearNotes() {
+  if (confirm("Are you sure you want to clear all notes?")) {
+    gameNotes.value = "";
+    localStorage.removeItem("werewolfGameNotes");
+  }
+}
+
+// Role guide function
+function showRoleGuide() {
+  const modal = document.createElement("div");
+  modal.className = "role-guide-modal";
+  modal.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  `;
+
+  const modalContent = document.createElement("div");
+  modalContent.style.cssText = `
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    max-width: 90%;
+    max-height: 90%;
+    overflow-y: auto;
+    position: relative;
+  `;
+
+  // Define role categories
+  const werewolfRoles = ["Werewolf", "WolfCub", "AlphaWolf", "Sorceress"];
+  const villagerRoles = [
+    "Seer",
+    "Doctor",
+    "Hunter",
+    "Villager",
+    "Bodyguard",
+    "Cupid",
+    "Witch",
+    "Detective",
+    "Revealer",
+    "PI",
+    "Lycan",
+  ];
+  const neutralRoles = ["Tanner"];
+
+  let rolesHTML = "<h2>🎭 Werewolf Role Guide</h2>";
+
+  // Werewolf Roles Section
+  rolesHTML +=
+    "<h3 style='color: #d32f2f; margin-top: 2rem; margin-bottom: 1rem; border-bottom: 2px solid #d32f2f; padding-bottom: 0.5rem;'>🐺 Werewolf Team</h3>";
+
+  Object.entries(roleConfigs)
+    .filter(([roleName, config]) => werewolfRoles.includes(roleName))
+    .forEach(([roleName, config]) => {
+      rolesHTML += `
+        <div class="role-guide-item" style="margin-bottom: 1.5rem; padding: 1rem; border: 1px solid #d32f2f; border-radius: 8px; background: rgba(211, 47, 47, 0.05);">
+          <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+            <span style="font-size: 2rem; margin-right: 1rem;">${config.icon}</span>
+            <h3 style="margin: 0; color: ${config.color};">${roleName}</h3>
+          </div>
+          <p style="margin: 0.5rem 0; font-weight: bold;">${config.description}</p>
+          <p style="margin: 0; color: #666; font-size: 0.9rem;">${config.detailedDescription}</p>
+        </div>
+      `;
+    });
+
+  // Villager Roles Section
+  rolesHTML +=
+    "<h3 style='color: #1976d2; margin-top: 2rem; margin-bottom: 1rem; border-bottom: 2px solid #1976d2; padding-bottom: 0.5rem;'>👥 Village Team</h3>";
+
+  Object.entries(roleConfigs)
+    .filter(([roleName, config]) => villagerRoles.includes(roleName))
+    .forEach(([roleName, config]) => {
+      rolesHTML += `
+        <div class="role-guide-item" style="margin-bottom: 1.5rem; padding: 1rem; border: 1px solid #1976d2; border-radius: 8px; background: rgba(25, 118, 210, 0.05);">
+          <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+            <span style="font-size: 2rem; margin-right: 1rem;">${config.icon}</span>
+            <h3 style="margin: 0; color: ${config.color};">${roleName}</h3>
+          </div>
+          <p style="margin: 0.5rem 0; font-weight: bold;">${config.description}</p>
+          <p style="margin: 0; color: #666; font-size: 0.9rem;">${config.detailedDescription}</p>
+        </div>
+      `;
+    });
+
+  // Neutral Roles Section
+  rolesHTML +=
+    "<h3 style='color: #ff9800; margin-top: 2rem; margin-bottom: 1rem; border-bottom: 2px solid #ff9800; padding-bottom: 0.5rem;'>⚖️ Neutral Roles</h3>";
+
+  Object.entries(roleConfigs)
+    .filter(([roleName, config]) => neutralRoles.includes(roleName))
+    .forEach(([roleName, config]) => {
+      rolesHTML += `
+        <div class="role-guide-item" style="margin-bottom: 1.5rem; padding: 1rem; border: 1px solid #ff9800; border-radius: 8px; background: rgba(255, 152, 0, 0.05);">
+          <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+            <span style="font-size: 2rem; margin-right: 1rem;">${config.icon}</span>
+            <h3 style="margin: 0; color: ${config.color};">${roleName}</h3>
+          </div>
+          <p style="margin: 0.5rem 0; font-weight: bold;">${config.description}</p>
+          <p style="margin: 0; color: #666; font-size: 0.9rem;">${config.detailedDescription}</p>
+        </div>
+      `;
+    });
+
+  modalContent.innerHTML = `
+    ${rolesHTML}
+    <button onclick="this.parentElement.parentElement.remove()" style="
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: #f44336;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+      font-size: 16px;
+    ">×</button>
+  `;
+
+  modal.appendChild(modalContent);
+  document.body.appendChild(modal);
+
+  // Close modal when clicking outside
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) {
+      modal.remove();
+    }
+  });
 }
 
 // Export functions for global access (if needed)

@@ -348,6 +348,104 @@ header p {
   text-align: center;
 }
 
+/* Timer Section */
+.timer-section {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  margin: 2rem 0;
+  box-shadow: var(--card-shadow);
+}
+
+.timer-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.timer-input {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.timer-buttons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.timer-display {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--primary-color);
+  background: rgba(76, 175, 80, 0.1);
+  padding: 1rem;
+  border-radius: var(--border-radius);
+  border: 2px solid var(--primary-color);
+}
+
+/* Notes Section */
+.notes-section {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  margin: 2rem 0;
+  box-shadow: var(--card-shadow);
+}
+
+.notes-section textarea {
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 0.75rem;
+  font-family: inherit;
+  resize: vertical;
+  background: var(--bg-color);
+  color: var(--text-color);
+}
+
+.notes-section textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+}
+
+.notes-buttons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+/* Button Styles */
+.btn-success {
+  background: #4caf50;
+  color: white;
+}
+
+.btn-success:hover {
+  background: #45a049;
+}
+
+.btn-warning {
+  background: #ff9800;
+  color: white;
+}
+
+.btn-warning:hover {
+  background: #f57c00;
+}
+
+.btn-info {
+  background: #2196f3;
+  color: white;
+}
+
+.btn-info:hover {
+  background: #1976d2;
+}
+
 /* Player Page Styles */
 .player-card {
   padding: 2rem;
@@ -593,4 +691,36 @@ header p {
   .role-content {
     filter: none !important;
   }
+}
+
+/* Player notes section */
+.player-notes-section {
+  margin-top: 1.5rem;
+  padding: 1.5rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+}
+
+.player-notes-section h3 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: #495057;
+}
+
+.player-notes-section textarea {
+  width: 100%;
+  min-height: 100px;
+  padding: 0.75rem;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  resize: vertical;
+}
+
+.player-notes-section textarea:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
