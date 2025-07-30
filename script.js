@@ -10,28 +10,111 @@ const roleConfigs = {
   Werewolf: {
     icon: "🐺",
     color: "#d32f2f",
-    description: "Work with your fellow werewolves to eliminate the villagers.",
+    description:
+      "Work with your fellow werewolves to eliminate the villagers. Each night, you can choose one player to eliminate.",
+    detailedDescription:
+      "You are a Werewolf! Work with your fellow werewolves to eliminate the villagers. Each night, you can choose one player to eliminate. You must work together to avoid detection and win the game.",
   },
   Seer: {
     icon: "🔮",
     color: "#1976d2",
     description: "Each night, investigate one player to learn their true role.",
+    detailedDescription:
+      "You are the Seer! Each night, you can investigate one player to learn their true role. Use this information wisely to help the villagers identify and eliminate the werewolves.",
   },
   Doctor: {
     icon: "🏥",
     color: "#388e3c",
     description: "Each night, protect one player from being eliminated.",
+    detailedDescription:
+      "You are the Doctor! Each night, you can protect one player from being eliminated by the werewolves. You cannot protect the same player two nights in a row. Use your healing powers to keep the villagers alive.",
   },
   Hunter: {
     icon: "🏹",
     color: "#f57c00",
-    description: "If eliminated, immediately eliminate one other player.",
+    description:
+      "If eliminated, immediately eliminate one other player as your final act.",
+    detailedDescription:
+      "You are the Hunter! If you are eliminated, you can immediately eliminate one other player as your final act. Choose wisely - you want to take down a werewolf, not a fellow villager.",
   },
   Villager: {
     icon: "👥",
     color: "#7b1fa2",
     description:
       "Work with fellow villagers to identify and eliminate werewolves.",
+    detailedDescription:
+      "You are a Villager! Work with your fellow villagers to identify and eliminate the werewolves through discussion and voting. You have no special powers, but your voice and vote are crucial to the village's survival.",
+  },
+  Bodyguard: {
+    icon: "🛡️",
+    color: "#2e7d32",
+    description:
+      "Each night, protect one player from elimination. If you protect someone, you might die instead.",
+    detailedDescription:
+      "You are the Bodyguard! Each night, you can protect one player from elimination. If the werewolves target your protected player, you will die instead of them. You cannot protect the same player two nights in a row.",
+  },
+  Cupid: {
+    icon: "💘",
+    color: "#e91e63",
+    description:
+      "On the first night, choose two players to fall in love. If one dies, the other dies too.",
+    detailedDescription:
+      "You are Cupid! On the first night, you must choose two players to fall in love. If one of them dies, the other will die of a broken heart. The lovers win together or lose together, regardless of their original roles.",
+  },
+  WolfCub: {
+    icon: "🐺",
+    color: "#d32f2f",
+    description:
+      "A young werewolf. If eliminated, the werewolves get an extra kill the next night.",
+    detailedDescription:
+      "You are the Wolf Cub! You are a young werewolf with a special ability. If you are eliminated, the werewolves will get an extra kill the following night as revenge. Work with your pack to survive.",
+  },
+  AlphaWolf: {
+    icon: "🐺",
+    color: "#b71c1c",
+    description:
+      "The leader of the werewolves. You can see who the other werewolves are.",
+    detailedDescription:
+      "You are the Alpha Wolf! You are the leader of the werewolves and can see who the other werewolves are. Lead your pack to victory by eliminating the villagers. Your leadership is crucial to the werewolves' success.",
+  },
+  Sorceress: {
+    icon: "🔮",
+    color: "#7b1fa2",
+    description:
+      "Each night, you can see if a player is a werewolf, but not who they are.",
+    detailedDescription:
+      "You are the Sorceress! Each night, you can use your magic to see if a player is a werewolf, but you cannot see their identity. Use your powers to help the villagers identify the werewolves.",
+  },
+  Lycan: {
+    icon: "🐺",
+    color: "#8d6e63",
+    description: "A werewolf who appears as a villager to the Seer.",
+    detailedDescription:
+      "You are the Lycan! You are a werewolf with a special ability - you appear as a villager to the Seer. Use this deception to your advantage and avoid detection while working with your pack.",
+  },
+  Witch: {
+    icon: "🧙‍♀️",
+    color: "#6a1b9a",
+    description:
+      "You have two potions: one to save a player, one to kill a player. Each can be used only once.",
+    detailedDescription:
+      "You are the Witch! You have two powerful potions: one to save a player from elimination, and one to kill a player. Each potion can be used only once during the game. Use them wisely to help your team win.",
+  },
+  Fool: {
+    icon: "🤡",
+    color: "#ff9800",
+    description:
+      "You think you're the Seer, but your visions are always wrong.",
+    detailedDescription:
+      "You are the Fool! You believe you are the Seer and receive visions each night, but your visions are always wrong. You will be told the opposite of the truth. Be careful not to mislead the villagers with your false information.",
+  },
+  Detective: {
+    icon: "🔍",
+    color: "#3f51b5",
+    description:
+      "Each night, you can investigate one player to learn if they have visited someone.",
+    detailedDescription:
+      "You are the Detective! Each night, you can investigate one player to learn if they have visited someone during the night. This can help you track the movements of werewolves and other night-active roles.",
   },
 };
 
@@ -41,6 +124,15 @@ const playerCountInput = document.getElementById("playerCount");
 const werewolfCountInput = document.getElementById("werewolfCount");
 const seerCountInput = document.getElementById("seerCount");
 const doctorCountInput = document.getElementById("doctorCount");
+const bodyguardCountInput = document.getElementById("bodyguardCount");
+const cupidCountInput = document.getElementById("cupidCount");
+const wolfCubCountInput = document.getElementById("wolfCubCount");
+const alphaWolfCountInput = document.getElementById("alphaWolfCount");
+const sorceressCountInput = document.getElementById("sorceressCount");
+const lycanCountInput = document.getElementById("lycanCount");
+const witchCountInput = document.getElementById("witchCount");
+const foolCountInput = document.getElementById("foolCount");
+const detectiveCountInput = document.getElementById("detectiveCount");
 const hunterCountInput = document.getElementById("hunterCount");
 const usePlayerNamesCheckbox = document.getElementById("usePlayerNames");
 const playerNamesContainer = document.getElementById("playerNamesContainer");
@@ -48,6 +140,7 @@ const playerNamesList = document.getElementById("playerNamesList");
 const gameResults = document.getElementById("gameResults");
 const playerLinks = document.getElementById("playerLinks");
 const gameSummary = document.getElementById("gameSummary");
+const roleAssignments = document.getElementById("roleAssignments");
 
 // Event listeners
 document.addEventListener("DOMContentLoaded", function () {
@@ -66,6 +159,14 @@ document.addEventListener("DOMContentLoaded", function () {
     testQRBtn.addEventListener("click", testQRCode);
   }
 
+  // Role assignments button
+  const showRoleAssignmentsBtn = document.getElementById(
+    "showRoleAssignmentsBtn"
+  );
+  if (showRoleAssignmentsBtn) {
+    showRoleAssignmentsBtn.addEventListener("click", toggleRoleAssignments);
+  }
+
   // Initialize player names
   updatePlayerNames();
 });
@@ -77,6 +178,24 @@ function togglePlayerNames() {
     updatePlayerNames();
   } else {
     playerNamesContainer.style.display = "none";
+  }
+}
+
+// Toggle role assignments section
+function toggleRoleAssignments() {
+  const roleAssignmentsSection = document.querySelector(".role-assignments");
+  const showRoleAssignmentsBtn = document.getElementById(
+    "showRoleAssignmentsBtn"
+  );
+
+  if (roleAssignmentsSection.style.display === "none") {
+    roleAssignmentsSection.style.display = "block";
+    showRoleAssignmentsBtn.textContent = "Hide Role Assignments";
+    showRoleAssignmentsBtn.classList.add("btn-danger");
+  } else {
+    roleAssignmentsSection.style.display = "none";
+    showRoleAssignmentsBtn.textContent = "Show Role Assignments";
+    showRoleAssignmentsBtn.classList.remove("btn-danger");
   }
 }
 
@@ -113,6 +232,15 @@ function handleGameSetup(event) {
   const werewolfCount = parseInt(werewolfCountInput.value);
   const seerCount = parseInt(seerCountInput.value);
   const doctorCount = parseInt(doctorCountInput.value);
+  const bodyguardCount = parseInt(bodyguardCountInput.value);
+  const cupidCount = parseInt(cupidCountInput.value);
+  const wolfCubCount = parseInt(wolfCubCountInput.value);
+  const alphaWolfCount = parseInt(alphaWolfCountInput.value);
+  const sorceressCount = parseInt(sorceressCountInput.value);
+  const lycanCount = parseInt(lycanCountInput.value);
+  const witchCount = parseInt(witchCountInput.value);
+  const foolCount = parseInt(foolCountInput.value);
+  const detectiveCount = parseInt(detectiveCountInput.value);
   const hunterCount = parseInt(hunterCountInput.value);
   const usePlayerNames = usePlayerNamesCheckbox.checked;
 
@@ -123,6 +251,15 @@ function handleGameSetup(event) {
       werewolfCount,
       seerCount,
       doctorCount,
+      bodyguardCount,
+      cupidCount,
+      wolfCubCount,
+      alphaWolfCount,
+      sorceressCount,
+      lycanCount,
+      witchCount,
+      foolCount,
+      detectiveCount,
       hunterCount
     )
   ) {
@@ -135,6 +272,15 @@ function handleGameSetup(event) {
     werewolfCount,
     seerCount,
     doctorCount,
+    bodyguardCount,
+    cupidCount,
+    wolfCubCount,
+    alphaWolfCount,
+    sorceressCount,
+    lycanCount,
+    witchCount,
+    foolCount,
+    detectiveCount,
     hunterCount,
     usePlayerNames
   );
@@ -146,10 +292,31 @@ function validateGameSetup(
   werewolfCount,
   seerCount,
   doctorCount,
+  bodyguardCount,
+  cupidCount,
+  wolfCubCount,
+  alphaWolfCount,
+  sorceressCount,
+  lycanCount,
+  witchCount,
+  foolCount,
+  detectiveCount,
   hunterCount
 ) {
   const totalSpecialRoles =
-    werewolfCount + seerCount + doctorCount + hunterCount;
+    werewolfCount +
+    seerCount +
+    doctorCount +
+    bodyguardCount +
+    cupidCount +
+    wolfCubCount +
+    alphaWolfCount +
+    sorceressCount +
+    lycanCount +
+    witchCount +
+    foolCount +
+    detectiveCount +
+    hunterCount;
   const villagerCount = playerCount - totalSpecialRoles;
 
   if (totalSpecialRoles > playerCount) {
@@ -183,6 +350,15 @@ function generateGame(
   werewolfCount,
   seerCount,
   doctorCount,
+  bodyguardCount,
+  cupidCount,
+  wolfCubCount,
+  alphaWolfCount,
+  sorceressCount,
+  lycanCount,
+  witchCount,
+  foolCount,
+  detectiveCount,
   hunterCount,
   usePlayerNames
 ) {
@@ -216,6 +392,51 @@ function generateGame(
   // Add doctors
   for (let i = 0; i < doctorCount; i++) {
     roles.push("Doctor");
+  }
+
+  // Add bodyguards
+  for (let i = 0; i < bodyguardCount; i++) {
+    roles.push("Bodyguard");
+  }
+
+  // Add cupids
+  for (let i = 0; i < cupidCount; i++) {
+    roles.push("Cupid");
+  }
+
+  // Add wolf cubs
+  for (let i = 0; i < wolfCubCount; i++) {
+    roles.push("WolfCub");
+  }
+
+  // Add alpha wolves
+  for (let i = 0; i < alphaWolfCount; i++) {
+    roles.push("AlphaWolf");
+  }
+
+  // Add sorceresses
+  for (let i = 0; i < sorceressCount; i++) {
+    roles.push("Sorceress");
+  }
+
+  // Add lycans
+  for (let i = 0; i < lycanCount; i++) {
+    roles.push("Lycan");
+  }
+
+  // Add witches
+  for (let i = 0; i < witchCount; i++) {
+    roles.push("Witch");
+  }
+
+  // Add fools
+  for (let i = 0; i < foolCount; i++) {
+    roles.push("Fool");
+  }
+
+  // Add detectives
+  for (let i = 0; i < detectiveCount; i++) {
+    roles.push("Detective");
   }
 
   // Add hunters
@@ -270,6 +491,9 @@ function displayGameResults() {
   // Generate game summary
   generateGameSummary();
 
+  // Generate role assignments
+  generateRoleAssignments();
+
   // Scroll to results
   gameResults.scrollIntoView({ behavior: "smooth" });
 }
@@ -287,19 +511,46 @@ function generatePlayerLinks() {
     playerUrl.searchParams.set("role", player.role);
     playerUrl.searchParams.set("player", player.number);
 
-    // Create card content - only show QR code, no text link
+    // Create card content with show QR code button
     playerCard.innerHTML = `
             <h3>${player.name}</h3>
-            <div class="qr-code-container" id="qr-${player.number}"></div>
+            <button class="btn btn-primary show-qr-btn" onclick="showQRCode('${playerUrl.href}', 'qr-${player.number}', this)">
+              Show QR Code
+            </button>
+            <div class="qr-code-container" id="qr-${player.number}" style="display: none;"></div>
         `;
 
     playerLinks.appendChild(playerCard);
-
-    // Generate QR code with animation delay
-    setTimeout(() => {
-      generateQRCode(playerUrl.href, `qr-${player.number}`);
-    }, index * 200);
   });
+}
+
+// Show QR code function
+function showQRCode(text, elementId, button) {
+  const element = document.getElementById(elementId);
+  if (!element) {
+    console.error("Element not found:", elementId);
+    return;
+  }
+
+  // Toggle QR code visibility
+  if (element.style.display === "none") {
+    // Show QR code
+    element.style.display = "block";
+    button.textContent = "Hide QR Code";
+    button.classList.remove("btn-primary");
+    button.classList.add("btn-secondary");
+
+    // Generate QR code if not already generated
+    if (element.innerHTML === "") {
+      generateQRCode(text, elementId);
+    }
+  } else {
+    // Hide QR code
+    element.style.display = "none";
+    button.textContent = "Show QR Code";
+    button.classList.remove("btn-secondary");
+    button.classList.add("btn-primary");
+  }
 }
 
 // Generate QR code
@@ -409,6 +660,38 @@ function generateGameSummary() {
   });
 
   gameSummary.innerHTML = summaryHTML;
+}
+
+// Generate role assignments display
+function generateRoleAssignments() {
+  const roleAssignmentsContainer = document.getElementById("roleAssignments");
+  if (!roleAssignmentsContainer) {
+    console.error("Role assignments container not found");
+    return;
+  }
+
+  // Create a shuffled copy of players to avoid revealing assignment order
+  const shuffledPlayers = [...gameState.players];
+  shuffleArray(shuffledPlayers);
+
+  let assignmentsHTML = "";
+
+  shuffledPlayers.forEach((player) => {
+    const config = roleConfigs[player.role];
+    if (config) {
+      assignmentsHTML += `
+        <div class="role-assignment-item">
+          <div class="role-assignment-icon">${config.icon}</div>
+          <div class="role-assignment-info">
+            <div class="role-assignment-player">${player.name}</div>
+            <div class="role-assignment-role">${player.role}</div>
+          </div>
+        </div>
+      `;
+    }
+  });
+
+  roleAssignmentsContainer.innerHTML = assignmentsHTML;
 }
 
 // Utility function to copy text to clipboard

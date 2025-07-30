@@ -15,6 +15,10 @@
             <div class="role-icon" id="roleIcon">🎭</div>
             <div class="role-name" id="roleName">Loading...</div>
             <div class="role-description" id="roleDescription"></div>
+            <div
+              class="role-detailed-description"
+              id="roleDetailedDescription"
+            ></div>
           </div>
         </div>
 
@@ -23,6 +27,7 @@
             Hide Role
           </button>
           <button id="copyLinkBtn" class="btn btn-primary">Copy Link</button>
+          <button id="roleInfoBtn" class="btn btn-info">❓ Role Guide</button>
         </div>
 
         <div class="player-info">
@@ -44,31 +49,112 @@
           icon: "🐺",
           color: "#d32f2f",
           description:
-            "You are a Werewolf! Work with your fellow werewolves to eliminate the villagers. Each night, you can choose one player to eliminate.",
+            "Work with your fellow werewolves to eliminate the villagers. Each night, you can choose one player to eliminate.",
+          detailedDescription:
+            "You are a Werewolf! Work with your fellow werewolves to eliminate the villagers. Each night, you can choose one player to eliminate. You must work together to avoid detection and win the game.",
         },
         Seer: {
           icon: "🔮",
           color: "#1976d2",
           description:
-            "You are the Seer! Each night, you can investigate one player to learn their true role.",
+            "Each night, investigate one player to learn their true role.",
+          detailedDescription:
+            "You are the Seer! Each night, you can investigate one player to learn their true role. Use this information wisely to help the villagers identify and eliminate the werewolves.",
         },
         Doctor: {
           icon: "🏥",
           color: "#388e3c",
           description:
-            "You are the Doctor! Each night, you can protect one player from being eliminated by the werewolves.",
+            "Each night, protect one player from being eliminated by the werewolves.",
+          detailedDescription:
+            "You are the Doctor! Each night, you can protect one player from being eliminated by the werewolves. You cannot protect the same player two nights in a row. Use your healing powers to keep the villagers alive.",
         },
         Hunter: {
           icon: "🏹",
           color: "#f57c00",
           description:
-            "You are the Hunter! If you are eliminated, you can immediately eliminate one other player as your final act.",
+            "If eliminated, immediately eliminate one other player as your final act.",
+          detailedDescription:
+            "You are the Hunter! If you are eliminated, you can immediately eliminate one other player as your final act. Choose wisely - you want to take down a werewolf, not a fellow villager.",
         },
         Villager: {
           icon: "👥",
           color: "#7b1fa2",
           description:
-            "You are a Villager! Work with your fellow villagers to identify and eliminate the werewolves through discussion and voting.",
+            "Work with fellow villagers to identify and eliminate werewolves through discussion and voting.",
+          detailedDescription:
+            "You are a Villager! Work with your fellow villagers to identify and eliminate the werewolves through discussion and voting. You have no special powers, but your voice and vote are crucial to the village's survival.",
+        },
+        Bodyguard: {
+          icon: "🛡️",
+          color: "#2e7d32",
+          description:
+            "Each night, protect one player from elimination. If you protect someone, you might die instead.",
+          detailedDescription:
+            "You are the Bodyguard! Each night, you can protect one player from elimination. If the werewolves target your protected player, you will die instead of them. You cannot protect the same player two nights in a row.",
+        },
+        Cupid: {
+          icon: "💘",
+          color: "#e91e63",
+          description:
+            "On the first night, choose two players to fall in love. If one dies, the other dies too.",
+          detailedDescription:
+            "You are Cupid! On the first night, you must choose two players to fall in love. If one of them dies, the other will die of a broken heart. The lovers win together or lose together, regardless of their original roles.",
+        },
+        WolfCub: {
+          icon: "🐺",
+          color: "#d32f2f",
+          description:
+            "A young werewolf. If eliminated, the werewolves get an extra kill the next night.",
+          detailedDescription:
+            "You are the Wolf Cub! You are a young werewolf with a special ability. If you are eliminated, the werewolves will get an extra kill the following night as revenge. Work with your pack to survive.",
+        },
+        AlphaWolf: {
+          icon: "🐺",
+          color: "#b71c1c",
+          description:
+            "The leader of the werewolves. You can see who the other werewolves are.",
+          detailedDescription:
+            "You are the Alpha Wolf! You are the leader of the werewolves and can see who the other werewolves are. Lead your pack to victory by eliminating the villagers. Your leadership is crucial to the werewolves' success.",
+        },
+        Sorceress: {
+          icon: "🔮",
+          color: "#7b1fa2",
+          description:
+            "Each night, you can see if a player is a werewolf, but not who they are.",
+          detailedDescription:
+            "You are the Sorceress! Each night, you can use your magic to see if a player is a werewolf, but you cannot see their identity. Use your powers to help the villagers identify the werewolves.",
+        },
+        Lycan: {
+          icon: "🐺",
+          color: "#8d6e63",
+          description: "A werewolf who appears as a villager to the Seer.",
+          detailedDescription:
+            "You are the Lycan! You are a werewolf with a special ability - you appear as a villager to the Seer. Use this deception to your advantage and avoid detection while working with your pack.",
+        },
+        Witch: {
+          icon: "🧙‍♀️",
+          color: "#6a1b9a",
+          description:
+            "You have two potions: one to save a player, one to kill a player. Each can be used only once.",
+          detailedDescription:
+            "You are the Witch! You have two powerful potions: one to save a player from elimination, and one to kill a player. Each potion can be used only once during the game. Use them wisely to help your team win.",
+        },
+        Fool: {
+          icon: "🤡",
+          color: "#ff9800",
+          description:
+            "You think you're the Seer, but your visions are always wrong.",
+          detailedDescription:
+            "You are the Fool! You believe you are the Seer and receive visions each night, but your visions are always wrong. You will be told the opposite of the truth. Be careful not to mislead the villagers with your false information.",
+        },
+        Detective: {
+          icon: "🔍",
+          color: "#3f51b5",
+          description:
+            "Each night, you can investigate one player to learn if they have visited someone.",
+          detailedDescription:
+            "You are the Detective! Each night, you can investigate one player to learn if they have visited someone during the night. This can help you track the movements of werewolves and other night-active roles.",
         },
       };
 
@@ -77,6 +163,9 @@
         const roleNameEl = document.getElementById("roleName");
         const roleIconEl = document.getElementById("roleIcon");
         const roleDescriptionEl = document.getElementById("roleDescription");
+        const roleDetailedDescriptionEl = document.getElementById(
+          "roleDetailedDescription"
+        );
         const playerNumberEl = document.getElementById("playerNumber");
         const gameLinkEl = document.getElementById("gameLink");
 
@@ -86,6 +175,7 @@
           roleNameEl.textContent = role;
           roleIconEl.textContent = config.icon;
           roleDescriptionEl.textContent = config.description;
+          roleDetailedDescriptionEl.textContent = config.detailedDescription;
 
           // Apply role color
           document.documentElement.style.setProperty(
@@ -100,6 +190,7 @@
           roleIconEl.textContent = "❌";
           roleDescriptionEl.textContent =
             "The role parameter is missing or invalid.";
+          roleDetailedDescriptionEl.textContent = "";
         }
 
         if (player) {
@@ -110,9 +201,14 @@
       }
 
       // Hide/Reveal functionality
-      let isHidden = false;
+      let isHidden = true; // Start hidden by default
       const hideRevealBtn = document.getElementById("hideRevealBtn");
       const roleContent = document.getElementById("roleContent");
+
+      // Initially hide the role content
+      roleContent.style.filter = "blur(10px)";
+      hideRevealBtn.textContent = "Reveal Role";
+      hideRevealBtn.classList.add("btn-danger");
 
       hideRevealBtn.addEventListener("click", () => {
         isHidden = !isHidden;
@@ -151,6 +247,80 @@
           }, 2000);
         }
       });
+
+      // Role guide functionality
+      const roleInfoBtn = document.getElementById("roleInfoBtn");
+      roleInfoBtn.addEventListener("click", showRoleGuide);
+
+      function showRoleGuide() {
+        const modal = document.createElement("div");
+        modal.className = "role-guide-modal";
+        modal.style.cssText = `
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0, 0, 0, 0.8);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          z-index: 1000;
+        `;
+
+        const modalContent = document.createElement("div");
+        modalContent.style.cssText = `
+          background: white;
+          padding: 2rem;
+          border-radius: 12px;
+          max-width: 90%;
+          max-height: 90%;
+          overflow-y: auto;
+          position: relative;
+        `;
+
+        let rolesHTML = "<h2>🎭 Werewolf Role Guide</h2>";
+
+        Object.entries(roleConfigs).forEach(([roleName, config]) => {
+          rolesHTML += `
+            <div class="role-guide-item" style="margin-bottom: 1.5rem; padding: 1rem; border: 1px solid #e0e0e0; border-radius: 8px;">
+              <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+                <span style="font-size: 2rem; margin-right: 1rem;">${config.icon}</span>
+                <h3 style="margin: 0; color: ${config.color};">${roleName}</h3>
+              </div>
+              <p style="margin: 0.5rem 0; font-weight: bold;">${config.description}</p>
+              <p style="margin: 0; color: #666; font-size: 0.9rem;">${config.detailedDescription}</p>
+            </div>
+          `;
+        });
+
+        modalContent.innerHTML = `
+          ${rolesHTML}
+          <button onclick="this.parentElement.parentElement.remove()" style="
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: #f44336;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            font-size: 16px;
+          ">×</button>
+        `;
+
+        modal.appendChild(modalContent);
+        document.body.appendChild(modal);
+
+        // Close modal when clicking outside
+        modal.addEventListener("click", (e) => {
+          if (e.target === modal) {
+            modal.remove();
+          }
+        });
+      }
 
       // Initialize page
       updatePage();

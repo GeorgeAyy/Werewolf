@@ -96,6 +96,114 @@
         </div>
 
         <div class="form-group">
+          <label for="bodyguardCount">Number of Bodyguards:</label>
+          <input
+            type="number"
+            id="bodyguardCount"
+            min="0"
+            max="1"
+            value="0"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="cupidCount">Number of Cupids:</label>
+          <input
+            type="number"
+            id="cupidCount"
+            min="0"
+            max="1"
+            value="0"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="wolfCubCount">Number of Wolf Cubs:</label>
+          <input
+            type="number"
+            id="wolfCubCount"
+            min="0"
+            max="1"
+            value="0"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="alphaWolfCount">Number of Alpha Wolves:</label>
+          <input
+            type="number"
+            id="alphaWolfCount"
+            min="0"
+            max="1"
+            value="0"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="sorceressCount">Number of Sorceresses:</label>
+          <input
+            type="number"
+            id="sorceressCount"
+            min="0"
+            max="1"
+            value="0"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="lycanCount">Number of Lycans:</label>
+          <input
+            type="number"
+            id="lycanCount"
+            min="0"
+            max="1"
+            value="0"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="witchCount">Number of Witches:</label>
+          <input
+            type="number"
+            id="witchCount"
+            min="0"
+            max="1"
+            value="0"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="foolCount">Number of Fools:</label>
+          <input
+            type="number"
+            id="foolCount"
+            min="0"
+            max="1"
+            value="0"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="detectiveCount">Number of Detectives:</label>
+          <input
+            type="number"
+            id="detectiveCount"
+            min="0"
+            max="1"
+            value="0"
+            required
+          />
+        </div>
+
+        <div class="form-group">
           <label for="hunterCount">Number of Hunters:</label>
           <input
             type="number"
@@ -145,6 +253,21 @@
         <div class="game-info">
           <h3>Game Summary</h3>
           <div id="gameSummary" class="game-summary"></div>
+        </div>
+
+        <div class="role-assignments" style="display: none">
+          <h3>Role Assignments</h3>
+          <p class="role-assignments-note">
+            Each player's assigned role (order does not reflect role assignment
+            order):
+          </p>
+          <div id="roleAssignments" class="role-assignments-list"></div>
+        </div>
+
+        <div class="role-assignments-controls">
+          <button id="showRoleAssignmentsBtn" class="btn btn-secondary">
+            Show Role Assignments
+          </button>
         </div>
       </div>
     </div>
