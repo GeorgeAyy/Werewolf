@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your Role - Werewolf Game</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="player-card">
+        <div class="role-display">
+          <h1 id="roleTitle">Your Role</h1>
+          <div id="roleContent" class="role-content">
+            <div class="role-icon" id="roleIcon">🎭</div>
+            <div class="role-name" id="roleName">Loading...</div>
+            <div class="role-description" id="roleDescription"></div>
+          </div>
+        </div>
+
+        <div class="player-controls">
+          <button id="hideRevealBtn" class="btn btn-secondary">
+            Hide Role
+          </button>
+          <button id="copyLinkBtn" class="btn btn-primary">Copy Link</button>
+        </div>
+
+        <div class="player-info">
+          <p>Player Number: <span id="playerNumber">-</span></p>
+          <p>Game Link: <span id="gameLink">-</span></p>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Get URL parameters
+      const urlParams = new URLSearchParams(window.location.search);
+      const role = urlParams.get("role");
+      const player = urlParams.get("player");
+
+      // Role configurations
+      const roleConfigs = {
+        Werewolf: {
+          icon: "🐺",
+          color: "#d32f2f",
+          description:
+            "You are a Werewolf! Work with your fellow werewolves to eliminate the villagers. Each night, you can choose one player to eliminate.",
+        },
+        Seer: {
+          icon: "🔮",
+          color: "#1976d2",
+          description:
+            "You are the Seer! Each night, you can investigate one player to learn their true role.",
+        },
+        Doctor: {
+          icon: "🏥",
+          color: "#388e3c",
+          description:
+            "You are the Doctor! Each night, you can protect one player from being eliminated by the werewolves.",
+        },
+        Hunter: {
+          icon: "🏹",
+          color: "#f57c00",
+          description:
+            "You are the Hunter! If you are eliminated, you can immediately eliminate one other player as your final act.",
+        },
+        Villager: {
+          icon: "👥",
+          color: "#7b1fa2",
+          description:
+            "You are a Villager! Work with your fellow villagers to identify and eliminate the werewolves through discussion and voting.",
+        },
+      };
+
+      // Update page content
+      function updatePage() {
+        const roleNameEl = document.getElementById("roleName");
+        const roleIconEl = document.getElementById("roleIcon");
+        const roleDescriptionEl = document.getElementById("roleDescription");
+        const playerNumberEl = document.getElementById("playerNumber");
+        const gameLinkEl = document.getElementById("gameLink");
+
+        if (role && roleConfigs[role]) {
+          const config = roleConfigs[role];
+
+          roleNameEl.textContent = role;
+          roleIconEl.textContent = config.icon;
+          roleDescriptionEl.textContent = config.description;
+
+          // Apply role color
+          document.documentElement.style.setProperty(
+            "--role-color",
+            config.color
+          );
+
+          // Update page title
+          document.title = `${role} - Werewolf Game`;
+        } else {
+          roleNameEl.textContent = "Invalid Role";
+          roleIconEl.textContent = "❌";
+          roleDescriptionEl.textContent =
+            "The role parameter is missing or invalid.";
+        }
+
+        if (player) {
+          playerNumberEl.textContent = player;
+        }
+
+        gameLinkEl.textContent = window.location.href;
+      }
+
+      // Hide/Reveal functionality
+      let isHidden = false;
+      const hideRevealBtn = document.getElementById("hideRevealBtn");
+      const roleContent = document.getElementById("roleContent");
+
+      hideRevealBtn.addEventListener("click", () => {
+        isHidden = !isHidden;
+        if (isHidden) {
+          roleContent.style.filter = "blur(10px)";
+          hideRevealBtn.textContent = "Reveal Role";
+          hideRevealBtn.classList.add("btn-danger");
+        } else {
+          roleContent.style.filter = "none";
+          hideRevealBtn.textContent = "Hide Role";
+          hideRevealBtn.classList.remove("btn-danger");
+        }
+      });
+
+      // Copy link functionality
+      const copyLinkBtn = document.getElementById("copyLinkBtn");
+      copyLinkBtn.addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText(window.location.href);
+          copyLinkBtn.textContent = "Copied!";
+          setTimeout(() => {
+            copyLinkBtn.textContent = "Copy Link";
+          }, 2000);
+        } catch (err) {
+          // Fallback for older browsers
+          const textArea = document.createElement("textarea");
+          textArea.value = window.location.href;
+          document.body.appendChild(textArea);
+          textArea.select();
+          document.execCommand("copy");
+          document.body.removeChild(textArea);
+
+          copyLinkBtn.textContent = "Copied!";
+          setTimeout(() => {
+            copyLinkBtn.textContent = "Copy Link";
+          }, 2000);
+        }
+      });
+
+      // Initialize page
+      updatePage();
+    </script>
+  </body>
+</html>
