@@ -502,6 +502,10 @@ function displayGameResults() {
 function generatePlayerLinks() {
   playerLinks.innerHTML = "";
 
+  // Get all werewolf players for teammate information
+  const werewolfPlayers = gameState.players.filter(p => p.role === "Werewolf");
+  const werewolfNames = werewolfPlayers.map(p => p.name);
+
   gameState.players.forEach((player, index) => {
     const playerCard = document.createElement("div");
     playerCard.className = "player-link-card";
@@ -510,6 +514,15 @@ function generatePlayerLinks() {
     const playerUrl = new URL("player.html", window.location.href);
     playerUrl.searchParams.set("role", player.role);
     playerUrl.searchParams.set("player", player.number);
+    playerUrl.searchParams.set("name", player.name);
+
+    // Add werewolf teammates if this player is a werewolf
+    if (player.role === "Werewolf") {
+      const teammates = werewolfNames.filter(name => name !== player.name);
+      if (teammates.length > 0) {
+        playerUrl.searchParams.set("teammates", teammates.join(","));
+      }
+    }
 
     // Create card content with show QR code button
     playerCard.innerHTML = `

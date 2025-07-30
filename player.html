@@ -11,6 +11,7 @@
       <div class="player-card">
         <div class="role-display">
           <h1 id="roleTitle">Your Role</h1>
+          <div id="playerName" class="player-name"></div>
           <div id="roleContent" class="role-content">
             <div class="role-icon" id="roleIcon">🎭</div>
             <div class="role-name" id="roleName">Loading...</div>
@@ -19,6 +20,10 @@
               class="role-detailed-description"
               id="roleDetailedDescription"
             ></div>
+            <div id="werewolfTeam" class="werewolf-team" style="display: none;">
+              <h3>🐺 Your Werewolf Team:</h3>
+              <div id="werewolfTeammates"></div>
+            </div>
           </div>
         </div>
 
@@ -42,6 +47,8 @@
       const urlParams = new URLSearchParams(window.location.search);
       const role = urlParams.get("role");
       const player = urlParams.get("player");
+      const playerName = urlParams.get("name");
+      const werewolfTeammates = urlParams.get("teammates");
 
       // Role configurations
       const roleConfigs = {
@@ -168,6 +175,9 @@
         );
         const playerNumberEl = document.getElementById("playerNumber");
         const gameLinkEl = document.getElementById("gameLink");
+        const playerNameEl = document.getElementById("playerName");
+        const werewolfTeamEl = document.getElementById("werewolfTeam");
+        const werewolfTeammatesEl = document.getElementById("werewolfTeammates");
 
         if (role && roleConfigs[role]) {
           const config = roleConfigs[role];
@@ -197,6 +207,25 @@
           playerNumberEl.textContent = player;
         }
 
+        // Display player name if available
+        if (playerName) {
+          playerNameEl.textContent = `Player: ${playerName}`;
+          playerNameEl.style.display = "block";
+        } else {
+          playerNameEl.style.display = "none";
+        }
+
+        // Display werewolf teammates if this is a werewolf and teammates are provided
+        if (role === "Werewolf" && werewolfTeammates) {
+          const teammates = werewolfTeammates.split(",").map(t => t.trim());
+          werewolfTeammatesEl.innerHTML = teammates.map(teammate => 
+            `<div class="teammate">${teammate}</div>`
+          ).join("");
+          werewolfTeamEl.style.display = "block";
+        } else {
+          werewolfTeamEl.style.display = "none";
+        }
+
         gameLinkEl.textContent = window.location.href;
       }
 
@@ -205,19 +234,19 @@
       const hideRevealBtn = document.getElementById("hideRevealBtn");
       const roleContent = document.getElementById("roleContent");
 
-      // Initially hide the role content
-      roleContent.style.filter = "blur(10px)";
+      // Initially hide the role content completely
+      roleContent.style.display = "none";
       hideRevealBtn.textContent = "Reveal Role";
       hideRevealBtn.classList.add("btn-danger");
 
       hideRevealBtn.addEventListener("click", () => {
         isHidden = !isHidden;
         if (isHidden) {
-          roleContent.style.filter = "blur(10px)";
+          roleContent.style.display = "none";
           hideRevealBtn.textContent = "Reveal Role";
           hideRevealBtn.classList.add("btn-danger");
         } else {
-          roleContent.style.filter = "none";
+          roleContent.style.display = "block";
           hideRevealBtn.textContent = "Hide Role";
           hideRevealBtn.classList.remove("btn-danger");
         }

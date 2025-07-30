@@ -409,6 +409,37 @@ header p {
   border-left: 4px solid var(--role-color);
 }
 
+.player-name {
+  font-size: 1.1rem;
+  color: var(--secondary-color);
+  margin-bottom: 1rem;
+  text-align: center;
+  font-weight: 500;
+}
+
+.werewolf-team {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: rgba(211, 47, 47, 0.1);
+  border-radius: var(--border-radius);
+  border: 2px solid rgba(211, 47, 47, 0.3);
+}
+
+.werewolf-team h3 {
+  color: #d32f2f;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
+.teammate {
+  background: rgba(211, 47, 47, 0.2);
+  padding: 0.5rem 1rem;
+  margin: 0.25rem 0;
+  border-radius: var(--border-radius);
+  color: #d32f2f;
+  font-weight: 500;
+}
+
 .player-controls {
   margin-bottom: 2rem;
   display: flex;
