@@ -6,6 +6,38 @@
     <title>Werewolf Game Setup</title>
     <link rel="stylesheet" href="styles.css" />
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+    <script>
+      // Check if QRCode library loaded successfully
+      window.addEventListener("load", function () {
+        if (typeof QRCode === "undefined") {
+          console.error("QRCode library failed to load from primary CDN");
+          // Try alternative CDN
+          const script = document.createElement("script");
+          script.src =
+            "https://cdnjs.cloudflare.com/ajax/libs/qrcode/1.5.3/qrcode.min.js";
+          script.onload = function () {
+            console.log("QRCode library loaded from alternative CDN");
+          };
+          script.onerror = function () {
+            console.error("Failed to load QRCode library from alternative CDN");
+            // Try third CDN
+            const script2 = document.createElement("script");
+            script2.src = "https://unpkg.com/qrcode@1.5.3/build/qrcode.min.js";
+            script2.onload = function () {
+              console.log("QRCode library loaded from unpkg CDN");
+            };
+            script2.onerror = function () {
+              console.error("All QRCode CDNs failed");
+            };
+            document.head.appendChild(script2);
+          };
+          document.head.appendChild(script);
+        } else {
+          console.log("QRCode library loaded successfully from primary CDN");
+        }
+      });
+    </script>
   </head>
   <body>
     <div class="container">
@@ -92,10 +124,22 @@
         </div>
 
         <button type="submit" class="btn btn-primary">Generate Game</button>
+        <button
+          type="button"
+          id="testQRBtn"
+          class="btn btn-secondary"
+          style="margin-left: 1rem"
+        >
+          Test QR Code
+        </button>
       </form>
 
       <div id="gameResults" class="game-results" style="display: none">
-        <h2>Player Links & QR Codes</h2>
+        <h2>Player QR Codes</h2>
+        <p class="qr-instructions">
+          Scan each QR code with your phone to view your role. Each player
+          should scan their own QR code to see their assigned role.
+        </p>
         <div id="playerLinks" class="player-links"></div>
 
         <div class="game-info">

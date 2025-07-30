@@ -60,6 +60,12 @@ document.addEventListener("DOMContentLoaded", function () {
   // Form submission
   gameSetupForm.addEventListener("submit", handleGameSetup);
 
+  // Test QR code button
+  const testQRBtn = document.getElementById("testQRBtn");
+  if (testQRBtn) {
+    testQRBtn.addEventListener("click", testQRCode);
+  }
+
   // Initialize player names
   updatePlayerNames();
 });
@@ -281,11 +287,10 @@ function generatePlayerLinks() {
     playerUrl.searchParams.set("role", player.role);
     playerUrl.searchParams.set("player", player.number);
 
-    // Create card content
+    // Create card content - only show QR code, no text link
     playerCard.innerHTML = `
             <h3>${player.name}</h3>
             <div class="qr-code-container" id="qr-${player.number}"></div>
-            <div class="player-link">${playerUrl.href}</div>
         `;
 
     playerLinks.appendChild(playerCard);
@@ -293,37 +298,92 @@ function generatePlayerLinks() {
     // Generate QR code with animation delay
     setTimeout(() => {
       generateQRCode(playerUrl.href, `qr-${player.number}`);
-    }, index * 100);
+    }, index * 200);
   });
 }
 
 // Generate QR code
 function generateQRCode(text, elementId) {
   const element = document.getElementById(elementId);
-  if (!element) return;
+  if (!element) {
+    console.error("Element not found:", elementId);
+    return;
+  }
 
   // Clear previous QR code
   element.innerHTML = "";
 
-  // Generate new QR code
-  QRCode.toCanvas(
-    element,
-    text,
-    {
-      width: 200,
-      margin: 2,
-      color: {
-        dark: "#000000",
-        light: "#FFFFFF",
-      },
-    },
-    function (error) {
-      if (error) {
-        console.error("QR Code generation error:", error);
-        element.innerHTML = "<p>QR Code generation failed</p>";
-      }
-    }
-  );
+  console.log("Generating QR code for:", text, "in element:", elementId);
+
+  // Try the most reliable method first - direct API call
+  generateFallbackQRCode(text, element);
+}
+
+// Fallback QR code generator using multiple methods
+function generateFallbackQRCode(text, element) {
+  try {
+    const size = 200;
+
+    // Method 1: Try QR Server API
+    const qrServerUrl = `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(
+      text
+    )}`;
+
+    const img = document.createElement("img");
+    img.src = qrServerUrl;
+    img.alt = "QR Code";
+    img.style.width = size + "px";
+    img.style.height = size + "px";
+
+    img.onload = function () {
+      console.log("QR code generated successfully using QR Server");
+    };
+
+    img.onerror = function () {
+      console.log("QR Server failed, trying alternative APIs...");
+
+      // Method 2: Try QR Code Monkey API
+      const qrMonkeyUrl = `https://www.qrcode-monkey.com/api/qr/custom?size=${size}&data=${encodeURIComponent(
+        text
+      )}&file=png`;
+      img.src = qrMonkeyUrl;
+
+      img.onerror = function () {
+        // Method 3: Try GoQR.me API
+        const goQrUrl = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(
+          text
+        )}&size=${size}x${size}&format=png`;
+        img.src = goQrUrl;
+
+        img.onerror = function () {
+          // Method 4: Simple text fallback
+          console.error("All QR APIs failed, showing text link");
+          element.innerHTML = `
+            <div style="border: 2px dashed #ccc; padding: 20px; text-align: center; border-radius: 8px;">
+              <p style="margin: 0 0 10px 0; font-weight: bold;">QR Code Unavailable</p>
+              <p style="margin: 0 0 10px 0; font-size: 12px; word-break: break-all;">${text}</p>
+              <button onclick="navigator.clipboard.writeText('${text}')" style="padding: 5px 10px; background: #2196f3; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                Copy Link
+              </button>
+            </div>
+          `;
+        };
+      };
+    };
+
+    element.appendChild(img);
+  } catch (error) {
+    console.error("Fallback QR code generation exception:", error);
+    element.innerHTML = `
+      <div style="border: 2px dashed #ccc; padding: 20px; text-align: center; border-radius: 8px;">
+        <p style="margin: 0 0 10px 0; font-weight: bold;">QR Code Error</p>
+        <p style="margin: 0 0 10px 0; font-size: 12px; word-break: break-all;">${text}</p>
+        <button onclick="navigator.clipboard.writeText('${text}')" style="padding: 5px 10px; background: #2196f3; color: white; border: none; border-radius: 4px; cursor: pointer;">
+          Copy Link
+        </button>
+      </div>
+    `;
+  }
 }
 
 // Generate game summary
@@ -373,9 +433,32 @@ function copyToClipboard(text) {
   }
 }
 
+// Test QR code function
+function testQRCode() {
+  console.log("Testing QR code generation...");
+  console.log("QRCode library available:", typeof QRCode !== "undefined");
+
+  // Create a test container
+  const testContainer = document.createElement("div");
+  testContainer.id = "test-qr";
+  testContainer.style.cssText =
+    "position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); z-index: 1000;";
+  testContainer.innerHTML =
+    '<h3>QR Code Test</h3><div id="test-qr-code"></div><button onclick="this.parentElement.remove()" style="margin-top: 10px;">Close</button>';
+
+  document.body.appendChild(testContainer);
+
+  // Test QR code generation with a sample player URL
+  const testUrl = new URL("player.html", window.location.href);
+  testUrl.searchParams.set("role", "Werewolf");
+  testUrl.searchParams.set("player", "1");
+  generateQRCode(testUrl.href, "test-qr-code");
+}
+
 // Export functions for global access (if needed)
 window.WerewolfGame = {
   generateGame,
   copyToClipboard,
   gameState,
+  testQRCode,
 };
