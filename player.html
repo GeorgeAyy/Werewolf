@@ -66,6 +66,10 @@
       const player = urlParams.get("player");
       const playerName = urlParams.get("name");
       const werewolfTeammates = urlParams.get("teammates");
+      const gameRolesParam = urlParams.get("gameRoles");
+
+      // Parse game roles - if not provided, show all roles (fallback)
+      const gameRoles = gameRolesParam ? gameRolesParam.split(",") : null;
 
       // Role configurations
       const roleConfigs = {
@@ -360,64 +364,92 @@
         ];
         const neutralRoles = ["Tanner"];
 
+        // Filter roles based on what's actually in the game
+        const filterRoles = (roleList) => {
+          if (!gameRoles) return roleList; // Show all if no game roles provided
+          return roleList.filter((role) => gameRoles.includes(role));
+        };
+
+        const filteredWerewolfRoles = filterRoles(werewolfRoles);
+        const filteredVillagerRoles = filterRoles(villagerRoles);
+        const filteredNeutralRoles = filterRoles(neutralRoles);
+
         let rolesHTML = "<h2>🎭 Werewolf Role Guide</h2>";
 
-        // Werewolf Roles Section
-        rolesHTML +=
-          "<h3 style='color: #d32f2f; margin-top: 2rem; margin-bottom: 1rem; border-bottom: 2px solid #d32f2f; padding-bottom: 0.5rem;'>🐺 Werewolf Team</h3>";
+        // Add note about filtered roles if applicable
+        if (gameRoles) {
+          rolesHTML +=
+            "<p style='color: #666; font-style: italic; margin-bottom: 1rem;'>Showing only roles in this game</p>";
+        }
 
-        Object.entries(roleConfigs)
-          .filter(([roleName, config]) => werewolfRoles.includes(roleName))
-          .forEach(([roleName, config]) => {
-            rolesHTML += `
-              <div class="role-guide-item" style="margin-bottom: 1.5rem; padding: 1rem; border: 1px solid #d32f2f; border-radius: 8px; background: rgba(211, 47, 47, 0.05);">
-                <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
-                  <span style="font-size: 2rem; margin-right: 1rem;">${config.icon}</span>
-                  <h3 style="margin: 0; color: ${config.color};">${roleName}</h3>
+        // Werewolf Roles Section
+        if (filteredWerewolfRoles.length > 0) {
+          rolesHTML +=
+            "<h3 style='color: #d32f2f; margin-top: 2rem; margin-bottom: 1rem; border-bottom: 2px solid #d32f2f; padding-bottom: 0.5rem;'>🐺 Werewolf Team</h3>";
+
+          Object.entries(roleConfigs)
+            .filter(([roleName, config]) =>
+              filteredWerewolfRoles.includes(roleName)
+            )
+            .forEach(([roleName, config]) => {
+              rolesHTML += `
+                <div class="role-guide-item" style="margin-bottom: 1.5rem; padding: 1rem; border: 1px solid #d32f2f; border-radius: 8px; background: rgba(211, 47, 47, 0.05);">
+                  <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+                    <span style="font-size: 2rem; margin-right: 1rem;">${config.icon}</span>
+                    <h3 style="margin: 0; color: ${config.color};">${roleName}</h3>
+                  </div>
+                  <p style="margin: 0.5rem 0; font-weight: bold;">${config.description}</p>
+                  <p style="margin: 0; color: #666; font-size: 0.9rem;">${config.detailedDescription}</p>
                 </div>
-                <p style="margin: 0.5rem 0; font-weight: bold;">${config.description}</p>
-                <p style="margin: 0; color: #666; font-size: 0.9rem;">${config.detailedDescription}</p>
-              </div>
-            `;
-          });
+              `;
+            });
+        }
 
         // Villager Roles Section
-        rolesHTML +=
-          "<h3 style='color: #1976d2; margin-top: 2rem; margin-bottom: 1rem; border-bottom: 2px solid #1976d2; padding-bottom: 0.5rem;'>👥 Village Team</h3>";
+        if (filteredVillagerRoles.length > 0) {
+          rolesHTML +=
+            "<h3 style='color: #1976d2; margin-top: 2rem; margin-bottom: 1rem; border-bottom: 2px solid #1976d2; padding-bottom: 0.5rem;'>👥 Village Team</h3>";
 
-        Object.entries(roleConfigs)
-          .filter(([roleName, config]) => villagerRoles.includes(roleName))
-          .forEach(([roleName, config]) => {
-            rolesHTML += `
-              <div class="role-guide-item" style="margin-bottom: 1.5rem; padding: 1rem; border: 1px solid #1976d2; border-radius: 8px; background: rgba(25, 118, 210, 0.05);">
-                <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
-                  <span style="font-size: 2rem; margin-right: 1rem;">${config.icon}</span>
-                  <h3 style="margin: 0; color: ${config.color};">${roleName}</h3>
+          Object.entries(roleConfigs)
+            .filter(([roleName, config]) =>
+              filteredVillagerRoles.includes(roleName)
+            )
+            .forEach(([roleName, config]) => {
+              rolesHTML += `
+                <div class="role-guide-item" style="margin-bottom: 1.5rem; padding: 1rem; border: 1px solid #1976d2; border-radius: 8px; background: rgba(25, 118, 210, 0.05);">
+                  <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+                    <span style="font-size: 2rem; margin-right: 1rem;">${config.icon}</span>
+                    <h3 style="margin: 0; color: ${config.color};">${roleName}</h3>
+                  </div>
+                  <p style="margin: 0.5rem 0; font-weight: bold;">${config.description}</p>
+                  <p style="margin: 0; color: #666; font-size: 0.9rem;">${config.detailedDescription}</p>
                 </div>
-                <p style="margin: 0.5rem 0; font-weight: bold;">${config.description}</p>
-                <p style="margin: 0; color: #666; font-size: 0.9rem;">${config.detailedDescription}</p>
-              </div>
-            `;
-          });
+              `;
+            });
+        }
 
         // Neutral Roles Section
-        rolesHTML +=
-          "<h3 style='color: #ff9800; margin-top: 2rem; margin-bottom: 1rem; border-bottom: 2px solid #ff9800; padding-bottom: 0.5rem;'>⚖️ Neutral Roles</h3>";
+        if (filteredNeutralRoles.length > 0) {
+          rolesHTML +=
+            "<h3 style='color: #ff9800; margin-top: 2rem; margin-bottom: 1rem; border-bottom: 2px solid #ff9800; padding-bottom: 0.5rem;'>⚖️ Neutral Roles</h3>";
 
-        Object.entries(roleConfigs)
-          .filter(([roleName, config]) => neutralRoles.includes(roleName))
-          .forEach(([roleName, config]) => {
-            rolesHTML += `
-              <div class="role-guide-item" style="margin-bottom: 1.5rem; padding: 1rem; border: 1px solid #ff9800; border-radius: 8px; background: rgba(255, 152, 0, 0.05);">
-                <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
-                  <span style="font-size: 2rem; margin-right: 1rem;">${config.icon}</span>
-                  <h3 style="margin: 0; color: ${config.color};">${roleName}</h3>
+          Object.entries(roleConfigs)
+            .filter(([roleName, config]) =>
+              filteredNeutralRoles.includes(roleName)
+            )
+            .forEach(([roleName, config]) => {
+              rolesHTML += `
+                <div class="role-guide-item" style="margin-bottom: 1.5rem; padding: 1rem; border: 1px solid #ff9800; border-radius: 8px; background: rgba(255, 152, 0, 0.05);">
+                  <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+                    <span style="font-size: 2rem; margin-right: 1rem;">${config.icon}</span>
+                    <h3 style="margin: 0; color: ${config.color};">${roleName}</h3>
+                  </div>
+                  <p style="margin: 0.5rem 0; font-weight: bold;">${config.description}</p>
+                  <p style="margin: 0; color: #666; font-size: 0.9rem;">${config.detailedDescription}</p>
                 </div>
-                <p style="margin: 0.5rem 0; font-weight: bold;">${config.description}</p>
-                <p style="margin: 0; color: #666; font-size: 0.9rem;">${config.detailedDescription}</p>
-              </div>
-            `;
-          });
+              `;
+            });
+        }
 
         modalContent.innerHTML = `
           ${rolesHTML}

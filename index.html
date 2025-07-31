@@ -47,6 +47,7 @@
       </header>
 
       <form id="gameSetupForm" class="setup-form">
+        <!-- Basic Game Settings -->
         <div class="form-group">
           <label for="playerCount">Number of Players:</label>
           <input
@@ -71,174 +72,217 @@
           />
         </div>
 
-        <div class="form-group">
-          <label for="seerCount">Number of Seers:</label>
-          <input
-            type="number"
-            id="seerCount"
-            min="0"
-            max="2"
-            value="1"
-            required
-          />
-        </div>
+        <!-- Role Inputs Grid -->
+        <div class="role-inputs-grid">
+          <div class="role-input-group">
+            <label for="seerCount">
+              <span class="role-icon">🔮</span>
+              Number of Seers:
+            </label>
+            <input
+              type="number"
+              id="seerCount"
+              min="0"
+              max="2"
+              value="1"
+              required
+            />
+          </div>
 
-        <div class="form-group">
-          <label for="doctorCount">Number of Doctors:</label>
-          <input
-            type="number"
-            id="doctorCount"
-            min="0"
-            max="1"
-            value="0"
-            required
-          />
-        </div>
+          <div class="role-input-group">
+            <label for="doctorCount">
+              <span class="role-icon">🏥</span>
+              Number of Doctors:
+            </label>
+            <input
+              type="number"
+              id="doctorCount"
+              min="0"
+              max="1"
+              value="0"
+              required
+            />
+          </div>
 
-        <div class="form-group">
-          <label for="bodyguardCount">Number of Bodyguards:</label>
-          <input
-            type="number"
-            id="bodyguardCount"
-            min="0"
-            max="1"
-            value="0"
-            required
-          />
-        </div>
+          <div class="role-input-group">
+            <label for="bodyguardCount">
+              <span class="role-icon">🛡️</span>
+              Number of Bodyguards:
+            </label>
+            <input
+              type="number"
+              id="bodyguardCount"
+              min="0"
+              max="1"
+              value="0"
+              required
+            />
+          </div>
 
-        <div class="form-group">
-          <label for="cupidCount">Number of Cupids:</label>
-          <input
-            type="number"
-            id="cupidCount"
-            min="0"
-            max="1"
-            value="0"
-            required
-          />
-        </div>
+          <div class="role-input-group">
+            <label for="cupidCount">
+              <span class="role-icon">💕</span>
+              Number of Cupids:
+            </label>
+            <input
+              type="number"
+              id="cupidCount"
+              min="0"
+              max="1"
+              value="0"
+              required
+            />
+          </div>
 
-        <div class="form-group">
-          <label for="wolfCubCount">Number of Wolf Cubs:</label>
-          <input
-            type="number"
-            id="wolfCubCount"
-            min="0"
-            max="1"
-            value="0"
-            required
-          />
-        </div>
+          <div class="role-input-group">
+            <label for="wolfCubCount">
+              <span class="role-icon">🐺</span>
+              Number of Wolf Cubs:
+            </label>
+            <input
+              type="number"
+              id="wolfCubCount"
+              min="0"
+              max="1"
+              value="0"
+              required
+            />
+          </div>
 
-        <div class="form-group">
-          <label for="alphaWolfCount">Number of Alpha Wolves:</label>
-          <input
-            type="number"
-            id="alphaWolfCount"
-            min="0"
-            max="1"
-            value="0"
-            required
-          />
-        </div>
+          <div class="role-input-group">
+            <label for="alphaWolfCount">
+              <span class="role-icon">👑</span>
+              Number of Alpha Wolves:
+            </label>
+            <input
+              type="number"
+              id="alphaWolfCount"
+              min="0"
+              max="1"
+              value="0"
+              required
+            />
+          </div>
 
-        <div class="form-group">
-          <label for="sorceressCount">Number of Sorceresses:</label>
-          <input
-            type="number"
-            id="sorceressCount"
-            min="0"
-            max="1"
-            value="0"
-            required
-          />
-        </div>
+          <div class="role-input-group">
+            <label for="sorceressCount">
+              <span class="role-icon">🔮</span>
+              Number of Sorceresses:
+            </label>
+            <input
+              type="number"
+              id="sorceressCount"
+              min="0"
+              max="1"
+              value="0"
+              required
+            />
+          </div>
 
-        <div class="form-group">
-          <label for="lycanCount">Number of Lycans:</label>
-          <input
-            type="number"
-            id="lycanCount"
-            min="0"
-            max="1"
-            value="0"
-            required
-          />
-        </div>
+          <div class="role-input-group">
+            <label for="lycanCount">
+              <span class="role-icon">🌙</span>
+              Number of Lycans:
+            </label>
+            <input
+              type="number"
+              id="lycanCount"
+              min="0"
+              max="1"
+              value="0"
+              required
+            />
+          </div>
 
-        <div class="form-group">
-          <label for="witchCount">Number of Witches:</label>
-          <input
-            type="number"
-            id="witchCount"
-            min="0"
-            max="1"
-            value="0"
-            required
-          />
-        </div>
+          <div class="role-input-group">
+            <label for="witchCount">
+              <span class="role-icon">🧙‍♀️</span>
+              Number of Witches:
+            </label>
+            <input
+              type="number"
+              id="witchCount"
+              min="0"
+              max="1"
+              value="0"
+              required
+            />
+          </div>
 
+          <div class="role-input-group">
+            <label for="detectiveCount">
+              <span class="role-icon">🔍</span>
+              Number of Detectives:
+            </label>
+            <input
+              type="number"
+              id="detectiveCount"
+              min="0"
+              max="1"
+              value="0"
+              required
+            />
+          </div>
 
+          <div class="role-input-group">
+            <label for="revealerCount">
+              <span class="role-icon">📢</span>
+              Number of Revealers:
+            </label>
+            <input
+              type="number"
+              id="revealerCount"
+              min="0"
+              max="1"
+              value="0"
+              required
+            />
+          </div>
 
-        <div class="form-group">
-          <label for="detectiveCount">Number of Detectives:</label>
-          <input
-            type="number"
-            id="detectiveCount"
-            min="0"
-            max="1"
-            value="0"
-            required
-          />
-        </div>
+          <div class="role-input-group">
+            <label for="piCount">
+              <span class="role-icon">🕵️</span>
+              Number of PIs:
+            </label>
+            <input
+              type="number"
+              id="piCount"
+              min="0"
+              max="1"
+              value="0"
+              required
+            />
+          </div>
 
-        <div class="form-group">
-          <label for="revealerCount">Number of Revealers:</label>
-          <input
-            type="number"
-            id="revealerCount"
-            min="0"
-            max="1"
-            value="0"
-            required
-          />
-        </div>
+          <div class="role-input-group">
+            <label for="tannerCount">
+              <span class="role-icon">🎭</span>
+              Number of Tanners:
+            </label>
+            <input
+              type="number"
+              id="tannerCount"
+              min="0"
+              max="1"
+              value="0"
+              required
+            />
+          </div>
 
-        <div class="form-group">
-          <label for="piCount">Number of PIs:</label>
-          <input
-            type="number"
-            id="piCount"
-            min="0"
-            max="1"
-            value="0"
-            required
-          />
-        </div>
-
-        <div class="form-group">
-          <label for="tannerCount">Number of Tanners:</label>
-          <input
-            type="number"
-            id="tannerCount"
-            min="0"
-            max="1"
-            value="0"
-            required
-          />
-        </div>
-
-        <div class="form-group">
-          <label for="hunterCount">Number of Hunters:</label>
-          <input
-            type="number"
-            id="hunterCount"
-            min="0"
-            max="1"
-            value="0"
-            required
-          />
+          <div class="role-input-group">
+            <label for="hunterCount">
+              <span class="role-icon">🏹</span>
+              Number of Hunters:
+            </label>
+            <input
+              type="number"
+              id="hunterCount"
+              min="0"
+              max="1"
+              value="0"
+              required
+            />
+          </div>
         </div>
 
         <div class="form-group">
@@ -353,6 +397,88 @@
           <button id="showRoleAssignmentsBtn" class="btn btn-secondary">
             Show Role Assignments
           </button>
+        </div>
+      </div>
+
+      <!-- Game Tracking System -->
+      <div id="gameTracking" class="game-tracking" style="display: none">
+        <h2>🎮 Game Tracking</h2>
+        
+        <!-- Player Status Tracking -->
+        <div class="tracking-grid">
+          <div class="tracking-section">
+            <h3>👥 Player Status</h3>
+            <div id="playerStatusList" class="player-status-list">
+              <!-- Player status items will be generated here -->
+            </div>
+          </div>
+
+          <div class="tracking-section">
+            <h3>📊 Game Statistics</h3>
+            <div id="gameStats">
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div style="background: #e8f5e8; padding: 1rem; border-radius: 8px; text-align: center;">
+                  <div style="font-size: 2rem; font-weight: bold; color: #4caf50;" id="aliveCount">0</div>
+                  <div style="font-size: 0.9rem; color: #666;">Alive</div>
+                </div>
+                <div style="background: #ffeaea; padding: 1rem; border-radius: 8px; text-align: center;">
+                  <div style="font-size: 2rem; font-weight: bold; color: #f44336;" id="deadCount">0</div>
+                  <div style="font-size: 0.9rem; color: #666;">Dead</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Night Actions Tracking -->
+        <div class="night-actions">
+          <h3>🌙 Night Actions</h3>
+          <div class="action-form">
+            <select id="actionType">
+              <option value="">Select Action Type</option>
+              <option value="attack">Werewolf Attack</option>
+              <option value="save">Doctor Save</option>
+              <option value="investigate">Seer Investigation</option>
+              <option value="protect">Bodyguard Protection</option>
+              <option value="witch-save">Witch Save</option>
+              <option value="witch-kill">Witch Kill</option>
+              <option value="hunter-kill">Hunter Kill</option>
+              <option value="other">Other</option>
+            </select>
+            <select id="actionPerformer">
+              <option value="">Performer</option>
+              <!-- Will be populated with alive players -->
+            </select>
+            <select id="actionTarget">
+              <option value="">Target</option>
+              <!-- Will be populated with alive players -->
+            </select>
+            <button type="button" id="addActionBtn" class="btn btn-primary">Add Action</button>
+          </div>
+          <div id="actionsList" class="actions-list">
+            <!-- Actions will be listed here -->
+          </div>
+        </div>
+
+        <!-- Lovers Tracking (only shown if Cupid is in game) -->
+        <div id="loversSection" class="lovers-section" style="display: none;">
+          <h3>💕 Lovers</h3>
+          <div id="loversList">
+            <!-- Lovers pairs will be listed here -->
+          </div>
+          <div style="margin-top: 1rem;">
+            <button id="addLoversBtn" class="btn btn-primary">Add Lovers Pair</button>
+          </div>
+        </div>
+
+        <!-- Game Phase Tracking -->
+        <div style="background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); border: 1px solid #e0e0e0; margin-top: 2rem;">
+          <h3 style="color: var(--dark-color); margin-bottom: 1rem; font-size: 1.2rem;">🔄 Game Phase</h3>
+          <div style="display: flex; gap: 1rem; align-items: center;">
+            <button id="nextPhaseBtn" class="btn btn-success">Next Phase</button>
+            <span id="currentPhase" style="font-weight: 600; color: var(--primary-color);">Night 1</span>
+            <button id="resetPhaseBtn" class="btn btn-secondary">Reset Phase</button>
+          </div>
         </div>
       </div>
     </div>

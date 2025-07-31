@@ -3,6 +3,12 @@ let gameState = {
   players: [],
   roles: [],
   playerNames: [],
+  // Game tracking state
+  playerStatus: {}, // player number -> 'alive' or 'dead'
+  nightActions: [], // array of action objects
+  lovers: [], // array of lover pairs
+  currentPhase: "Night 1",
+  phaseCount: 1,
 };
 
 // Role configurations
@@ -177,6 +183,23 @@ const roleGuideBtn = document.getElementById("roleGuideBtn");
 const gameSummary = document.getElementById("gameSummary");
 const roleAssignments = document.getElementById("roleAssignments");
 
+// Game tracking elements
+const gameTracking = document.getElementById("gameTracking");
+const playerStatusList = document.getElementById("playerStatusList");
+const aliveCount = document.getElementById("aliveCount");
+const deadCount = document.getElementById("deadCount");
+const actionType = document.getElementById("actionType");
+const actionPerformer = document.getElementById("actionPerformer");
+const actionTarget = document.getElementById("actionTarget");
+const addActionBtn = document.getElementById("addActionBtn");
+const actionsList = document.getElementById("actionsList");
+const loversSection = document.getElementById("loversSection");
+const loversList = document.getElementById("loversList");
+const addLoversBtn = document.getElementById("addLoversBtn");
+const nextPhaseBtn = document.getElementById("nextPhaseBtn");
+const currentPhase = document.getElementById("currentPhase");
+const resetPhaseBtn = document.getElementById("resetPhaseBtn");
+
 // Timer state variables (global scope)
 let timerInterval = null;
 let timerRunning = false;
@@ -219,6 +242,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Role guide functionality
   if (roleGuideBtn) roleGuideBtn.addEventListener("click", showRoleGuide);
+
+  // Game tracking functionality
+  if (addActionBtn) addActionBtn.addEventListener("click", addNightAction);
+  if (addLoversBtn) addLoversBtn.addEventListener("click", addLoversPair);
+  if (nextPhaseBtn) nextPhaseBtn.addEventListener("click", nextPhase);
+  if (resetPhaseBtn) resetPhaseBtn.addEventListener("click", resetPhase);
 
   // Load saved notes on page load
   loadNotes();
@@ -567,6 +596,9 @@ function displayGameResults() {
   // Show results section
   gameResults.style.display = "block";
 
+  // Show game tracking system
+  gameTracking.style.display = "block";
+
   // Generate player links and QR codes
   generatePlayerLinks();
 
@@ -575,6 +607,9 @@ function displayGameResults() {
 
   // Generate role assignments
   generateRoleAssignments();
+
+  // Initialize game tracking
+  initializeGameTracking();
 
   // Scroll to results
   gameResults.scrollIntoView({ behavior: "smooth" });
@@ -608,6 +643,10 @@ function generatePlayerLinks() {
         playerUrl.searchParams.set("teammates", teammates.join(","));
       }
     }
+
+    // Add game roles so the player guide only shows roles in this game
+    const uniqueRoles = [...new Set(gameState.roles)];
+    playerUrl.searchParams.set("gameRoles", uniqueRoles.join(","));
 
     // Create card content with show QR code button
     playerCard.innerHTML = `
@@ -1079,6 +1118,272 @@ function showRoleGuide() {
       modal.remove();
     }
   });
+}
+
+// ===== GAME TRACKING SYSTEM =====
+
+// Initialize game tracking
+function initializeGameTracking() {
+  // Initialize player status
+  gameState.players.forEach((player) => {
+    gameState.playerStatus[player.number] = "alive";
+  });
+
+  // Show lovers section if Cupid is in the game
+  const hasCupid = gameState.players.some((player) => player.role === "Cupid");
+  if (hasCupid && loversSection) {
+    loversSection.style.display = "block";
+  }
+
+  // Update displays
+  updatePlayerStatusDisplay();
+  updateActionDropdowns();
+  updatePhaseDisplay();
+}
+
+// Update player status display
+function updatePlayerStatusDisplay() {
+  if (!playerStatusList) return;
+
+  playerStatusList.innerHTML = "";
+
+  gameState.players.forEach((player) => {
+    const status = gameState.playerStatus[player.number] || "alive";
+    const roleConfig = roleConfigs[player.role];
+
+    const playerItem = document.createElement("div");
+    playerItem.className = `player-status-item ${status}`;
+
+    playerItem.innerHTML = `
+      <div class="player-info">
+        <div class="player-avatar">${player.number}</div>
+        <div class="player-details">
+          <div class="player-name">${player.name}</div>
+          <div class="player-role">
+            <span class="player-role-icon">${roleConfig.icon}</span>
+            ${player.role}
+          </div>
+        </div>
+      </div>
+      <div class="status-controls">
+        <button class="status-btn alive" onclick="setPlayerStatus(${player.number}, 'alive')">Alive</button>
+        <button class="status-btn dead" onclick="setPlayerStatus(${player.number}, 'dead')">Dead</button>
+      </div>
+    `;
+
+    playerStatusList.appendChild(playerItem);
+  });
+
+  // Update statistics
+  updateGameStatistics();
+}
+
+// Set player status
+function setPlayerStatus(playerNumber, status) {
+  gameState.playerStatus[playerNumber] = status;
+  updatePlayerStatusDisplay();
+  updateActionDropdowns();
+}
+
+// Update game statistics
+function updateGameStatistics() {
+  if (!aliveCount || !deadCount) return;
+
+  const alivePlayers = Object.values(gameState.playerStatus).filter(
+    (status) => status === "alive"
+  ).length;
+  const deadPlayers = Object.values(gameState.playerStatus).filter(
+    (status) => status === "dead"
+  ).length;
+
+  aliveCount.textContent = alivePlayers;
+  deadCount.textContent = deadPlayers;
+}
+
+// Update action dropdowns
+function updateActionDropdowns() {
+  if (!actionPerformer || !actionTarget) return;
+
+  const alivePlayers = gameState.players.filter(
+    (player) => gameState.playerStatus[player.number] === "alive"
+  );
+
+  // Update performer dropdown
+  actionPerformer.innerHTML = '<option value="">Performer</option>';
+  alivePlayers.forEach((player) => {
+    const option = document.createElement("option");
+    option.value = player.number;
+    option.textContent = `${player.name} (${player.role})`;
+    actionPerformer.appendChild(option);
+  });
+
+  // Update target dropdown
+  actionTarget.innerHTML = '<option value="">Target</option>';
+  alivePlayers.forEach((player) => {
+    const option = document.createElement("option");
+    option.value = player.number;
+    option.textContent = `${player.name} (${player.role})`;
+    actionTarget.appendChild(option);
+  });
+}
+
+// Add night action
+function addNightAction() {
+  if (!actionType || !actionPerformer || !actionTarget) return;
+
+  const type = actionType.value;
+  const performer = actionPerformer.value;
+  const target = actionTarget.value;
+
+  if (!type || !performer || !target) {
+    alert("Please fill in all fields");
+    return;
+  }
+
+  const performerPlayer = gameState.players.find((p) => p.number == performer);
+  const targetPlayer = gameState.players.find((p) => p.number == target);
+
+  const action = {
+    type: type,
+    performer: performer,
+    target: target,
+    performerName: performerPlayer.name,
+    targetName: targetPlayer.name,
+    timestamp: new Date().toLocaleTimeString(),
+    phase: gameState.currentPhase,
+  };
+
+  gameState.nightActions.push(action);
+  updateActionsDisplay();
+
+  // Clear form
+  actionType.value = "";
+  actionPerformer.value = "";
+  actionTarget.value = "";
+}
+
+// Update actions display
+function updateActionsDisplay() {
+  if (!actionsList) return;
+
+  actionsList.innerHTML = "";
+
+  gameState.nightActions.forEach((action) => {
+    const actionItem = document.createElement("div");
+    actionItem.className = "action-item";
+
+    const actionText = getActionText(action);
+
+    actionItem.innerHTML = `
+      <div class="action-text">${actionText}</div>
+      <div class="action-time">${action.timestamp}</div>
+    `;
+
+    actionsList.appendChild(actionItem);
+  });
+}
+
+// Get action text
+function getActionText(action) {
+  const actionTexts = {
+    attack: `🐺 ${action.performerName} attacked ${action.targetName}`,
+    save: `🏥 ${action.performerName} saved ${action.targetName}`,
+    investigate: `🔮 ${action.performerName} investigated ${action.targetName}`,
+    protect: `🛡️ ${action.performerName} protected ${action.targetName}`,
+    "witch-save": `🧙‍♀️ ${action.performerName} used save potion on ${action.targetName}`,
+    "witch-kill": `🧙‍♀️ ${action.performerName} used kill potion on ${action.targetName}`,
+    "hunter-kill": `🏹 ${action.performerName} killed ${action.targetName}`,
+    other: `⚡ ${action.performerName} performed action on ${action.targetName}`,
+  };
+
+  return actionTexts[action.type] || actionTexts["other"];
+}
+
+// Add lovers pair
+function addLoversPair() {
+  if (!loversList) return;
+
+  const alivePlayers = gameState.players.filter(
+    (player) => gameState.playerStatus[player.number] === "alive"
+  );
+
+  if (alivePlayers.length < 2) {
+    alert("Need at least 2 alive players to create lovers");
+    return;
+  }
+
+  // Simple implementation - just add the first two alive players
+  // In a real implementation, you'd want a modal to select specific players
+  const player1 = alivePlayers[0];
+  const player2 = alivePlayers[1];
+
+  const loversPair = {
+    player1: player1.number,
+    player2: player2.number,
+    player1Name: player1.name,
+    player2Name: player2.name,
+  };
+
+  gameState.lovers.push(loversPair);
+  updateLoversDisplay();
+}
+
+// Update lovers display
+function updateLoversDisplay() {
+  if (!loversList) return;
+
+  loversList.innerHTML = "";
+
+  gameState.lovers.forEach((pair) => {
+    const loversItem = document.createElement("div");
+    loversItem.className = "lovers-pair";
+
+    loversItem.innerHTML = `
+      <div class="lovers-names">
+        <span class="player-name">${pair.player1Name}</span>
+        <span class="separator">💕</span>
+        <span class="player-name">${pair.player2Name}</span>
+      </div>
+      <button class="btn btn-danger" onclick="removeLoversPair(${pair.player1}, ${pair.player2})">Remove</button>
+    `;
+
+    loversList.appendChild(loversItem);
+  });
+}
+
+// Remove lovers pair
+function removeLoversPair(player1, player2) {
+  gameState.lovers = gameState.lovers.filter(
+    (pair) => !(pair.player1 === player1 && pair.player2 === player2)
+  );
+  updateLoversDisplay();
+}
+
+// Next phase
+function nextPhase() {
+  gameState.phaseCount++;
+
+  if (gameState.phaseCount % 2 === 0) {
+    gameState.currentPhase = `Day ${gameState.phaseCount / 2}`;
+  } else {
+    gameState.currentPhase = `Night ${Math.ceil(gameState.phaseCount / 2)}`;
+  }
+
+  updatePhaseDisplay();
+}
+
+// Reset phase
+function resetPhase() {
+  gameState.phaseCount = 1;
+  gameState.currentPhase = "Night 1";
+  updatePhaseDisplay();
+}
+
+// Update phase display
+function updatePhaseDisplay() {
+  if (currentPhase) {
+    currentPhase.textContent = gameState.currentPhase;
+  }
 }
 
 // Export functions for global access (if needed)
