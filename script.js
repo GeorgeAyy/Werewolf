@@ -670,7 +670,8 @@ function showQRCode(text, elementId, button) {
     button.classList.add("btn-secondary");
 
     // Generate QR code if not already generated
-    if (element.innerHTML === "") {
+    const linkElement = element.querySelector(".qr-code-link");
+    if (linkElement && linkElement.innerHTML.trim() === "") {
       generateQRCode(text, elementId);
     }
   } else {
