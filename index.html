@@ -5,39 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Werewolf Game Setup</title>
     <link rel="stylesheet" href="styles.css" />
-    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
-    <script>
-      // Check if QRCode library loaded successfully
-      window.addEventListener("load", function () {
-        if (typeof QRCode === "undefined") {
-          console.error("QRCode library failed to load from primary CDN");
-          // Try alternative CDN
-          const script = document.createElement("script");
-          script.src =
-            "https://cdnjs.cloudflare.com/ajax/libs/qrcode/1.5.3/qrcode.min.js";
-          script.onload = function () {
-            console.log("QRCode library loaded from alternative CDN");
-          };
-          script.onerror = function () {
-            console.error("Failed to load QRCode library from alternative CDN");
-            // Try third CDN
-            const script2 = document.createElement("script");
-            script2.src = "https://unpkg.com/qrcode@1.5.3/build/qrcode.min.js";
-            script2.onload = function () {
-              console.log("QRCode library loaded from unpkg CDN");
-            };
-            script2.onerror = function () {
-              console.error("All QRCode CDNs failed");
-            };
-            document.head.appendChild(script2);
-          };
-          document.head.appendChild(script);
-        } else {
-          console.log("QRCode library loaded successfully from primary CDN");
-        }
-      });
-    </script>
+
   </head>
   <body>
     <div class="container">

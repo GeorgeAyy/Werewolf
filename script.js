@@ -725,54 +725,47 @@ function generateFallbackQRCode(text, element) {
   try {
     const size = 200;
 
-    // Method 1: Try QR Server API
+    // Method 1: Try QR Server API with CORS-friendly approach
     const qrServerUrl = `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(
       text
-    )}`;
+    )}&format=png&margin=0`;
 
     console.log("QR Server URL:", qrServerUrl);
 
     const img = document.createElement("img");
+    img.crossOrigin = "anonymous"; // Add CORS support
     img.src = qrServerUrl;
     img.alt = "QR Code";
     img.style.width = size + "px";
     img.style.height = size + "px";
+    img.style.borderRadius = "8px";
+    img.style.boxShadow = "0 2px 8px rgba(0, 0, 0, 0.1)";
+
+    // Set a timeout to detect if the image fails to load
+    const timeout = setTimeout(() => {
+      console.log("QR code generation timed out, showing fallback");
+      showTextFallback(element, text);
+    }, 5000); // 5 second timeout
 
     img.onload = function () {
+      clearTimeout(timeout);
       console.log("QR code generated successfully using QR Server");
       console.log("Image loaded:", img);
     };
 
     img.onerror = function () {
-      console.log("QR Server failed, trying alternative APIs...");
-      console.log("Image error:", img);
+      clearTimeout(timeout);
+      console.log("QR Server failed, trying alternative method...");
 
-      // Method 2: Try QR Code Monkey API
-      const qrMonkeyUrl = `https://www.qrcode-monkey.com/api/qr/custom?size=${size}&data=${encodeURIComponent(
+      // Method 2: Try a different QR API
+      const alternativeUrl = `https://chart.googleapis.com/chart?cht=qr&chs=${size}x${size}&chl=${encodeURIComponent(
         text
-      )}&file=png`;
-      img.src = qrMonkeyUrl;
+      )}&chld=L|0`;
+      img.src = alternativeUrl;
 
       img.onerror = function () {
-        // Method 3: Try GoQR.me API
-        const goQrUrl = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(
-          text
-        )}&size=${size}x${size}&format=png`;
-        img.src = goQrUrl;
-
-        img.onerror = function () {
-          // Method 4: Simple text fallback
-          console.error("All QR APIs failed, showing text link");
-          element.innerHTML = `
-            <div style="border: 2px dashed #ccc; padding: 20px; text-align: center; border-radius: 8px;">
-              <p style="margin: 0 0 10px 0; font-weight: bold;">QR Code Unavailable</p>
-              <p style="margin: 0 0 10px 0; font-size: 12px; word-break: break-all;">${text}</p>
-              <button onclick="navigator.clipboard.writeText('${text}')" style="padding: 5px 10px; background: #2196f3; color: white; border: none; border-radius: 4px; cursor: pointer;">
-                Copy Link
-              </button>
-            </div>
-          `;
-        };
+        console.log("Alternative QR API also failed, showing text fallback");
+        showTextFallback(element, text);
       };
     };
 
@@ -781,16 +774,21 @@ function generateFallbackQRCode(text, element) {
     console.log("Image appended successfully");
   } catch (error) {
     console.error("Fallback QR code generation exception:", error);
-    element.innerHTML = `
-      <div style="border: 2px dashed #ccc; padding: 20px; text-align: center; border-radius: 8px;">
-        <p style="margin: 0 0 10px 0; font-weight: bold;">QR Code Error</p>
-        <p style="margin: 0 0 10px 0; font-size: 12px; word-break: break-all;">${text}</p>
-        <button onclick="navigator.clipboard.writeText('${text}')" style="padding: 5px 10px; background: #2196f3; color: white; border: none; border-radius: 4px; cursor: pointer;">
-          Copy Link
-        </button>
-      </div>
-    `;
+    showTextFallback(element, text);
   }
+}
+
+// Helper function to show text fallback
+function showTextFallback(element, text) {
+  element.innerHTML = `
+    <div style="border: 2px dashed #ccc; padding: 20px; text-align: center; border-radius: 8px; background: #f8f9fa;">
+      <p style="margin: 0 0 10px 0; font-weight: bold; color: #666;">QR Code Unavailable</p>
+      <p style="margin: 0 0 15px 0; font-size: 12px; word-break: break-all; color: #333; background: white; padding: 8px; border-radius: 4px; border: 1px solid #ddd;">${text}</p>
+      <button onclick="copyToClipboard('${text}')" style="padding: 8px 16px; background: #2196f3; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px;">
+        Copy Link
+      </button>
+    </div>
+  `;
 }
 
 // Generate game summary
