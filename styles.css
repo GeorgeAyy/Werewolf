@@ -183,20 +183,51 @@ header p {
   gap: 1rem;
   margin-bottom: 1rem;
   align-items: center;
+  padding: 1.5rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e0e0e0;
+  transition: var(--transition);
+}
+
+.player-name-input:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  transform: translateY(-1px);
 }
 
 .player-name-input input {
   flex: 1;
+  padding: 1rem 1.25rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: var(--transition);
+  background: #fafafa;
+}
+
+.player-name-input input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+  background: white;
+}
+
+.player-name-input input:hover {
+  border-color: #bdbdbd;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .player-name-input .player-number {
-  background: var(--primary-color);
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: var(--border-radius);
+  background: rgba(33, 150, 243, 0.1);
+  color: var(--primary-color);
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
   font-weight: bold;
   min-width: 60px;
   text-align: center;
+  font-size: 1.1rem;
 }
 
 /* Button Styles */
@@ -591,6 +622,20 @@ header p {
   animation: fadeInUp 0.6s ease-out;
   max-width: 100%;
   height: auto;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.qr-code-container canvas:hover,
+.qr-code-container img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.qr-code-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
 }
 
 /* Game Summary */
@@ -716,7 +761,44 @@ header p {
 .timer-input {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 1rem;
+  background: white;
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e0e0e0;
+}
+
+.timer-input label {
+  font-weight: 600;
+  color: var(--dark-color);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.timer-input input {
+  width: 80px;
+  padding: 0.75rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  text-align: center;
+  transition: var(--transition);
+  background: #fafafa;
+}
+
+.timer-input input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+  background: white;
+}
+
+.timer-input input:hover {
+  border-color: #bdbdbd;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .timer-buttons {
@@ -734,37 +816,6 @@ header p {
   padding: 1rem;
   border-radius: var(--border-radius);
   border: 2px solid var(--primary-color);
-}
-
-/* Notes Section */
-.notes-section {
-  background: var(--card-bg);
-  padding: 1.5rem;
-  border-radius: var(--border-radius);
-  margin: 2rem 0;
-  box-shadow: var(--card-shadow);
-}
-
-.notes-section textarea {
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
-  padding: 0.75rem;
-  font-family: inherit;
-  resize: vertical;
-  background: var(--bg-color);
-  color: var(--text-color);
-}
-
-.notes-section textarea:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
-}
-
-.notes-buttons {
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
 }
 
 /* Button Styles */
@@ -976,7 +1027,8 @@ header p {
 
   .setup-form,
   .game-results,
-  .player-card {
+  .player-card,
+  .game-tracking {
     padding: 1rem;
   }
 
@@ -1009,6 +1061,86 @@ header p {
   .btn {
     width: 100%;
     max-width: 200px;
+  }
+
+  /* Game tracking responsive fixes */
+  .tracking-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .action-form {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .action-form button {
+    width: 100%;
+  }
+
+  .role-inputs-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .role-input-group {
+    padding: 1rem;
+  }
+
+  .timer-controls {
+    flex-direction: column;
+  }
+
+  .timer-input {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .timer-input input {
+    width: 100%;
+    margin: 0.25rem 0;
+  }
+
+  .player-status-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .status-controls {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .status-btn {
+    flex: 1;
+    margin: 0 0.25rem;
+  }
+
+  .lovers-pair {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .lovers-pair .btn {
+    width: 100%;
+  }
+
+  .night-actions {
+    margin-top: 1rem;
+  }
+
+  .actions-list {
+    max-height: 150px;
+  }
+
+  /* Lovers modal responsive */
+  .lovers-selection-modal {
+    padding: 1rem !important;
+  }
+
+  .lovers-selection-modal > div {
+    grid-template-columns: 1fr !important;
   }
 }
 

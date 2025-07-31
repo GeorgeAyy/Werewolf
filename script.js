@@ -173,11 +173,6 @@ const resetTimerBtn = document.getElementById("resetTimerBtn");
 const timerDisplay = document.getElementById("timerDisplay");
 const timerTime = document.getElementById("timerTime");
 
-// Notes elements
-const gameNotes = document.getElementById("gameNotes");
-const saveNotesBtn = document.getElementById("saveNotesBtn");
-const clearNotesBtn = document.getElementById("clearNotesBtn");
-
 // Role guide button
 const roleGuideBtn = document.getElementById("roleGuideBtn");
 const gameSummary = document.getElementById("gameSummary");
@@ -236,10 +231,6 @@ document.addEventListener("DOMContentLoaded", function () {
   if (pauseTimerBtn) pauseTimerBtn.addEventListener("click", pauseTimer);
   if (resetTimerBtn) resetTimerBtn.addEventListener("click", resetTimer);
 
-  // Notes functionality
-  if (saveNotesBtn) saveNotesBtn.addEventListener("click", saveNotes);
-  if (clearNotesBtn) clearNotesBtn.addEventListener("click", clearNotes);
-
   // Role guide functionality
   if (roleGuideBtn) roleGuideBtn.addEventListener("click", showRoleGuide);
 
@@ -248,9 +239,6 @@ document.addEventListener("DOMContentLoaded", function () {
   if (addLoversBtn) addLoversBtn.addEventListener("click", addLoversPair);
   if (nextPhaseBtn) nextPhaseBtn.addEventListener("click", nextPhase);
   if (resetPhaseBtn) resetPhaseBtn.addEventListener("click", resetPhase);
-
-  // Load saved notes on page load
-  loadNotes();
 
   // Initialize player names
   updatePlayerNames();
@@ -654,7 +642,11 @@ function generatePlayerLinks() {
             <button class="btn btn-primary show-qr-btn" onclick="showQRCode('${playerUrl.href}', 'qr-${player.number}', this)">
               Show QR Code
             </button>
-            <div class="qr-code-container" id="qr-${player.number}" style="display: none;"></div>
+            <div class="qr-code-container" id="qr-${player.number}" style="display: none;">
+              <a href="${playerUrl.href}" class="qr-code-link" target="_blank" title="Click to open player page">
+                <!-- QR code will be inserted here -->
+              </a>
+            </div>
         `;
 
     playerLinks.appendChild(playerCard);
@@ -698,13 +690,20 @@ function generateQRCode(text, elementId) {
     return;
   }
 
+  // Find the link element inside the container
+  const linkElement = element.querySelector(".qr-code-link");
+  if (!linkElement) {
+    console.error("Link element not found in:", elementId);
+    return;
+  }
+
   // Clear previous QR code
-  element.innerHTML = "";
+  linkElement.innerHTML = "";
 
   console.log("Generating QR code for:", text, "in element:", elementId);
 
   // Try the most reliable method first - direct API call
-  generateFallbackQRCode(text, element);
+  generateFallbackQRCode(text, linkElement);
 }
 
 // Fallback QR code generator using multiple methods
@@ -956,36 +955,6 @@ function updateTimerDisplay() {
   timerTime.textContent = `${minutes.toString().padStart(2, "0")}:${seconds
     .toString()
     .padStart(2, "0")}`;
-}
-
-// Notes functions
-function saveNotes() {
-  const notes = gameNotes.value;
-  localStorage.setItem("werewolfGameNotes", notes);
-
-  // Show save confirmation
-  const originalText = saveNotesBtn.textContent;
-  saveNotesBtn.textContent = "Saved!";
-  saveNotesBtn.style.background = "#4caf50";
-
-  setTimeout(() => {
-    saveNotesBtn.textContent = originalText;
-    saveNotesBtn.style.background = "";
-  }, 2000);
-}
-
-function loadNotes() {
-  const savedNotes = localStorage.getItem("werewolfGameNotes");
-  if (savedNotes) {
-    gameNotes.value = savedNotes;
-  }
-}
-
-function clearNotes() {
-  if (confirm("Are you sure you want to clear all notes?")) {
-    gameNotes.value = "";
-    localStorage.removeItem("werewolfGameNotes");
-  }
 }
 
 // Role guide function
@@ -1312,20 +1281,141 @@ function addLoversPair() {
     return;
   }
 
-  // Simple implementation - just add the first two alive players
-  // In a real implementation, you'd want a modal to select specific players
-  const player1 = alivePlayers[0];
-  const player2 = alivePlayers[1];
+  // Create a modal for selecting lovers
+  showLoversSelectionModal(alivePlayers);
+}
+
+// Show lovers selection modal
+function showLoversSelectionModal(alivePlayers) {
+  const modal = document.createElement("div");
+  modal.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  `;
+
+  const modalContent = document.createElement("div");
+  modalContent.className = "lovers-selection-modal";
+  modalContent.style.cssText = `
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    max-width: 90%;
+    max-height: 90%;
+    overflow-y: auto;
+    position: relative;
+  `;
+
+  // Create player selection options
+  let playerOptions = '<option value="">Select Player</option>';
+  alivePlayers.forEach((player) => {
+    playerOptions += `<option value="${player.number}">${player.name} (${player.role})</option>`;
+  });
+
+  modalContent.innerHTML = `
+    <h3 style="color: #e91e63; margin-bottom: 1.5rem;">💕 Select Lovers Pair</h3>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+      <div>
+        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">First Lover:</label>
+        <select id="lover1Select" style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px;">
+          ${playerOptions}
+        </select>
+      </div>
+      <div>
+        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Second Lover:</label>
+        <select id="lover2Select" style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px;">
+          ${playerOptions}
+        </select>
+      </div>
+    </div>
+    <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+      <button onclick="this.parentElement.parentElement.parentElement.remove()" style="
+        padding: 0.75rem 1.5rem;
+        background: #6c757d;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+      ">Cancel</button>
+      <button onclick="createLoversPair()" style="
+        padding: 0.75rem 1.5rem;
+        background: #e91e63;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+      ">Create Lovers</button>
+    </div>
+  `;
+
+  modal.appendChild(modalContent);
+  document.body.appendChild(modal);
+
+  // Close modal when clicking outside
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) {
+      modal.remove();
+    }
+  });
+}
+
+// Create lovers pair from modal selection
+function createLoversPair() {
+  const lover1Select = document.getElementById("lover1Select");
+  const lover2Select = document.getElementById("lover2Select");
+
+  if (!lover1Select || !lover2Select) return;
+
+  const lover1Number = lover1Select.value;
+  const lover2Number = lover2Select.value;
+
+  if (!lover1Number || !lover2Number) {
+    alert("Please select both lovers");
+    return;
+  }
+
+  if (lover1Number === lover2Number) {
+    alert("A player cannot be in love with themselves");
+    return;
+  }
+
+  // Check if either player is already in a lovers pair
+  const existingLovers = gameState.lovers.some(
+    (pair) =>
+      pair.player1 == lover1Number ||
+      pair.player2 == lover1Number ||
+      pair.player1 == lover2Number ||
+      pair.player2 == lover2Number
+  );
+
+  if (existingLovers) {
+    alert("One or both players are already in a lovers pair");
+    return;
+  }
+
+  const lover1 = gameState.players.find((p) => p.number == lover1Number);
+  const lover2 = gameState.players.find((p) => p.number == lover2Number);
 
   const loversPair = {
-    player1: player1.number,
-    player2: player2.number,
-    player1Name: player1.name,
-    player2Name: player2.name,
+    player1: lover1.number,
+    player2: lover2.number,
+    player1Name: lover1.name,
+    player2Name: lover2.name,
   };
 
   gameState.lovers.push(loversPair);
   updateLoversDisplay();
+
+  // Close modal
+  const modal = document.querySelector("div[style*='position: fixed']");
+  if (modal) modal.remove();
 }
 
 // Update lovers display
