@@ -655,11 +655,16 @@ function generatePlayerLinks() {
 
 // Show QR code function
 function showQRCode(text, elementId, button) {
+  console.log("showQRCode called with:", text, elementId);
+
   const element = document.getElementById(elementId);
   if (!element) {
     console.error("Element not found:", elementId);
     return;
   }
+
+  console.log("Element found:", element);
+  console.log("Current display style:", element.style.display);
 
   // Toggle QR code visibility
   if (element.style.display === "none") {
@@ -669,11 +674,9 @@ function showQRCode(text, elementId, button) {
     button.classList.remove("btn-primary");
     button.classList.add("btn-secondary");
 
-    // Generate QR code if not already generated
-    const linkElement = element.querySelector(".qr-code-link");
-    if (linkElement && linkElement.innerHTML.trim() === "") {
-      generateQRCode(text, elementId);
-    }
+    // Always generate QR code when showing
+    console.log("Generating QR code...");
+    generateQRCode(text, elementId);
   } else {
     // Hide QR code
     element.style.display = "none";
@@ -685,18 +688,25 @@ function showQRCode(text, elementId, button) {
 
 // Generate QR code
 function generateQRCode(text, elementId) {
+  console.log("generateQRCode called with:", text, elementId);
+
   const element = document.getElementById(elementId);
   if (!element) {
     console.error("Element not found:", elementId);
     return;
   }
 
+  console.log("Element HTML:", element.innerHTML);
+
   // Find the link element inside the container
   const linkElement = element.querySelector(".qr-code-link");
   if (!linkElement) {
     console.error("Link element not found in:", elementId);
+    console.log("Available elements:", element.children);
     return;
   }
+
+  console.log("Link element found:", linkElement);
 
   // Clear previous QR code
   linkElement.innerHTML = "";
@@ -709,6 +719,9 @@ function generateQRCode(text, elementId) {
 
 // Fallback QR code generator using multiple methods
 function generateFallbackQRCode(text, element) {
+  console.log("generateFallbackQRCode called with:", text);
+  console.log("Target element:", element);
+
   try {
     const size = 200;
 
@@ -716,6 +729,8 @@ function generateFallbackQRCode(text, element) {
     const qrServerUrl = `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(
       text
     )}`;
+
+    console.log("QR Server URL:", qrServerUrl);
 
     const img = document.createElement("img");
     img.src = qrServerUrl;
@@ -725,10 +740,12 @@ function generateFallbackQRCode(text, element) {
 
     img.onload = function () {
       console.log("QR code generated successfully using QR Server");
+      console.log("Image loaded:", img);
     };
 
     img.onerror = function () {
       console.log("QR Server failed, trying alternative APIs...");
+      console.log("Image error:", img);
 
       // Method 2: Try QR Code Monkey API
       const qrMonkeyUrl = `https://www.qrcode-monkey.com/api/qr/custom?size=${size}&data=${encodeURIComponent(
@@ -759,7 +776,9 @@ function generateFallbackQRCode(text, element) {
       };
     };
 
+    console.log("Appending image to element:", element);
     element.appendChild(img);
+    console.log("Image appended successfully");
   } catch (error) {
     console.error("Fallback QR code generation exception:", error);
     element.innerHTML = `
