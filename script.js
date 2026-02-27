@@ -9,133 +9,106 @@ let gameState = {
   lovers: [], // array of lover pairs
   currentPhase: "Night 1",
   phaseCount: 1,
+  votes: {}, // player number -> vote count
 };
 
 // Role configurations
 const roleConfigs = {
   Werewolf: {
-    icon: "🐺",
-    color: "#d32f2f",
-    description:
-      "Work with your fellow werewolves to eliminate the villagers each night.",
-    detailedDescription:
-      "You are a Werewolf! Work with your fellow werewolves to eliminate the villagers. Each night, you can choose one player to eliminate. Avoid detection to win the game with your pack.",
+    icon: '<i class="fa-solid fa-paw"></i>',
+    color: "#dc2626",
+    description: "Work with your pack to eliminate the villagers.",
+    detailedDescription: "You are a Werewolf! Work with your fellow werewolves to eliminate the villagers. Each night, you can choose one player to eliminate.",
   },
   Villager: {
-    icon: "👥",
-    color: "#7b1fa2",
-    description:
-      "Work with fellow villagers to identify and eliminate werewolves.",
-    detailedDescription:
-      "You are a Villager! You have no special powers, but your vote and voice are crucial to eliminating the werewolves. Discuss, deduce, and survive.",
+    icon: '<i class="fa-solid fa-user"></i>',
+    color: "#9ca3af",
+    description: "Find and eliminate the werewolves.",
+    detailedDescription: "You are a Villager! You have no special powers, but your vote and voice are crucial to eliminating the werewolves.",
   },
   Seer: {
-    icon: "🔮",
-    color: "#1976d2",
-    description: "Each night, investigate one player to learn their true role.",
-    detailedDescription:
-      "You are the Seer! Each night, you can investigate one player to learn their true role. Use this information wisely to help the village identify werewolves.",
+    icon: '<i class="fa-solid fa-eye"></i>',
+    color: "#3b82f6",
+    description: "Investigate one player to learn their true role.",
+    detailedDescription: "You are the Seer! Each night, you can investigate one player to learn their true role.",
   },
   Doctor: {
-    icon: "🏥",
-    color: "#388e3c",
-    description: "Each night, protect one player from elimination.",
-    detailedDescription:
-      "You are the Doctor! Each night, you can protect one player from elimination by the werewolves. You cannot protect the same player two nights in a row. Use your ability wisely to save the village.",
+    icon: '<i class="fa-solid fa-kit-medical"></i>',
+    color: "#10b981",
+    description: "Protect one player from elimination.",
+    detailedDescription: "You are the Doctor! Each night, you can protect one player from elimination by the werewolves. You cannot protect the same player two nights in a row.",
   },
   Hunter: {
-    icon: "🏹",
-    color: "#f57c00",
-    description:
-      "If you are eliminated, you can take one player down with you.",
-    detailedDescription:
-      "You are the Hunter! If you are eliminated, you may immediately eliminate one player as your final act. Choose carefully to maximize your impact.",
+    icon: '<i class="fa-solid fa-crosshairs"></i>',
+    color: "#d97706",
+    description: "If you are eliminated, take one player down with you.",
+    detailedDescription: "You are the Hunter! If you are eliminated, you may immediately eliminate one player as your final act.",
   },
   Bodyguard: {
-    icon: "🛡️",
-    color: "#2e7d32",
-    description:
-      "Each night, protect one player. If attacked, you die in their place.",
-    detailedDescription:
-      "You are the Bodyguard! Each night, choose one player to protect. If the werewolves attack them, you die instead. You cannot protect the same player on consecutive nights.",
+    icon: '<i class="fa-solid fa-shield"></i>',
+    color: "#059669",
+    description: "Protect one player. If attacked, you die instead.",
+    detailedDescription: "You are the Bodyguard! Each night, choose one player to protect. If the werewolves attack them, you die instead.",
   },
   Cupid: {
-    icon: "💘",
-    color: "#e91e63",
-    description: "On the first night, choose two players to fall in love.",
-    detailedDescription:
-      "You are Cupid! On the first night, select two players to become lovers. If one dies, the other dies too. Lovers win together regardless of their original teams.",
+    icon: '<i class="fa-solid fa-heart-arrow-up"></i>',
+    color: "#ec4899",
+    description: "Choose two players to fall in love.",
+    detailedDescription: "You are Cupid! On the first night, select two players to become lovers. If one dies, the other dies too.",
   },
   WolfCub: {
-    icon: "🐺",
-    color: "#d32f2f",
-    description:
-      "A young werewolf. If killed, werewolves get an extra kill next night.",
-    detailedDescription:
-      "You are the Wolf Cub! If you are eliminated, your werewolf pack will be enraged and may eliminate two players the following night.",
+    icon: '<i class="fa-solid fa-dog"></i>',
+    color: "#b91c1c",
+    description: "If killed, werewolves get an extra kill.",
+    detailedDescription: "You are the Wolf Cub! If you are eliminated, your werewolf pack will be enraged and may eliminate two players the following night.",
   },
   AlphaWolf: {
-    icon: "🐺",
-    color: "#b71c1c",
-    description: "Leader of the werewolves. Knows all fellow werewolves.",
-    detailedDescription:
-      "You are the Alpha Wolf! You lead the werewolf pack and know your allies. Coordinate attacks and survive to win.",
+    icon: '<i class="fa-solid fa-crown"></i>',
+    color: "#7f1d1d",
+    description: "Leader of the werewolves.",
+    detailedDescription: "You are the Alpha Wolf! You lead the werewolf pack and know your allies.",
   },
   Sorceress: {
-    icon: "🔮",
-    color: "#7b1fa2",
-    description:
-      "Each night, check if a player is a werewolf (without seeing exact role).",
-    detailedDescription:
-      "You are the Sorceress! Each night, choose one player to sense. You will know if they are a werewolf, but not their exact role.",
+    icon: '<i class="fa-solid fa-hat-wizard"></i>',
+    color: "#8b5cf6",
+    description: "Check if a player is a werewolf.",
+    detailedDescription: "You are the Sorceress! Each night, choose one player to sense. You will know if they are a werewolf, but not their exact role.",
   },
   Lycan: {
-    icon: "🐺",
-    color: "#8d6e63",
-    description: "A normal villager who appears as a werewolf to the Seer.",
-    detailedDescription:
-      "You are the Lycan! You are a normal villager with no special powers, but if the Seer investigates you, the moderator will tell them that you are a Werewolf. Use this to mislead the Seer or to create confusion among the players.",
+    icon: '<i class="fa-solid fa-dog"></i>',
+    color: "#4b5563",
+    description: "Appears as a werewolf to the Seer.",
+    detailedDescription: "You are the Lycan! You are a normal villager with no special powers, but if the Seer investigates you, you appear as a Werewolf.",
   },
   Witch: {
-    icon: "🧙‍♀️",
-    color: "#6a1b9a",
-    description:
-      "You have two potions: one heal, one kill. Each can be used once.",
-    detailedDescription:
-      "You are the Witch! You can save a player once and eliminate a player once during the game. Choose carefully to shift the balance.",
+    icon: '<i class="fa-solid fa-flask"></i>',
+    color: "#c026d3",
+    description: "One heal potion, one kill potion.",
+    detailedDescription: "You are the Witch! You can save a player once and eliminate a player once during the game.",
   },
-
   Detective: {
-    icon: "🔍",
-    color: "#3f51b5",
-    description:
-      "Each night, check if a player visited someone during the night.",
-    detailedDescription:
-      "You are the Detective! You can track one player each night to see if they visited anyone. This can help identify night-active roles like werewolves.",
+    icon: '<i class="fa-solid fa-magnifying-glass"></i>',
+    color: "#2563eb",
+    description: "Check if a player visited someone.",
+    detailedDescription: "You are the Detective! You can track one player each night to see if they visited anyone.",
   },
   Revealer: {
-    icon: "🔫",
-    color: "#795548",
-    description:
-      "At night, you may shoot a player. If you hit a villager, you die.",
-    detailedDescription:
-      "You are the Revealer! Each night, you may shoot one player. If you hit a Werewolf, they die and you survive. If you hit a Villager or non-Werewolf, they die and you die as punishment. A high-risk, high-reward role for the village.",
+    icon: '<i class="fa-solid fa-bullseye"></i>',
+    color: "#d97706",
+    description: "Shoot a player. If a villager, you die.",
+    detailedDescription: "You are the Revealer! Each night, you may shoot one player. If you hit a Werewolf, they die. If Villager, they die AND you die.",
   },
   PI: {
-    icon: "🧭",
-    color: "#009688",
-    description:
-      "Check one player. Learn if they or their neighbors are Werewolves.",
-    detailedDescription:
-      "You are the Paranormal Investigator! Each night, select one player. You will receive 'YES' if that player OR the players to their left or right are Werewolves. Otherwise, you get 'NO'. Use this info to guide the village.",
+    icon: '<i class="fa-solid fa-user-ninja"></i>',
+    color: "#0f766e",
+    description: "Learn if they or neighbors are Werewolves.",
+    detailedDescription: "You are the Paranormal Investigator! Each night, select one player. You learn if they OR adjacent players are Werewolves.",
   },
   Tanner: {
-    icon: "🪓",
-    color: "#9e9e9e",
-    description:
-      "You hate your job and want to die. If lynched, you alone win.",
-    detailedDescription:
-      "You are the Tanner! You are not on the village or werewolf team. Your goal is to get yourself eliminated during the day. If the village votes you out, you win instantly—even if the werewolves survive.",
+    icon: '<i class="fa-solid fa-mask"></i>',
+    color: "#78716c",
+    description: "If lynched, you alone win.",
+    detailedDescription: "You are the Tanner! You are not on the village or werewolf team. Your goal is to get yourself eliminated during the day.",
   },
 };
 
@@ -195,6 +168,15 @@ const nextPhaseBtn = document.getElementById("nextPhaseBtn");
 const currentPhase = document.getElementById("currentPhase");
 const resetPhaseBtn = document.getElementById("resetPhaseBtn");
 
+// Session controls
+const restartGameBtn = document.getElementById("restartGameBtn");
+const endGameBtn = document.getElementById("endGameBtn");
+
+// Voting elements
+const voteTallyList = document.getElementById("voteTallyList");
+const resetVotesBtn = document.getElementById("resetVotesBtn");
+const remainingVotesCount = document.getElementById("remainingVotesCount");
+
 // Timer state variables (global scope)
 let timerInterval = null;
 let timerRunning = false;
@@ -236,12 +218,30 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Game tracking functionality
   if (addActionBtn) addActionBtn.addEventListener("click", addNightAction);
-  if (addLoversBtn) addLoversBtn.addEventListener("click", addLoversPair);
-  if (nextPhaseBtn) nextPhaseBtn.addEventListener("click", nextPhase);
-  if (resetPhaseBtn) resetPhaseBtn.addEventListener("click", resetPhase);
+  if (actionPerformer) actionPerformer.addEventListener("change", updateActionAutoLabel);
+
+  // Session controls
+  if (restartGameBtn) restartGameBtn.addEventListener("click", restartGame);
+  if (endGameBtn) endGameBtn.addEventListener("click", endGame);
+
+  // Voting controls
+  if (resetVotesBtn) resetVotesBtn.addEventListener("click", resetVotes);
 
   // Initialize player names
   updatePlayerNames();
+
+  // Live villager counter - listen on all role inputs
+  const roleInputIds = [
+    'playerCount', 'werewolfCount', 'seerCount', 'doctorCount',
+    'bodyguardCount', 'cupidCount', 'wolfCubCount', 'alphaWolfCount',
+    'sorceressCount', 'lycanCount', 'witchCount', 'detectiveCount',
+    'revealerCount', 'piCount', 'tannerCount', 'hunterCount'
+  ];
+  roleInputIds.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('input', updateVillagerCounter);
+  });
+  updateVillagerCounter();
 });
 
 // Toggle player names section
@@ -254,27 +254,46 @@ function togglePlayerNames() {
   }
 }
 
-// Toggle role assignments section
+// Toggle role assignments section with smooth transition
 function toggleRoleAssignments() {
   const roleAssignmentsSection = document.querySelector(".role-assignments");
-  const showRoleAssignmentsBtn = document.getElementById(
-    "showRoleAssignmentsBtn"
-  );
+  const showRoleAssignmentsBtn = document.getElementById("showRoleAssignmentsBtn");
 
-  if (roleAssignmentsSection.style.display === "none") {
+  if (!roleAssignmentsSection.classList.contains('revealed')) {
     roleAssignmentsSection.style.display = "block";
-    showRoleAssignmentsBtn.textContent = "Hide Role Assignments";
+    // Force reflow for transition
+    void roleAssignmentsSection.offsetHeight;
+    roleAssignmentsSection.classList.add('revealed');
+    showRoleAssignmentsBtn.innerHTML = '<i class="fa-solid fa-eye"></i> Hide Secret Assignments';
     showRoleAssignmentsBtn.classList.add("btn-danger");
+    showRoleAssignmentsBtn.classList.remove("text-danger");
   } else {
-    roleAssignmentsSection.style.display = "none";
-    showRoleAssignmentsBtn.textContent = "Show Role Assignments";
+    roleAssignmentsSection.classList.remove('revealed');
+    // Wait for transition to finish, then hide
+    setTimeout(() => {
+      if (!roleAssignmentsSection.classList.contains('revealed')) {
+        roleAssignmentsSection.style.display = "none";
+      }
+    }, 400);
+    showRoleAssignmentsBtn.innerHTML = '<i class="fa-solid fa-eye-slash"></i> Reveal Secret Assignments';
     showRoleAssignmentsBtn.classList.remove("btn-danger");
+    showRoleAssignmentsBtn.classList.add("text-danger");
   }
 }
+
+// Persistent map to save names when inputs are temporarily cleared
+const persistentPlayerNames = {};
 
 // Update player names inputs based on player count
 function updatePlayerNames() {
   const playerCount = parseInt(playerCountInput.value) || 0;
+  
+  // Save existing values
+  const existingInputs = playerNamesList.querySelectorAll('input[type="text"]');
+  existingInputs.forEach(input => {
+    persistentPlayerNames[input.id] = input.value;
+  });
+
   playerNamesList.innerHTML = "";
 
   for (let i = 1; i <= playerCount; i++) {
@@ -289,6 +308,11 @@ function updatePlayerNames() {
     nameInput.type = "text";
     nameInput.placeholder = `Player ${i} Name (Optional)`;
     nameInput.id = `playerName${i}`;
+    
+    // Restore value if it existed previously
+    if (persistentPlayerNames[`playerName${i}`]) {
+      nameInput.value = persistentPlayerNames[`playerName${i}`];
+    }
 
     playerNameDiv.appendChild(playerNumber);
     playerNameDiv.appendChild(nameInput);
@@ -403,29 +427,63 @@ function validateGameSetup(
     hunterCount;
   const villagerCount = playerCount - totalSpecialRoles;
 
+  // All wolf-team roles count toward the werewolf requirement
+  const totalWolfTeam = werewolfCount + wolfCubCount + alphaWolfCount + sorceressCount;
+
   if (totalSpecialRoles > playerCount) {
-    alert("Error: Total special roles cannot exceed the number of players.");
+    window.customAlert("Total special roles cannot exceed the number of players.", "Configuration Error");
     return false;
   }
 
   if (villagerCount < 0) {
-    alert("Error: Not enough players for the specified role distribution.");
+    window.customAlert("Not enough players for the specified role distribution.", "Configuration Error");
     return false;
   }
 
-  if (werewolfCount < 1) {
-    alert("Error: At least one werewolf is required.");
+  if (totalWolfTeam < 1) {
+    window.customAlert("At least one werewolf-team role is required (Werewolf, Wolf Cub, Alpha Wolf, or Sorceress).", "Missing Requirements");
     return false;
   }
 
-  if (werewolfCount >= playerCount / 2) {
-    alert(
-      "Error: Too many werewolves. Werewolves should be less than half the players."
+  if (totalWolfTeam >= playerCount / 2) {
+    window.customAlert(
+      "Too many werewolf-team roles. They should be less than half the players.",
+      "Balance Warning"
     );
     return false;
   }
 
   return true;
+}
+
+// Update villager counter live
+function updateVillagerCounter() {
+  const playerCount = parseInt(playerCountInput.value) || 0;
+  const totalRoles =
+    (parseInt(werewolfCountInput.value) || 0) +
+    (parseInt(seerCountInput.value) || 0) +
+    (parseInt(doctorCountInput.value) || 0) +
+    (parseInt(bodyguardCountInput.value) || 0) +
+    (parseInt(cupidCountInput.value) || 0) +
+    (parseInt(wolfCubCountInput.value) || 0) +
+    (parseInt(alphaWolfCountInput.value) || 0) +
+    (parseInt(sorceressCountInput.value) || 0) +
+    (parseInt(lycanCountInput.value) || 0) +
+    (parseInt(witchCountInput.value) || 0) +
+    (parseInt(detectiveCountInput.value) || 0) +
+    (parseInt(revealerCountInput.value) || 0) +
+    (parseInt(piCountInput.value) || 0) +
+    (parseInt(tannerCountInput.value) || 0) +
+    (parseInt(hunterCountInput.value) || 0);
+  const villagers = playerCount - totalRoles;
+  const display = document.getElementById('villagerCountDisplay');
+  const container = document.getElementById('villagerCounter');
+  if (display) display.textContent = Math.max(0, villagers);
+  if (container) {
+    container.classList.remove('warning', 'error');
+    if (villagers < 0) container.classList.add('error');
+    else if (villagers === 0) container.classList.add('warning');
+  }
 }
 
 // Generate the game
@@ -599,197 +657,246 @@ function displayGameResults() {
   // Initialize game tracking
   initializeGameTracking();
 
+  // Initialize night dialogue script
+  initializeNightDialogue();
+
   // Scroll to results
   gameResults.scrollIntoView({ behavior: "smooth" });
+}
+
+// Initialize night dialogue script
+function initializeNightDialogue() {
+  const dialogueContainer = document.getElementById("nightDialogueList");
+  if (!dialogueContainer) return;
+  
+  // Extract all unique roles present in this game
+  const activeRoles = new Set(gameState.players.map(p => p.role));
+  
+  // Define the master order of operations and dialogue
+  const nightDialogueScripts = [
+    {
+      role: 'ALL',
+      title: 'First Night Setup',
+      icon: '🌙',
+      firstNightOnly: true,
+      text: '"Everybody, close your eyes and go to sleep."'
+    },
+    {
+      role: 'Cupid',
+      title: 'Cupid',
+      icon: '💘',
+      firstNightOnly: true,
+      text: '"Cupid, wake up. Point to two players to be lovers." <br><small><i>(Wait for selection, tap them to acknowledge)</i></small><br>"Cupid, go to sleep."'
+    },
+    {
+      role: 'Cupid', // Tied to Cupid's presence
+      title: 'Lovers',
+      icon: '💕',
+      firstNightOnly: true,
+      text: '"Lovers, wake up and acknowledge each other." <br><small><i>(Make them open eyes and see each other)</i></small><br>"Lovers, go to sleep."'
+    },
+    {
+      role: 'Bodyguard',
+      title: 'Bodyguard',
+      icon: '🛡️',
+      text: '"Bodyguard, wake up. Point to the player you want to protect." <br><small><i>(Acknowledge selection)</i></small><br>"Bodyguard, go to sleep."'
+    },
+    {
+      role: 'Seer',
+      title: 'Seer',
+      icon: '🔮',
+      text: '"Seer, wake up. Point to one player whose role you want to know." <br><small><i>(Give thumbs up for Werewolf/Lycan, thumbs down for Villager)</i></small><br>"Seer, go to sleep."'
+    },
+    {
+      role: 'PI',
+      title: 'Paranormal Investigator',
+      icon: '🕵️',
+      text: '"PI, wake up. Point to two players." <br><small><i>(Nod if at least one is a Werewolf)</i></small><br>"PI, go to sleep."'
+    },
+    {
+      role: 'Detective',
+      title: 'Detective',
+      icon: '🔍',
+      text: '"Detective, wake up. Point to a player to learn their exact role." <br><small><i>(Show them the role card/app screen)</i></small><br>"Detective, go to sleep."'
+    },
+    {
+      role: 'WEREWOLVES', // Group wrapper
+      title: 'Werewolves',
+      icon: '🐺',
+      text: '"Werewolves, wake up. Point to the player you want to kill." <br><small><i>(Wait for consensus)</i></small><br>"Werewolves, go to sleep."'
+    },
+    {
+      role: 'Sorceress',
+      title: 'Sorceress',
+      icon: '🔮',
+      text: '"Sorceress, wake up. Point to a player to see if they are the Seer." <br><small><i>(Nod if Seer, shake head if not)</i></small><br>"Sorceress, go to sleep."'
+    },
+    {
+      role: 'Witch',
+      title: 'Witch',
+      icon: '🧙‍♀️',
+      text: '"Witch, wake up. The Werewolves attacked [Name]. Do you want to use your healing potion?" <br><small><i>(Wait for nod/shake)</i></small><br>"Do you want to use your poison potion and on who?" <br><small><i>(Wait for selection or shake)</i></small><br>"Witch, go to sleep."'
+    },
+    {
+      role: 'Doctor',
+      title: 'Doctor',
+      icon: '🏥',
+      text: '"Doctor, wake up. Point to a player to cure them of disease." <br><small><i>(Acknowledge selection)</i></small><br>"Doctor, go to sleep."'
+    },
+    {
+      role: 'ALL',
+      title: 'Morning',
+      icon: '☀️',
+      text: '"Everybody, wake up! It is now daytime."'
+    }
+  ];
+
+  let dialogueHTML = "";
+  let isFirstNight = gameState.currentPhase === 1; // Assuming day/night pairs, or just show all for first iteration
+
+  nightDialogueScripts.forEach(script => {
+    // Determine if this script should be shown based on active roles
+    let shouldShow = false;
+    
+    if (script.role === 'ALL') {
+      shouldShow = true;
+    } else if (script.role === 'WEREWOLVES') {
+      shouldShow = activeRoles.has('Werewolf') || activeRoles.has('AlphaWolf') || activeRoles.has('WolfCub');
+    } else {
+      shouldShow = activeRoles.has(script.role);
+    }
+
+    if (shouldShow) {
+      // Add first-night badge if applicable
+      const badge = script.firstNightOnly ? '<span style="font-size:0.7rem; background:rgba(56, 189, 248, 0.2); color:#38bdf8; padding:0.1rem 0.4rem; border-radius:4px; margin-left:0.5rem; vertical-align:middle;">First Night Only</span>' : '';
+      
+      dialogueHTML += `
+        <div style="margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px dashed rgba(255,255,255,0.1);">
+          <div style="font-weight: 700; color: var(--primary); margin-bottom: 0.4rem; font-size: 1.05rem;">
+            ${script.icon} ${script.title} ${badge}
+          </div>
+          <div style="color: #cbd5e1; font-size: 0.95rem; line-height: 1.4;">
+            ${script.text}
+          </div>
+        </div>
+      `;
+    }
+  });
+
+  dialogueContainer.innerHTML = dialogueHTML || '<div style="color:var(--text-muted); text-align:center; padding:1rem;">No special night roles active.</div>';
 }
 
 // Generate player links and QR codes
 function generatePlayerLinks() {
   playerLinks.innerHTML = "";
 
-  // Get all werewolf players for teammate information
   const werewolfRoles = ["Werewolf", "WolfCub", "AlphaWolf", "Sorceress"];
-  const werewolfPlayers = gameState.players.filter((p) =>
-    werewolfRoles.includes(p.role)
-  );
+  const werewolfPlayers = gameState.players.filter((p) => werewolfRoles.includes(p.role));
   const werewolfNames = werewolfPlayers.map((p) => p.name);
+  const uniqueRoles = [...new Set(gameState.roles)];
 
-  gameState.players.forEach((player, index) => {
+  gameState.players.forEach((player) => {
     const playerCard = document.createElement("div");
     playerCard.className = "player-link-card";
+    
+    // Create base data object
+    const playerData = {
+      r: player.role,
+      p: player.number,
+      n: player.name,
+      g: uniqueRoles.join(",")
+    };
 
-    // Create player link
-    const playerUrl = new URL("player.html", window.location.href);
-    playerUrl.searchParams.set("role", player.role);
-    playerUrl.searchParams.set("player", player.number);
-    playerUrl.searchParams.set("name", player.name);
-
-    // Add werewolf teammates if this player is a werewolf role
     if (werewolfRoles.includes(player.role)) {
       const teammates = werewolfNames.filter((name) => name !== player.name);
       if (teammates.length > 0) {
-        playerUrl.searchParams.set("teammates", teammates.join(","));
+        playerData.t = teammates.join(",");
       }
     }
 
-    // Add game roles so the player guide only shows roles in this game
-    const uniqueRoles = [...new Set(gameState.roles)];
-    playerUrl.searchParams.set("gameRoles", uniqueRoles.join(","));
+    // Encode to base64
+    const encodedData = btoa(unescape(encodeURIComponent(JSON.stringify(playerData))));
+    const playerUrl = new URL("player.html", window.location.href);
+    playerUrl.searchParams.set("data", encodedData);
+    
+    const urlString = playerUrl.href;
 
-    // Create card content with show QR code button
+    // Check if Web Share API is available for native sharing
+    const canShare = navigator.share !== undefined;
+
     playerCard.innerHTML = `
-            <h3>${player.name}</h3>
-            <button class="btn btn-primary show-qr-btn" onclick="showQRCode('${playerUrl.href}', 'qr-${player.number}', this)">
-              Show QR Code
-            </button>
-            <div class="qr-code-container" id="qr-${player.number}" style="display: none;">
-              <a href="${playerUrl.href}" class="qr-code-link" target="_blank" title="Click to open player page">
-                <!-- QR code will be inserted here -->
-              </a>
-            </div>
-        `;
+      <h3><i class="fa-solid fa-user"></i> ${player.name}</h3>
+      <div class="link-actions">
+        <button class="btn btn-primary btn-sm show-qr-btn" onclick="showQRCode('${urlString}', 'qr-${player.number}', this)">
+          <i class="fa-solid fa-qrcode"></i> QR
+        </button>
+        <button class="btn btn-secondary btn-sm copy-btn" onclick="copyToClipboard('${urlString}', this)">
+          <i class="fa-solid fa-copy"></i> Copy
+        </button>
+        ${canShare ? `<button class="btn btn-outline btn-sm" onclick="nativeShare('${player.name}', '${urlString}')"><i class="fa-solid fa-share-nodes"></i> Share</button>` : ''}
+      </div>
+      <div class="qr-code-container" id="qr-${player.number}" style="display: none;">
+        <a href="${urlString}" target="_blank" title="Click to open role link in a new tab" style="display: block; width: 100%; height: 100%;">
+          <canvas id="canvas-${player.number}"></canvas>
+        </a>
+      </div>
+    `;
 
     playerLinks.appendChild(playerCard);
   });
 }
 
+// Native Web Share API helper
+function nativeShare(playerName, url) {
+  if (navigator.share) {
+    navigator.share({
+      title: 'Werewolf Game - Your Role',
+      text: `${playerName}, here is your secret Werewolf role link! Do not share this with anyone.`,
+      url: url
+    }).catch(err => console.log('Error sharing:', err));
+  }
+}
+
 // Show QR code function
 function showQRCode(text, elementId, button) {
-  console.log("showQRCode called with:", text, elementId);
-
   const element = document.getElementById(elementId);
-  if (!element) {
-    console.error("Element not found:", elementId);
-    return;
-  }
-
-  console.log("Element found:", element);
-  console.log("Current display style:", element.style.display);
-
-  // Toggle QR code visibility
+  const canvasId = elementId.replace('qr-', 'canvas-');
+  const canvas = document.getElementById(canvasId);
+  
   if (element.style.display === "none") {
-    // Show QR code
     element.style.display = "block";
-    button.textContent = "Hide QR Code";
+    // Trigger animation by resetting and re-adding class
+    element.classList.remove("qr-expand-anim");
+    void element.offsetWidth; // trigger reflow
+    element.classList.add("qr-expand-anim");
+
+    button.innerHTML = '<i class="fa-solid fa-eye-slash"></i> Hide';
     button.classList.remove("btn-primary");
     button.classList.add("btn-secondary");
 
-    // Always generate QR code when showing
-    console.log("Generating QR code...");
-    generateQRCode(text, elementId);
+    // Generate QR code using QRious
+    if (window.QRious) {
+      new QRious({
+        element: canvas,
+        value: text,
+        size: 200,
+        background: 'white',
+        foreground: '#0f172a',
+        level: 'H'
+      });
+    } else {
+        // Fallback if QRious failed to load from CDN
+        element.innerHTML = `<p style="color:var(--danger)">QR library failed to load.</p>`;
+    }
   } else {
-    // Hide QR code
     element.style.display = "none";
-    button.textContent = "Show QR Code";
+    button.innerHTML = '<i class="fa-solid fa-qrcode"></i> QR';
     button.classList.remove("btn-secondary");
     button.classList.add("btn-primary");
   }
 }
 
-// Generate QR code
-function generateQRCode(text, elementId) {
-  console.log("generateQRCode called with:", text, elementId);
-
-  const element = document.getElementById(elementId);
-  if (!element) {
-    console.error("Element not found:", elementId);
-    return;
-  }
-
-  console.log("Element HTML:", element.innerHTML);
-
-  // Find the link element inside the container
-  const linkElement = element.querySelector(".qr-code-link");
-  if (!linkElement) {
-    console.error("Link element not found in:", elementId);
-    console.log("Available elements:", element.children);
-    return;
-  }
-
-  console.log("Link element found:", linkElement);
-
-  // Clear previous QR code
-  linkElement.innerHTML = "";
-
-  console.log("Generating QR code for:", text, "in element:", elementId);
-
-  // Try the most reliable method first - direct API call
-  generateFallbackQRCode(text, linkElement);
-}
-
-// Fallback QR code generator using multiple methods
-function generateFallbackQRCode(text, element) {
-  console.log("generateFallbackQRCode called with:", text);
-  console.log("Target element:", element);
-
-  try {
-    const size = 200;
-
-    // Method 1: Try QR Server API with CORS-friendly approach
-    const qrServerUrl = `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(
-      text
-    )}&format=png&margin=0`;
-
-    console.log("QR Server URL:", qrServerUrl);
-
-    const img = document.createElement("img");
-    img.crossOrigin = "anonymous"; // Add CORS support
-    img.src = qrServerUrl;
-    img.alt = "QR Code";
-    img.style.width = size + "px";
-    img.style.height = size + "px";
-    img.style.borderRadius = "8px";
-    img.style.boxShadow = "0 2px 8px rgba(0, 0, 0, 0.1)";
-
-    // Set a timeout to detect if the image fails to load
-    const timeout = setTimeout(() => {
-      console.log("QR code generation timed out, showing fallback");
-      showTextFallback(element, text);
-    }, 5000); // 5 second timeout
-
-    img.onload = function () {
-      clearTimeout(timeout);
-      console.log("QR code generated successfully using QR Server");
-      console.log("Image loaded:", img);
-    };
-
-    img.onerror = function () {
-      clearTimeout(timeout);
-      console.log("QR Server failed, trying alternative method...");
-
-      // Method 2: Try a different QR API
-      const alternativeUrl = `https://chart.googleapis.com/chart?cht=qr&chs=${size}x${size}&chl=${encodeURIComponent(
-        text
-      )}&chld=L|0`;
-      img.src = alternativeUrl;
-
-      img.onerror = function () {
-        console.log("Alternative QR API also failed, showing text fallback");
-        showTextFallback(element, text);
-      };
-    };
-
-    console.log("Appending image to element:", element);
-    element.appendChild(img);
-    console.log("Image appended successfully");
-  } catch (error) {
-    console.error("Fallback QR code generation exception:", error);
-    showTextFallback(element, text);
-  }
-}
-
-// Helper function to show text fallback
-function showTextFallback(element, text) {
-  element.innerHTML = `
-    <div style="border: 2px dashed #ccc; padding: 20px; text-align: center; border-radius: 8px; background: #f8f9fa;">
-      <p style="margin: 0 0 10px 0; font-weight: bold; color: #666;">QR Code Unavailable</p>
-      <p style="margin: 0 0 15px 0; font-size: 12px; word-break: break-all; color: #333; background: white; padding: 8px; border-radius: 4px; border: 1px solid #ddd;">${text}</p>
-      <button onclick="copyToClipboard('${text}')" style="padding: 8px 16px; background: #2196f3; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px;">
-        Copy Link
-      </button>
-    </div>
-  `;
-}
+// Removed old generateQRCode and generateFallbackQRCode and showTextFallback.
 
 // Generate game summary
 function generateGameSummary() {
@@ -800,17 +907,25 @@ function generateGameSummary() {
     roleCounts[player.role] = (roleCounts[player.role] || 0) + 1;
   });
 
-  // Create summary HTML
+  const werewolfRoles = ["Werewolf", "WolfCub", "AlphaWolf", "Sorceress"];
+  const neutralRoles = ["Tanner"];
+
+  // Create summary HTML with premium cards
   let summaryHTML = "";
 
   Object.entries(roleCounts).forEach(([role, count]) => {
     const config = roleConfigs[role];
+    let teamClass = 'village';
+    if (werewolfRoles.includes(role)) teamClass = 'wolf';
+    else if (neutralRoles.includes(role)) teamClass = 'neutral';
+
     summaryHTML += `
-            <div class="summary-item">
-                <span class="count">${count}</span>
-                <span class="label">${role}${count > 1 ? "s" : ""}</span>
-            </div>
-        `;
+      <div class="summary-card ${teamClass}">
+        <span class="summary-icon">${config ? config.icon : '👤'}</span>
+        <span class="summary-count">${count}</span>
+        <span class="summary-role">${role}${count > 1 ? 's' : ''}</span>
+      </div>
+    `;
   });
 
   gameSummary.innerHTML = summaryHTML;
@@ -849,12 +964,25 @@ function generateRoleAssignments() {
 }
 
 // Utility function to copy text to clipboard
-function copyToClipboard(text) {
+function copyToClipboard(text, button = null) {
+  const showFeedback = () => {
+    if (button) {
+      const originalHTML = button.innerHTML;
+      button.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+      button.classList.replace('btn-secondary', 'btn-success');
+      setTimeout(() => {
+        button.innerHTML = originalHTML;
+        button.classList.replace('btn-success', 'btn-secondary');
+      }, 2000);
+    }
+  };
+
   if (navigator.clipboard) {
     navigator.clipboard
       .writeText(text)
       .then(() => {
         console.log("Text copied to clipboard");
+        showFeedback();
       })
       .catch((err) => {
         console.error("Failed to copy text: ", err);
@@ -867,6 +995,7 @@ function copyToClipboard(text) {
     textArea.select();
     document.execCommand("copy");
     document.body.removeChild(textArea);
+    showFeedback();
   }
 }
 
@@ -900,7 +1029,7 @@ function startTimer() {
     remainingTime = minutes * 60 + seconds;
 
     if (remainingTime <= 0) {
-      alert("Please set a valid time!");
+      window.customAlert("Please set a valid time!", "Invalid Timer");
       return;
     }
 
@@ -954,13 +1083,19 @@ function updateTimer() {
     timerTime.textContent = "00:00";
 
     // Play notification sound or show alert
+    const bellSound = document.getElementById("timerBellSound");
+    if (bellSound) {
+      bellSound.currentTime = 0;
+      bellSound.play().catch(e => console.log("Audio play prevented", e));
+    }
+    
     if (Notification.permission === "granted") {
       new Notification("Timer Finished!", {
         body: "Your game timer has finished!",
         icon: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⏰</text></svg>",
       });
     } else {
-      alert("⏰ Timer finished!");
+      window.customAlert("Phase timer has finished!", "⏰ Time's Up");
     }
   } else {
     updateTimerDisplay();
@@ -985,7 +1120,9 @@ function showRoleGuide() {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(2, 6, 23, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -993,14 +1130,18 @@ function showRoleGuide() {
   `;
 
   const modalContent = document.createElement("div");
+  modalContent.className = "glass-panel-inner role-guide-content";
   modalContent.style.cssText = `
-    background: white;
-    padding: 2rem;
-    border-radius: 12px;
+    background: rgba(15, 23, 42, 0.95);
+    padding: 2.5rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--glass-border);
     max-width: 90%;
+    width: 800px;
     max-height: 90%;
     overflow-y: auto;
     position: relative;
+    box-shadow: 0 25px 50px -12px rgba(0,0,0,0.8);
   `;
 
   // Define role categories
@@ -1020,61 +1161,61 @@ function showRoleGuide() {
   ];
   const neutralRoles = ["Tanner"];
 
-  let rolesHTML = "<h2>🎭 Werewolf Role Guide</h2>";
+  let rolesHTML = "<h2 style='font-size: 2rem; color: #fff; margin-bottom: 2rem; text-align: center;'>🎭 Werewolf Role Guide</h2>";
 
   // Werewolf Roles Section
   rolesHTML +=
-    "<h3 style='color: #d32f2f; margin-top: 2rem; margin-bottom: 1rem; border-bottom: 2px solid #d32f2f; padding-bottom: 0.5rem;'>🐺 Werewolf Team</h3>";
+    "<h3 style='color: var(--danger); margin-top: 1rem; margin-bottom: 1rem; border-bottom: 1px solid rgba(153, 27, 27, 0.3); padding-bottom: 0.5rem;'>🐺 Werewolf Team</h3>";
 
   Object.entries(roleConfigs)
     .filter(([roleName, config]) => werewolfRoles.includes(roleName))
     .forEach(([roleName, config]) => {
       rolesHTML += `
-        <div class="role-guide-item" style="margin-bottom: 1.5rem; padding: 1rem; border: 1px solid #d32f2f; border-radius: 8px; background: rgba(211, 47, 47, 0.05);">
+        <div class="role-guide-item" style="margin-bottom: 1rem; padding: 1.25rem; border: 1px solid rgba(153, 27, 27, 0.3); border-radius: var(--radius-sm); background: rgba(153, 27, 27, 0.1);">
           <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
-            <span style="font-size: 2rem; margin-right: 1rem;">${config.icon}</span>
-            <h3 style="margin: 0; color: ${config.color};">${roleName}</h3>
+            <span style="font-size: 1.8rem; margin-right: 1rem; color: var(--danger);">${config.icon}</span>
+            <h3 style="margin: 0; color: var(--danger); font-size: 1.3rem;">${roleName}</h3>
           </div>
-          <p style="margin: 0.5rem 0; font-weight: bold;">${config.description}</p>
-          <p style="margin: 0; color: #666; font-size: 0.9rem;">${config.detailedDescription}</p>
+          <p style="margin: 0.5rem 0; font-weight: 600; color: #fff;">${config.description}</p>
+          <p style="margin: 0; color: var(--text-muted); font-size: 0.95rem;">${config.detailedDescription}</p>
         </div>
       `;
     });
 
   // Villager Roles Section
   rolesHTML +=
-    "<h3 style='color: #1976d2; margin-top: 2rem; margin-bottom: 1rem; border-bottom: 2px solid #1976d2; padding-bottom: 0.5rem;'>👥 Village Team</h3>";
+    "<h3 style='color: var(--primary); margin-top: 2.5rem; margin-bottom: 1rem; border-bottom: 1px solid rgba(148, 163, 184, 0.2); padding-bottom: 0.5rem;'>👥 Village Team</h3>";
 
   Object.entries(roleConfigs)
     .filter(([roleName, config]) => villagerRoles.includes(roleName))
     .forEach(([roleName, config]) => {
       rolesHTML += `
-        <div class="role-guide-item" style="margin-bottom: 1.5rem; padding: 1rem; border: 1px solid #1976d2; border-radius: 8px; background: rgba(25, 118, 210, 0.05);">
+        <div class="role-guide-item" style="margin-bottom: 1rem; padding: 1.25rem; border: 1px solid rgba(148, 163, 184, 0.2); border-radius: var(--radius-sm); background: rgba(30, 41, 59, 0.5);">
           <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
-            <span style="font-size: 2rem; margin-right: 1rem;">${config.icon}</span>
-            <h3 style="margin: 0; color: ${config.color};">${roleName}</h3>
+            <span style="font-size: 1.8rem; margin-right: 1rem; color: var(--primary);">${config.icon}</span>
+            <h3 style="margin: 0; color: var(--primary); font-size: 1.3rem;">${roleName}</h3>
           </div>
-          <p style="margin: 0.5rem 0; font-weight: bold;">${config.description}</p>
-          <p style="margin: 0; color: #666; font-size: 0.9rem;">${config.detailedDescription}</p>
+          <p style="margin: 0.5rem 0; font-weight: 600; color: #fff;">${config.description}</p>
+          <p style="margin: 0; color: var(--text-muted); font-size: 0.95rem;">${config.detailedDescription}</p>
         </div>
       `;
     });
 
   // Neutral Roles Section
   rolesHTML +=
-    "<h3 style='color: #ff9800; margin-top: 2rem; margin-bottom: 1rem; border-bottom: 2px solid #ff9800; padding-bottom: 0.5rem;'>⚖️ Neutral Roles</h3>";
+    "<h3 style='color: var(--warning); margin-top: 2.5rem; margin-bottom: 1rem; border-bottom: 1px solid rgba(180, 83, 9, 0.3); padding-bottom: 0.5rem;'>⚖️ Neutral Roles</h3>";
 
   Object.entries(roleConfigs)
     .filter(([roleName, config]) => neutralRoles.includes(roleName))
     .forEach(([roleName, config]) => {
       rolesHTML += `
-        <div class="role-guide-item" style="margin-bottom: 1.5rem; padding: 1rem; border: 1px solid #ff9800; border-radius: 8px; background: rgba(255, 152, 0, 0.05);">
+        <div class="role-guide-item" style="margin-bottom: 1rem; padding: 1.25rem; border: 1px solid rgba(180, 83, 9, 0.3); border-radius: var(--radius-sm); background: rgba(180, 83, 9, 0.1);">
           <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
-            <span style="font-size: 2rem; margin-right: 1rem;">${config.icon}</span>
-            <h3 style="margin: 0; color: ${config.color};">${roleName}</h3>
+            <span style="font-size: 1.8rem; margin-right: 1rem; color: var(--warning);">${config.icon}</span>
+            <h3 style="margin: 0; color: var(--warning); font-size: 1.3rem;">${roleName}</h3>
           </div>
-          <p style="margin: 0.5rem 0; font-weight: bold;">${config.description}</p>
-          <p style="margin: 0; color: #666; font-size: 0.9rem;">${config.detailedDescription}</p>
+          <p style="margin: 0.5rem 0; font-weight: 600; color: #fff;">${config.description}</p>
+          <p style="margin: 0; color: var(--text-muted); font-size: 0.95rem;">${config.detailedDescription}</p>
         </div>
       `;
     });
@@ -1083,17 +1224,21 @@ function showRoleGuide() {
     ${rolesHTML}
     <button onclick="this.parentElement.parentElement.remove()" style="
       position: absolute;
-      top: 1rem;
-      right: 1rem;
-      background: #f44336;
+      top: 1.5rem;
+      right: 1.5rem;
+      background: rgba(153, 27, 27, 0.8);
       color: white;
-      border: none;
+      border: 1px solid rgba(153, 27, 27, 0.4);
       border-radius: 50%;
-      width: 30px;
-      height: 30px;
+      width: 36px;
+      height: 36px;
       cursor: pointer;
-      font-size: 16px;
-    ">×</button>
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    " onmouseover="this.style.background='var(--danger)'" onmouseout="this.style.background='rgba(153, 27, 27, 0.8)'">×</button>
   `;
 
   modal.appendChild(modalContent);
@@ -1116,16 +1261,32 @@ function initializeGameTracking() {
     gameState.playerStatus[player.number] = "alive";
   });
 
-  // Show lovers section if Cupid is in the game
-  const hasCupid = gameState.players.some((player) => player.role === "Cupid");
-  if (hasCupid && loversSection) {
-    loversSection.style.display = "block";
-  }
+  // Initialize votes
+  initializeVoteTally();
 
   // Update displays
   updatePlayerStatusDisplay();
   updateActionDropdowns();
-  updatePhaseDisplay();
+}
+
+// Toggle a player's lover status
+function toggleLover(playerNumber) {
+  if (!gameState.lovers) gameState.lovers = [];
+  
+  // If they are already a lover, remove them
+  if (gameState.lovers.includes(playerNumber)) {
+    gameState.lovers = gameState.lovers.filter(num => num !== playerNumber);
+  } else {
+    // Add them to the lovers array (max 2)
+    if (gameState.lovers.length < 2) {
+      gameState.lovers.push(playerNumber);
+    } else {
+      window.customAlert("Cupid can only bind two lovers.", "Max Lovers Reached");
+      return;
+    }
+  }
+  
+  updatePlayerStatusDisplay();
 }
 
 // Update player status display
@@ -1134,12 +1295,32 @@ function updatePlayerStatusDisplay() {
 
   playerStatusList.innerHTML = "";
 
+  const hasCupid = gameState.players.some((player) => player.role === "Cupid");
+
   gameState.players.forEach((player) => {
     const status = gameState.playerStatus[player.number] || "alive";
     const roleConfig = roleConfigs[player.role];
+    const isLover = gameState.lovers && gameState.lovers.some(
+      (pair) => pair.player1 == player.number || pair.player2 == player.number
+      // Handle the new single-array lovers format
+      || (typeof pair === "number" && pair == player.number)
+    );
+
+    // Fallback: Check if they are in the flat array of lovers
+    const isLoverSingle = Array.isArray(gameState.lovers) && gameState.lovers.includes(player.number);
+    const finalIsLover = isLover || isLoverSingle;
 
     const playerItem = document.createElement("div");
     playerItem.className = `player-status-item ${status}`;
+
+    let loverBtnHTML = "";
+    if (hasCupid) {
+        loverBtnHTML = `
+          <button class="status-btn lover-btn ${finalIsLover ? 'active' : ''}" onclick="toggleLover(${player.number})" title="Toggle Lover Status">
+            <i class="fa-solid fa-heart"></i>
+          </button>
+        `;
+    }
 
     playerItem.innerHTML = `
       <div class="player-info">
@@ -1153,6 +1334,7 @@ function updatePlayerStatusDisplay() {
         </div>
       </div>
       <div class="status-controls">
+        ${loverBtnHTML}
         <button class="status-btn alive" onclick="setPlayerStatus(${player.number}, 'alive')">Alive</button>
         <button class="status-btn dead" onclick="setPlayerStatus(${player.number}, 'dead')">Dead</button>
       </div>
@@ -1166,10 +1348,37 @@ function updatePlayerStatusDisplay() {
 }
 
 // Set player status
-function setPlayerStatus(playerNumber, status) {
+function setPlayerStatus(playerNumber, status, isChainedReaction = false) {
+  // If no change, do nothing
+  if (gameState.playerStatus[playerNumber] === status) return;
+
   gameState.playerStatus[playerNumber] = status;
+  
+  // Remove dead players from vote tally
+  if (status === 'dead') {
+    delete gameState.votes[playerNumber];
+
+    // Handle Lovers Suicide Chain (only if this isn't already a chained reaction to prevent infinite loops)
+    if (!isChainedReaction && gameState.lovers) {
+      // Check if the dying player is one of the lovers
+      const isLover = Array.isArray(gameState.lovers) && gameState.lovers.includes(playerNumber);
+      
+      if (isLover) {
+        // Find the partner
+        const partnerNumber = gameState.lovers.find(num => num !== playerNumber);
+        
+        // If partner exists and is currently alive, kill them too
+        if (partnerNumber && gameState.playerStatus[partnerNumber] === 'alive') {
+          // Log the chained death
+          console.log(`Lover ${playerNumber} died, chaining death to partner ${partnerNumber}`);
+          setPlayerStatus(partnerNumber, 'dead', true);
+        }
+      }
+    }
+  }
   updatePlayerStatusDisplay();
   updateActionDropdowns();
+  updateVoteTallyDisplay();
 }
 
 // Update game statistics
@@ -1187,7 +1396,24 @@ function updateGameStatistics() {
   deadCount.textContent = deadPlayers;
 }
 
-// Update action dropdowns
+// Role-to-action mapping
+const roleActionMap = {
+  Werewolf: { action: 'attack', label: '🐺 Attacks', icon: '🐺' },
+  AlphaWolf: { action: 'attack', label: '🐺 Attacks', icon: '🐺' },
+  WolfCub: { action: 'attack', label: '🐺 Attacks', icon: '🐺' },
+  Seer: { action: 'investigate', label: '🔮 Investigates', icon: '🔮' },
+  Doctor: { action: 'save', label: '🏥 Saves', icon: '🏥' },
+  Bodyguard: { action: 'protect', label: '🛡️ Protects', icon: '🛡️' },
+  Witch: null, // Special case — has two actions
+  Hunter: { action: 'hunter-kill', label: '🏹 Shoots', icon: '🏹' },
+  Sorceress: { action: 'investigate', label: '🔮 Divines', icon: '🔮' },
+  Detective: { action: 'investigate', label: '🔍 Inspects', icon: '🔍' },
+  PI: { action: 'investigate', label: '🕵️ Investigates', icon: '🕵️' },
+  Cupid: { action: 'other', label: '💘 Binds', icon: '💘' },
+  Revealer: { action: 'other', label: '🌟 Reveals', icon: '🌟' },
+};
+
+// Update action dropdowns — smart, role-grouped
 function updateActionDropdowns() {
   if (!actionPerformer || !actionTarget) return;
 
@@ -1195,44 +1421,139 @@ function updateActionDropdowns() {
     (player) => gameState.playerStatus[player.number] === "alive"
   );
 
-  // Update performer dropdown
-  actionPerformer.innerHTML = '<option value="">Performer</option>';
-  alivePlayers.forEach((player) => {
-    const option = document.createElement("option");
-    option.value = player.number;
-    option.textContent = `${player.name} (${player.role})`;
-    actionPerformer.appendChild(option);
-  });
+  // Determine which roles have night actions
+  const nightRoles = Object.keys(roleActionMap);
 
-  // Update target dropdown
-  actionTarget.innerHTML = '<option value="">Target</option>';
+  // Build performer dropdown: group night-action roles at top, others at bottom
+  actionPerformer.innerHTML = '<option value="">-- Who acts? --</option>';
+
+  // Night-active players only
+  const nightPlayers = alivePlayers.filter(p => nightRoles.includes(p.role));
+
+  if (nightPlayers.length > 0) {
+    const nightGroup = document.createElement('optgroup');
+    nightGroup.label = '🌙 Night Roles';
+    nightPlayers.forEach((player) => {
+      const config = roleConfigs[player.role];
+      // Witch gets TWO entries
+      if (player.role === 'Witch') {
+        const optSave = document.createElement('option');
+        optSave.value = player.number + ':witch-save';
+        optSave.innerHTML = `${config.icon} ${player.name} — Save Potion`;
+        nightGroup.appendChild(optSave);
+
+        const optKill = document.createElement('option');
+        optKill.value = player.number + ':witch-kill';
+        optKill.innerHTML = `${config.icon} ${player.name} — Kill Potion`;
+        nightGroup.appendChild(optKill);
+      } else {
+        const opt = document.createElement('option');
+        opt.value = player.number + ':' + (roleActionMap[player.role]?.action || 'other');
+        opt.innerHTML = `${config.icon} ${player.name} — ${player.role}`;
+        nightGroup.appendChild(opt);
+      }
+    });
+    actionPerformer.appendChild(nightGroup);
+  }
+
+
+
+  // Reset auto label
+  updateActionAutoLabel();
+}
+
+// Update the smart action label & target dropdown based on selected performer
+function updateActionAutoLabel() {
+  const autoLabel = document.getElementById('actionAutoLabel');
+  const autoIcon = autoLabel?.querySelector('.action-auto-icon');
+  const autoText = autoLabel?.querySelector('.action-auto-text');
+  
+  if (!autoLabel || !autoIcon || !autoText || !actionTarget) return;
+
+  const val = actionPerformer.value;
+  actionTarget.innerHTML = '<option value="">-- On who? --</option>';
+
+  if (!val) {
+    autoIcon.textContent = '❓';
+    autoText.textContent = 'Select a player';
+    actionType.value = '';
+    return;
+  }
+
+  const [playerNum, actionKey] = val.split(':');
+  actionType.value = actionKey;
+
+  // Get performer player object
+  const performer = gameState.players.find(p => p.number == playerNum);
+  if (!performer) return;
+
+  // Smart filtering for target dropdown
+  const alivePlayers = gameState.players.filter(
+    (player) => gameState.playerStatus[player.number] === "alive"
+  );
+  
+  const wolfTeamRoles = ["Werewolf", "AlphaWolf", "WolfCub"];
+  const isPerformerWolf = wolfTeamRoles.includes(performer.role);
+  
+  // Roles that are allowed to target themselves (Doctor heal, Witch save)
+  const canTargetSelf = (performer.role === 'Doctor') || (performer.role === 'Witch' && actionKey === 'witch-save');
+
   alivePlayers.forEach((player) => {
+    // Prevent wolves from targeting other wolves during an attack
+    if (isPerformerWolf && actionKey === 'attack' && wolfTeamRoles.includes(player.role)) {
+      return; // Skip adding this wolf as a target
+    }
+
+    // Prevent players from targeting themselves (unless allowed)
+    if (player.number == performer.number && !canTargetSelf) {
+      return; 
+    }
+
     const option = document.createElement("option");
     option.value = player.number;
-    option.textContent = `${player.name} (${player.role})`;
+    const config = roleConfigs[player.role];
+    option.innerHTML = `${config ? config.icon : ''} ${player.name}`;
     actionTarget.appendChild(option);
   });
+
+  const actionLabels = {
+    attack: { icon: '🐺', text: 'Attacks' },
+    save: { icon: '🏥', text: 'Saves' },
+    investigate: { icon: '🔮', text: 'Investigates' },
+    protect: { icon: '🛡️', text: 'Protects' },
+    'witch-save': { icon: '🧪', text: 'Save Potion' },
+    'witch-kill': { icon: '☠️', text: 'Kill Potion' },
+    'hunter-kill': { icon: '🏹', text: 'Shoots' },
+    other: { icon: '⚡', text: 'Acts on' },
+  };
+
+  const info = actionLabels[actionKey] || actionLabels['other'];
+  autoIcon.textContent = info.icon;
+  autoText.textContent = info.text;
 }
 
 // Add night action
 function addNightAction() {
-  if (!actionType || !actionPerformer || !actionTarget) return;
+  if (!actionPerformer || !actionTarget) return;
 
-  const type = actionType.value;
-  const performer = actionPerformer.value;
+  const performerVal = actionPerformer.value;
   const target = actionTarget.value;
 
-  if (!type || !performer || !target) {
-    alert("Please fill in all fields");
+  if (!performerVal || !target) {
+    window.customAlert("Select who is acting and on whom.", "Incomplete Entry");
     return;
   }
 
-  const performerPlayer = gameState.players.find((p) => p.number == performer);
+  const [performerNum, actionKey] = performerVal.split(':');
+
+  const performerPlayer = gameState.players.find((p) => p.number == performerNum);
   const targetPlayer = gameState.players.find((p) => p.number == target);
 
+  if (!performerPlayer || !targetPlayer) return;
+
   const action = {
-    type: type,
-    performer: performer,
+    type: actionKey,
+    performer: performerNum,
     target: target,
     performerName: performerPlayer.name,
     targetName: targetPlayer.name,
@@ -1244,9 +1565,9 @@ function addNightAction() {
   updateActionsDisplay();
 
   // Clear form
-  actionType.value = "";
   actionPerformer.value = "";
   actionTarget.value = "";
+  updateActionAutoLabel();
 }
 
 // Update actions display
@@ -1286,25 +1607,115 @@ function getActionText(action) {
   return actionTexts[action.type] || actionTexts["other"];
 }
 
-// Add lovers pair
-function addLoversPair() {
-  if (!loversList) return;
 
+// ===== DAY VOTE TALLY SYSTEM =====
+
+// Initialize vote tally for all alive players
+function initializeVoteTally() {
+  gameState.votes = {};
+  gameState.players.forEach((player) => {
+    if (gameState.playerStatus[player.number] === "alive") {
+      gameState.votes[player.number] = 0;
+    }
+  });
+  updateVoteTallyDisplay();
+}
+
+// Update vote tally display
+function updateVoteTallyDisplay() {
+  if (!voteTallyList) return;
+
+  voteTallyList.innerHTML = "";
+
+  // Get alive players and their vote counts
   const alivePlayers = gameState.players.filter(
     (player) => gameState.playerStatus[player.number] === "alive"
   );
+  const totalAlive = alivePlayers.length;
 
-  if (alivePlayers.length < 2) {
-    alert("Need at least 2 alive players to create lovers");
-    return;
+  // Find the max vote count (for highlighting) and total votes cast
+  let maxVotes = 0;
+  let totalVotesCast = 0;
+  
+  alivePlayers.forEach((p) => {
+    const v = gameState.votes[p.number] || 0;
+    totalVotesCast += v;
+    if (v > maxVotes) maxVotes = v;
+  });
+
+  // Update remaining votes counter
+  if (remainingVotesCount) {
+    const remaining = Math.max(0, totalAlive - totalVotesCast);
+    remainingVotesCount.textContent = remaining;
+    if (remaining === 0 && totalAlive > 0) {
+      remainingVotesCount.style.color = "var(--success)";
+    } else {
+      remainingVotesCount.style.color = "var(--primary)";
+    }
   }
 
-  // Create a modal for selecting lovers
-  showLoversSelectionModal(alivePlayers);
+  alivePlayers.forEach((player) => {
+    const votes = gameState.votes[player.number] || 0;
+    const isMostVoted = maxVotes > 0 && votes === maxVotes;
+
+    const item = document.createElement("div");
+    item.className = `vote-tally-item${isMostVoted ? " most-votes" : ""}`;
+
+    item.innerHTML = `
+      <div class="vote-player-info">
+        <div class="player-avatar">${player.number}</div>
+        <span class="vote-player-name">${player.name}</span>
+      </div>
+      <div class="vote-count-controls">
+        <button class="vote-btn decrement" onclick="decrementVote(${player.number})" title="Remove vote">
+          <i class="fa-solid fa-minus"></i>
+        </button>
+        <span class="vote-count-badge${votes > 0 ? " has-votes" : ""}">${votes}</span>
+        <button class="vote-btn increment" onclick="incrementVote(${player.number})" title="Add vote">
+          <i class="fa-solid fa-plus"></i>
+        </button>
+      </div>
+    `;
+
+    voteTallyList.appendChild(item);
+  });
+
+  // Show empty state if no alive players
+  if (alivePlayers.length === 0) {
+    voteTallyList.innerHTML = '<div style="color: var(--text-muted); text-align: center; padding: 1rem;">No players alive to vote.</div>';
+  }
 }
 
-// Show lovers selection modal
-function showLoversSelectionModal(alivePlayers) {
+// Increment vote for a player
+function incrementVote(playerNumber) {
+  gameState.votes[playerNumber] = (gameState.votes[playerNumber] || 0) + 1;
+  updateVoteTallyDisplay();
+}
+
+// Decrement vote for a player
+function decrementVote(playerNumber) {
+  if ((gameState.votes[playerNumber] || 0) > 0) {
+    gameState.votes[playerNumber]--;
+  }
+  updateVoteTallyDisplay();
+}
+
+// Reset all votes to zero
+function resetVotes() {
+  Object.keys(gameState.votes).forEach((key) => {
+    gameState.votes[key] = 0;
+  });
+  updateVoteTallyDisplay();
+}
+
+// ==========================================
+// SESSION CONTROLS & UI ALERTS
+// ==========================================
+
+// Custom Modal UI
+function showCustomModal(options) {
+  const { title = "Alert", message, isConfirm = false, onConfirm, onCancel, confirmText = "OK", cancelText = "Cancel" } = options;
+  
   const modal = document.createElement("div");
   modal.style.cssText = `
     position: fixed;
@@ -1312,186 +1723,145 @@ function showLoversSelectionModal(alivePlayers) {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(2, 6, 23, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    z-index: 9999;
   `;
 
   const modalContent = document.createElement("div");
-  modalContent.className = "lovers-selection-modal";
+  modalContent.className = "glass-panel-inner";
   modalContent.style.cssText = `
-    background: white;
+    background: rgba(15, 23, 42, 0.95);
     padding: 2rem;
-    border-radius: 12px;
-    max-width: 90%;
-    max-height: 90%;
-    overflow-y: auto;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--glass-border);
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 25px 50px -12px rgba(0,0,0,0.8);
     position: relative;
+    animation: fadeInUp 0.3s ease-out;
   `;
 
-  // Create player selection options
-  let playerOptions = '<option value="">Select Player</option>';
-  alivePlayers.forEach((player) => {
-    playerOptions += `<option value="${player.number}">${player.name} (${player.role})</option>`;
-  });
-
-  modalContent.innerHTML = `
-    <h3 style="color: #e91e63; margin-bottom: 1.5rem;">💕 Select Lovers Pair</h3>
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
-      <div>
-        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">First Lover:</label>
-        <select id="lover1Select" style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px;">
-          ${playerOptions}
-        </select>
-      </div>
-      <div>
-        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Second Lover:</label>
-        <select id="lover2Select" style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px;">
-          ${playerOptions}
-        </select>
-      </div>
-    </div>
-    <div style="display: flex; gap: 1rem; justify-content: flex-end;">
-      <button onclick="this.parentElement.parentElement.parentElement.remove()" style="
-        padding: 0.75rem 1.5rem;
-        background: #6c757d;
-        color: white;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-      ">Cancel</button>
-      <button onclick="createLoversPair()" style="
-        padding: 0.75rem 1.5rem;
-        background: #e91e63;
-        color: white;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-      ">Create Lovers</button>
-    </div>
-  `;
-
+  let innerHTML = `<h3 style="color: #fff; font-size: 1.5rem; margin-bottom: 1rem; font-family: Outfit, sans-serif;">${title}</h3>`;
+  innerHTML += `<p style="color: var(--text-muted); margin-bottom: 2rem; font-size: 1.05rem; line-height: 1.5;">${message}</p>`;
+  
+  innerHTML += `<div style="display: flex; gap: 1rem; justify-content: center;">`;
+  if (isConfirm) {
+    innerHTML += `<button id="modalCancelBtn" class="btn btn-outline" style="flex: 1;">${cancelText}</button>`;
+  }
+  innerHTML += `<button id="modalConfirmBtn" class="btn btn-primary btn-glow" style="flex: 1;">${confirmText}</button>`;
+  innerHTML += `</div>`;
+  
+  modalContent.innerHTML = innerHTML;
   modal.appendChild(modalContent);
   document.body.appendChild(modal);
 
-  // Close modal when clicking outside
-  modal.addEventListener("click", (e) => {
-    if (e.target === modal) {
+  const confirmBtn = document.getElementById("modalConfirmBtn");
+  if (isConfirm) {
+    const cancelBtn = document.getElementById("modalCancelBtn");
+    cancelBtn.addEventListener("click", () => {
       modal.remove();
-    }
+      if (onCancel) onCancel();
+    });
+  }
+
+  confirmBtn.addEventListener("click", () => {
+    modal.remove();
+    if (onConfirm) onConfirm();
   });
 }
 
-// Create lovers pair from modal selection
-function createLoversPair() {
-  const lover1Select = document.getElementById("lover1Select");
-  const lover2Select = document.getElementById("lover2Select");
+// Helper wrappers
+window.customAlert = (message, title = "Notice") => showCustomModal({ title, message, isConfirm: false });
+window.customConfirm = (message, onConfirm, title = "Please Confirm") => showCustomModal({ title, message, isConfirm: true, onConfirm });
 
-  if (!lover1Select || !lover2Select) return;
-
-  const lover1Number = lover1Select.value;
-  const lover2Number = lover2Select.value;
-
-  if (!lover1Number || !lover2Number) {
-    alert("Please select both lovers");
-    return;
-  }
-
-  if (lover1Number === lover2Number) {
-    alert("A player cannot be in love with themselves");
-    return;
-  }
-
-  // Check if either player is already in a lovers pair
-  const existingLovers = gameState.lovers.some(
-    (pair) =>
-      pair.player1 == lover1Number ||
-      pair.player2 == lover1Number ||
-      pair.player1 == lover2Number ||
-      pair.player2 == lover2Number
+function restartGame() {
+  window.customConfirm(
+    "Restart game with the same player distribution? New roles will be assigned.",
+    () => {
+      // Generate new roles directly based on current form inputs
+      handleGameSetup(new Event('submit'));
+      
+      // Reset phases and tracking
+      resetTrackingData();
+      resetPhase();
+      
+      // Scroll back to the top of the tracking board or results
+      document.getElementById("gameResults").scrollIntoView({ behavior: "smooth" });
+    },
+    "Restart Game"
   );
-
-  if (existingLovers) {
-    alert("One or both players are already in a lovers pair");
-    return;
-  }
-
-  const lover1 = gameState.players.find((p) => p.number == lover1Number);
-  const lover2 = gameState.players.find((p) => p.number == lover2Number);
-
-  const loversPair = {
-    player1: lover1.number,
-    player2: lover2.number,
-    player1Name: lover1.name,
-    player2Name: lover2.name,
-  };
-
-  gameState.lovers.push(loversPair);
-  updateLoversDisplay();
-
-  // Close modal
-  const modal = document.querySelector("div[style*='position: fixed']");
-  if (modal) modal.remove();
 }
 
-// Update lovers display
-function updateLoversDisplay() {
-  if (!loversList) return;
-
-  loversList.innerHTML = "";
-
-  gameState.lovers.forEach((pair) => {
-    const loversItem = document.createElement("div");
-    loversItem.className = "lovers-pair";
-
-    loversItem.innerHTML = `
-      <div class="lovers-names">
-        <span class="player-name">${pair.player1Name}</span>
-        <span class="separator">💕</span>
-        <span class="player-name">${pair.player2Name}</span>
-      </div>
-      <button class="btn btn-danger" onclick="removeLoversPair(${pair.player1}, ${pair.player2})">Remove</button>
-    `;
-
-    loversList.appendChild(loversItem);
-  });
-}
-
-// Remove lovers pair
-function removeLoversPair(player1, player2) {
-  gameState.lovers = gameState.lovers.filter(
-    (pair) => !(pair.player1 === player1 && pair.player2 === player2)
+function endGame() {
+  window.customConfirm(
+    "End the current game? This will clear all tracking data and return to the setup screen. Your player names and role counts will be preserved.",
+    () => {
+      // Clear the tracking board and results
+      document.getElementById("gameResults").style.display = "none";
+      document.getElementById("gameTracking").style.display = "none";
+      document.getElementById("roleAssignments").style.display = "none";
+      document.getElementById("showRoleAssignmentsBtn").innerHTML = '<i class="fa-solid fa-eye-slash"></i> Reveal Secret Assignments';
+      
+      // Show the setup form again
+      document.getElementById("gameSetupForm").style.display = "block";
+      
+      // Stop the timer if it's running
+      if (timerRunning || timerPaused) {
+        resetTimer();
+      }
+      
+      // Clear tracking data
+      resetTrackingData();
+      resetPhase();
+      
+      // Scroll to top
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    },
+    "End Game"
   );
-  updateLoversDisplay();
 }
 
-// Next phase
-function nextPhase() {
-  gameState.phaseCount++;
 
-  if (gameState.phaseCount % 2 === 0) {
-    gameState.currentPhase = `Day ${gameState.phaseCount / 2}`;
-  } else {
-    gameState.currentPhase = `Night ${Math.ceil(gameState.phaseCount / 2)}`;
-  }
+function resetTrackingData() {
+  // Clear players
+  const playerStatusList = document.getElementById("playerStatusList");
+  if (playerStatusList) playerStatusList.innerHTML = "";
+  
+  const aliveCount = document.getElementById("aliveCount");
+  if (aliveCount) aliveCount.textContent = "0";
+  
+  const deadCount = document.getElementById("deadCount");
+  if (deadCount) deadCount.textContent = "0";
 
-  updatePhaseDisplay();
-}
+  // Clear night actions
+  gameState.nightActions = [];
+  const actionsList = document.getElementById("actionsList");
+  if (actionsList) actionsList.innerHTML = "";
+  
+  // Clear lovers
+  gameState.lovers = [];
+  const loversSection = document.getElementById("loversSection");
+  if (loversSection) loversSection.style.display = "none";
+  
+  const loversList = document.getElementById("loversList");
+  if (loversList) loversList.innerHTML = "";
+  
+  // Clear dropdowns
+  const performerSelect = document.getElementById("actionPerformer");
+  const targetSelect = document.getElementById("actionTarget");
+  if (performerSelect) performerSelect.innerHTML = '<option value="">-- Source --</option>';
+  if (targetSelect) targetSelect.innerHTML = '<option value="">-- Target --</option>';
 
-// Reset phase
-function resetPhase() {
-  gameState.phaseCount = 1;
-  gameState.currentPhase = "Night 1";
-  updatePhaseDisplay();
-}
-
-// Update phase display
-function updatePhaseDisplay() {
-  if (currentPhase) {
-    currentPhase.textContent = gameState.currentPhase;
-  }
+  // Clear votes
+  gameState.votes = {};
+  const voteTally = document.getElementById("voteTallyList");
+  if (voteTally) voteTally.innerHTML = "";
 }
 
 // Export functions for global access (if needed)

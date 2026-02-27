@@ -3,441 +3,307 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Werewolf Game Setup</title>
-    <link rel="stylesheet" href="styles.css" />
+    <title>Werewolf Moderator Dashboard | 2026 Edition</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div class="container">
-      <header>
-        <h1>🐺 Werewolf Game Setup</h1>
-        <p>Configure your game and generate player links</p>
+    <!-- Background Effects -->
+    <div class="ambient-glow"></div>
+
+    <div class="container glass-panel">
+      <header class="app-header">
+        <div class="header-icon"><img src="werewolf-2-svgrepo-com.svg" alt="Werewolf Logo" class="header-logo" /></div>
+        <h1>Werewolf</h1>
+        <h2>Moderator Dashboard</h2>
+        <p>Configure your game and summon the pack</p>
       </header>
 
-      <form id="gameSetupForm" class="setup-form">
-        <!-- Basic Game Settings -->
-        <div class="form-group">
-          <label for="playerCount">Number of Players:</label>
-          <input
-            type="number"
-            id="playerCount"
-            min="6"
-            max="20"
-            value="8"
-            required
-          />
-        </div>
-
-        <div class="form-group">
-          <label for="werewolfCount">Number of Werewolves:</label>
-          <input
-            type="number"
-            id="werewolfCount"
-            min="1"
-            max="4"
-            value="2"
-            required
-          />
-        </div>
-
-        <!-- Role Inputs Grid -->
-        <div class="role-inputs-grid">
-          <div class="role-input-group">
-            <label for="seerCount">
-              <span class="role-icon">🔮</span>
-              Number of Seers:
-            </label>
-            <input
-              type="number"
-              id="seerCount"
-              min="0"
-              max="2"
-              value="1"
-              required
-            />
-          </div>
-
-          <div class="role-input-group">
-            <label for="doctorCount">
-              <span class="role-icon">🏥</span>
-              Number of Doctors:
-            </label>
-            <input
-              type="number"
-              id="doctorCount"
-              min="0"
-              max="1"
-              value="0"
-              required
-            />
-          </div>
-
-          <div class="role-input-group">
-            <label for="bodyguardCount">
-              <span class="role-icon">🛡️</span>
-              Number of Bodyguards:
-            </label>
-            <input
-              type="number"
-              id="bodyguardCount"
-              min="0"
-              max="1"
-              value="0"
-              required
-            />
-          </div>
-
-          <div class="role-input-group">
-            <label for="cupidCount">
-              <span class="role-icon">💕</span>
-              Number of Cupids:
-            </label>
-            <input
-              type="number"
-              id="cupidCount"
-              min="0"
-              max="1"
-              value="0"
-              required
-            />
-          </div>
-
-          <div class="role-input-group">
-            <label for="wolfCubCount">
-              <span class="role-icon">🐺</span>
-              Number of Wolf Cubs:
-            </label>
-            <input
-              type="number"
-              id="wolfCubCount"
-              min="0"
-              max="1"
-              value="0"
-              required
-            />
-          </div>
-
-          <div class="role-input-group">
-            <label for="alphaWolfCount">
-              <span class="role-icon">👑</span>
-              Number of Alpha Wolves:
-            </label>
-            <input
-              type="number"
-              id="alphaWolfCount"
-              min="0"
-              max="1"
-              value="0"
-              required
-            />
-          </div>
-
-          <div class="role-input-group">
-            <label for="sorceressCount">
-              <span class="role-icon">🔮</span>
-              Number of Sorceresses:
-            </label>
-            <input
-              type="number"
-              id="sorceressCount"
-              min="0"
-              max="1"
-              value="0"
-              required
-            />
-          </div>
-
-          <div class="role-input-group">
-            <label for="lycanCount">
-              <span class="role-icon">🌙</span>
-              Number of Lycans:
-            </label>
-            <input
-              type="number"
-              id="lycanCount"
-              min="0"
-              max="1"
-              value="0"
-              required
-            />
-          </div>
-
-          <div class="role-input-group">
-            <label for="witchCount">
-              <span class="role-icon">🧙‍♀️</span>
-              Number of Witches:
-            </label>
-            <input
-              type="number"
-              id="witchCount"
-              min="0"
-              max="1"
-              value="0"
-              required
-            />
-          </div>
-
-          <div class="role-input-group">
-            <label for="detectiveCount">
-              <span class="role-icon">🔍</span>
-              Number of Detectives:
-            </label>
-            <input
-              type="number"
-              id="detectiveCount"
-              min="0"
-              max="1"
-              value="0"
-              required
-            />
-          </div>
-
-          <div class="role-input-group">
-            <label for="revealerCount">
-              <span class="role-icon">📢</span>
-              Number of Revealers:
-            </label>
-            <input
-              type="number"
-              id="revealerCount"
-              min="0"
-              max="1"
-              value="0"
-              required
-            />
-          </div>
-
-          <div class="role-input-group">
-            <label for="piCount">
-              <span class="role-icon">🕵️</span>
-              Number of PIs:
-            </label>
-            <input
-              type="number"
-              id="piCount"
-              min="0"
-              max="1"
-              value="0"
-              required
-            />
-          </div>
-
-          <div class="role-input-group">
-            <label for="tannerCount">
-              <span class="role-icon">🎭</span>
-              Number of Tanners:
-            </label>
-            <input
-              type="number"
-              id="tannerCount"
-              min="0"
-              max="1"
-              value="0"
-              required
-            />
-          </div>
-
-          <div class="role-input-group">
-            <label for="hunterCount">
-              <span class="role-icon">🏹</span>
-              Number of Hunters:
-            </label>
-            <input
-              type="number"
-              id="hunterCount"
-              min="0"
-              max="1"
-              value="0"
-              required
-            />
+      <form id="gameSetupForm" class="setup-form glass-panel-inner">
+        
+        <div class="settings-section">
+          <h3><i class="fa-solid fa-users"></i> Basic Configuration</h3>
+          <div class="basic-settings-grid">
+            <div class="form-group custom-input">
+              <label for="playerCount">Total Players</label>
+              <div class="input-wrapper">
+                <i class="fa-solid fa-user-group input-icon"></i>
+                <input type="number" id="playerCount" min="6" max="20" value="8" required />
+              </div>
+            </div>
           </div>
         </div>
 
-        <div class="form-group">
-          <label>
-            <input type="checkbox" id="usePlayerNames" /> Use Player Names
-            (Optional)
-          </label>
+        <div class="settings-section">
+          <h3><i class="fa-solid fa-masks-theater"></i> Roles</h3>
+          <p class="section-desc">Assign quantities for each role. Remaining players become Villagers.</p>
+          
+          <div class="role-inputs-grid">
+            <div class="role-input-group theme-wolf">
+              <label for="werewolfCount"><i class="fa-solid fa-moon role-icon"></i> Werewolves</label>
+              <input type="number" id="werewolfCount" min="0" max="4" value="2" required />
+            </div>
+            <div class="role-input-group theme-village">
+              <label for="seerCount"><i class="fa-solid fa-eye role-icon"></i> Seers</label>
+              <input type="number" id="seerCount" min="0" max="2" value="1" required />
+            </div>
+
+            <div class="role-input-group theme-village">
+              <label for="doctorCount"><i class="fa-solid fa-kit-medical role-icon"></i> Doctors</label>
+              <input type="number" id="doctorCount" min="0" max="1" value="0" required />
+            </div>
+
+            <div class="role-input-group theme-village">
+              <label for="bodyguardCount"><i class="fa-solid fa-shield role-icon"></i> Bodyguards</label>
+              <input type="number" id="bodyguardCount" min="0" max="1" value="0" required />
+            </div>
+
+            <div class="role-input-group theme-neutral">
+              <label for="cupidCount"><i class="fa-solid fa-heart role-icon"></i> Cupids</label>
+              <input type="number" id="cupidCount" min="0" max="1" value="0" required />
+            </div>
+
+            <div class="role-input-group theme-wolf">
+              <label for="wolfCubCount"><i class="fa-solid fa-paw role-icon"></i> Wolf Cubs</label>
+              <input type="number" id="wolfCubCount" min="0" max="1" value="0" required />
+            </div>
+
+            <div class="role-input-group theme-wolf">
+              <label for="alphaWolfCount"><i class="fa-solid fa-crown role-icon"></i> Alpha Wolves</label>
+              <input type="number" id="alphaWolfCount" min="0" max="1" value="0" required />
+            </div>
+
+            <div class="role-input-group theme-wolf">
+              <label for="sorceressCount"><i class="fa-solid fa-hat-wizard role-icon"></i> Sorceresses</label>
+              <input type="number" id="sorceressCount" min="0" max="1" value="0" required />
+            </div>
+
+            <div class="role-input-group theme-village">
+              <label for="lycanCount"><i class="fa-solid fa-masks-theater role-icon"></i> Lycans</label>
+              <input type="number" id="lycanCount" min="0" max="1" value="0" required />
+            </div>
+
+            <div class="role-input-group theme-neutral">
+              <label for="witchCount"><i class="fa-solid fa-flask role-icon"></i> Witches</label>
+              <input type="number" id="witchCount" min="0" max="1" value="0" required />
+            </div>
+
+            <div class="role-input-group theme-village">
+              <label for="detectiveCount"><i class="fa-solid fa-magnifying-glass role-icon"></i> Detectives</label>
+              <input type="number" id="detectiveCount" min="0" max="1" value="0" required />
+            </div>
+
+            <div class="role-input-group theme-village">
+              <label for="revealerCount"><i class="fa-solid fa-bullseye role-icon"></i> Revealers</label>
+              <input type="number" id="revealerCount" min="0" max="1" value="0" required />
+            </div>
+
+            <div class="role-input-group theme-village">
+              <label for="piCount"><i class="fa-solid fa-binoculars role-icon"></i> P.I.s</label>
+              <input type="number" id="piCount" min="0" max="1" value="0" required />
+            </div>
+
+            <div class="role-input-group theme-neutral">
+              <label for="tannerCount"><i class="fa-solid fa-face-dizzy role-icon"></i> Tanners</label>
+              <input type="number" id="tannerCount" min="0" max="1" value="0" required />
+            </div>
+
+            <div class="role-input-group theme-village">
+              <label for="hunterCount"><i class="fa-solid fa-crosshairs role-icon"></i> Hunters</label>
+              <input type="number" id="hunterCount" min="0" max="1" value="0" required />
+            </div>
+          </div>
+
+          <div class="villager-counter" id="villagerCounter">
+            <i class="fa-solid fa-person"></i>
+            <span>Normal Villagers: <strong id="villagerCountDisplay">0</strong></span>
+          </div>
         </div>
 
-        <div
-          id="playerNamesContainer"
-          class="player-names-container"
-          style="display: none"
-        >
-          <h3>Player Names</h3>
+        <div class="settings-section">
+          <div class="checkbox-wrapper">
+            <label class="toggle-switch">
+              <input type="checkbox" id="usePlayerNames" />
+              <span class="slider round"></span>
+            </label>
+            <span class="toggle-label"><i class="fa-solid fa-id-badge"></i> Use Custom Player Names</span>
+          </div>
+        </div>
+
+        <div id="playerNamesContainer" class="player-names-container glass-panel-inner" style="display: none">
+          <h3><i class="fa-solid fa-signature"></i> Identifiers</h3>
           <div id="playerNamesList"></div>
         </div>
 
-        <button type="submit" class="btn btn-primary">Generate Game</button>
-        <button
-          type="button"
-          id="testQRBtn"
-          class="btn btn-secondary"
-          style="margin-left: 1rem"
-        >
-          Test QR Code
-        </button>
-        <button
-          type="button"
-          id="roleGuideBtn"
-          class="btn btn-info"
-          style="margin-left: 1rem"
-        >
-          ❓ Role Guide
-        </button>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-glow btn-primary"><i class="fa-solid fa-wand-magic-sparkles"></i> Generate Game</button>
+          <div class="secondary-actions">
+            <!-- <button type="button" id="testQRBtn" class="btn btn-secondary"><i class="fa-solid fa-qrcode"></i> Test QR</button> -->
+            <button type="button" id="roleGuideBtn" class="btn btn-outline"><i class="fa-solid fa-book-open"></i> Role Guide</button>
+          </div>
+        </div>
       </form>
 
       <!-- Timer Section -->
-      <div class="timer-section">
-        <h3>⏱️ Game Timer</h3>
+      <div class="timer-section glass-panel-inner">
+        <h3><i class="fa-solid fa-hourglass-half"></i> Phase Timer</h3>
         <div class="timer-controls">
-          <div class="timer-input">
-            <label for="timerMinutes">Minutes:</label>
-            <input
-              type="number"
-              id="timerMinutes"
-              min="1"
-              max="120"
-              value="15"
-              style="width: 80px; margin-right: 1rem"
-            />
-            <label for="timerSeconds">Seconds:</label>
-            <input
-              type="number"
-              id="timerSeconds"
-              min="0"
-              max="59"
-              value="0"
-              style="width: 80px"
-            />
+          <div class="timer-input custom-input">
+            <div class="input-wrapper">
+              <input type="number" id="timerMinutes" min="1" max="120" value="15" />
+              <span class="unit">min</span>
+            </div>
+            <div class="input-wrapper">
+              <input type="number" id="timerSeconds" min="0" max="59" value="0" />
+              <span class="unit">sec</span>
+            </div>
           </div>
           <div class="timer-buttons">
-            <button id="startTimerBtn" class="btn btn-success">Start Timer</button>
-            <button id="pauseTimerBtn" class="btn btn-warning" style="display: none">Pause</button>
-            <button id="resetTimerBtn" class="btn btn-secondary">Reset</button>
+            <button id="startTimerBtn" class="btn btn-success"><i class="fa-solid fa-play"></i> Start</button>
+            <button id="pauseTimerBtn" class="btn btn-warning" style="display: none"><i class="fa-solid fa-pause"></i> Pause</button>
+            <button id="resetTimerBtn" class="btn btn-secondary"><i class="fa-solid fa-rotate-right"></i> Reset</button>
           </div>
         </div>
         <div id="timerDisplay" class="timer-display" style="display: none">
           <span id="timerTime">15:00</span>
         </div>
       </div>
+      
+      <!-- Hidden Audio Elements -->
+      <audio id="timerBellSound" src="freesound_community-bell-ringing-ii-98323.mp3" preload="auto"></audio>
 
-
-      </form>
-
-      <div id="gameResults" class="game-results" style="display: none">
-        <h2>Player QR Codes</h2>
+      <div id="gameResults" class="game-results glass-panel-inner" style="display: none">
+        <h2><i class="fa-solid fa-link"></i> Player Links</h2>
         <p class="qr-instructions">
-          Scan each QR code with your phone to view your role. Each player
-          should scan their own QR code to see their assigned role.
+          Distribute these codes to your players. They can scan them with their device camera to securely view their role.
         </p>
         <div id="playerLinks" class="player-links"></div>
 
         <div class="game-info">
-          <h3>Game Summary</h3>
+          <h3><i class="fa-solid fa-chart-pie"></i> Distribution Summary</h3>
           <div id="gameSummary" class="game-summary"></div>
         </div>
 
         <div class="role-assignments" style="display: none">
-          <h3>Role Assignments</h3>
+          <h3><i class="fa-solid fa-clipboard-list"></i> Secret Roles</h3>
           <p class="role-assignments-note">
-            Each player's assigned role (order does not reflect role assignment
-            order):
+            (Hidden to protect the game. Only view if you intend to moderate without playing.)
           </p>
           <div id="roleAssignments" class="role-assignments-list"></div>
         </div>
 
         <div class="role-assignments-controls">
-          <button id="showRoleAssignmentsBtn" class="btn btn-secondary">
-            Show Role Assignments
+          <button id="showRoleAssignmentsBtn" class="btn btn-outline text-danger">
+            <i class="fa-solid fa-eye-slash"></i> Reveal Secret Assignments
           </button>
         </div>
       </div>
 
       <!-- Game Tracking System -->
-      <div id="gameTracking" class="game-tracking" style="display: none">
-        <h2>🎮 Game Tracking</h2>
+      <div id="gameTracking" class="game-tracking glass-panel-inner" style="display: none">
+        <h2><i class="fa-solid fa-chess-board"></i> Master Tracking Board</h2>
         
-        <!-- Player Status Tracking -->
         <div class="tracking-grid">
-          <div class="tracking-section">
-            <h3>👥 Player Status</h3>
-            <div id="playerStatusList" class="player-status-list">
-              <!-- Player status items will be generated here -->
+          <div class="tracking-section box-panel">
+            <h3><i class="fa-solid fa-users-viewfinder"></i> Village Status</h3>
+            <div id="playerStatusList" class="player-status-list custom-scrollbar">
+              <!-- Player status items -->
             </div>
           </div>
 
-          <div class="tracking-section">
-            <h3>📊 Game Statistics</h3>
-            <div id="gameStats">
-              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                <div style="background: #e8f5e8; padding: 1rem; border-radius: 8px; text-align: center;">
-                  <div style="font-size: 2rem; font-weight: bold; color: #4caf50;" id="aliveCount">0</div>
-                  <div style="font-size: 0.9rem; color: #666;">Alive</div>
-                </div>
-                <div style="background: #ffeaea; padding: 1rem; border-radius: 8px; text-align: center;">
-                  <div style="font-size: 2rem; font-weight: bold; color: #f44336;" id="deadCount">0</div>
-                  <div style="font-size: 0.9rem; color: #666;">Dead</div>
-                </div>
+          <div class="tracking-section box-panel">
+            <h3><i class="fa-solid fa-chart-simple"></i> Casualties</h3>
+            <div id="gameStats" class="stats-grid">
+              <div class="stat-box alive">
+                <i class="fa-solid fa-heart-pulse"></i>
+                <div class="stat-value" id="aliveCount">0</div>
+                <div class="stat-label">Alive</div>
+              </div>
+              <div class="stat-box dead">
+                <i class="fa-solid fa-skull"></i>
+                <div class="stat-value" id="deadCount">0</div>
+                <div class="stat-label">Deceased</div>
               </div>
             </div>
           </div>
         </div>
 
+        <!-- Night Dialogue Script -->
+        <div class="night-dialogue box-panel" style="margin-bottom: 1.5rem;">
+          <h3><i class="fa-solid fa-book-journal-whills"></i> Night Dialogue Script</h3>
+          <p class="dialogue-help" style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
+            Read these scripts in order during the Night Phase. Only roles present in this game are shown.
+          </p>
+          <div id="nightDialogueList" class="dialogue-list custom-scrollbar" style="max-height: 250px; overflow-y: auto; background: rgba(2, 6, 23, 0.3); border: 1px solid var(--glass-border); border-radius: var(--radius-sm); padding: 1rem;">
+            <!-- Dialogue items generated dynamically -->
+          </div>
+        </div>
+
         <!-- Night Actions Tracking -->
-        <div class="night-actions">
-          <h3>🌙 Night Actions</h3>
+        <div class="night-actions box-panel">
+          <h3><i class="fa-solid fa-cloud-moon"></i> Night Log</h3>
           <div class="action-form">
-            <select id="actionType">
-              <option value="">Select Action Type</option>
-              <option value="attack">Werewolf Attack</option>
-              <option value="save">Doctor Save</option>
-              <option value="investigate">Seer Investigation</option>
-              <option value="protect">Bodyguard Protection</option>
-              <option value="witch-save">Witch Save</option>
-              <option value="witch-kill">Witch Kill</option>
-              <option value="hunter-kill">Hunter Kill</option>
-              <option value="other">Other</option>
-            </select>
-            <select id="actionPerformer">
-              <option value="">Performer</option>
-              <!-- Will be populated with alive players -->
-            </select>
-            <select id="actionTarget">
-              <option value="">Target</option>
-              <!-- Will be populated with alive players -->
-            </select>
-            <button type="button" id="addActionBtn" class="btn btn-primary">Add Action</button>
+            <div class="custom-select-wrapper">
+              <select id="actionPerformer" class="custom-select">
+                <option value="">-- Who acts? --</option>
+              </select>
+            </div>
+            <div class="action-auto-label" id="actionAutoLabel">
+              <span class="action-auto-icon">❓</span>
+              <span class="action-auto-text">Select a player</span>
+            </div>
+            <div class="custom-select-wrapper">
+              <select id="actionTarget" class="custom-select">
+                <option value="">-- On who? --</option>
+              </select>
+            </div>
+            <input type="hidden" id="actionType" value="">
+            <button type="button" id="addActionBtn" class="btn btn-primary btn-sm"><i class="fa-solid fa-plus"></i></button>
           </div>
-          <div id="actionsList" class="actions-list">
-            <!-- Actions will be listed here -->
+          <div id="actionsList" class="actions-list custom-scrollbar">
+            <!-- Actions -->
           </div>
         </div>
 
-        <!-- Lovers Tracking (only shown if Cupid is in game) -->
-        <div id="loversSection" class="lovers-section" style="display: none;">
-          <h3>💕 Lovers</h3>
-          <div id="loversList">
-            <!-- Lovers pairs will be listed here -->
+
+
+        <!-- Day Vote Tally -->
+        <div id="votingSection" class="voting-section box-panel">
+          <h3><i class="fa-solid fa-hand-paper"></i> Day Vote Tally</h3>
+          <div id="voteTallyList" class="vote-tally-list custom-scrollbar">
+            <!-- Dynamically populated with alive players and their vote counts -->
           </div>
-          <div style="margin-top: 1rem;">
-            <button id="addLoversBtn" class="btn btn-primary">Add Lovers Pair</button>
+          <div class="vote-controls" style="margin-top: 1rem; display: flex; justify-content: space-between; align-items: center;">
+            <div id="remainingVotesDisplay" style="font-size: 0.9rem; color: var(--text-muted); font-weight: 500;">
+              Votes Remaining: <span id="remainingVotesCount" style="color: var(--primary); font-weight: 700;">0</span>
+            </div>
+            <button id="resetVotesBtn" class="btn btn-outline btn-sm"><i class="fa-solid fa-rotate-right"></i> Reset Votes</button>
           </div>
         </div>
 
-        <!-- Game Phase Tracking -->
-        <div style="background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); border: 1px solid #e0e0e0; margin-top: 2rem;">
-          <h3 style="color: var(--dark-color); margin-bottom: 1rem; font-size: 1.2rem;">🔄 Game Phase</h3>
-          <div style="display: flex; gap: 1rem; align-items: center;">
-            <button id="nextPhaseBtn" class="btn btn-success">Next Phase</button>
-            <span id="currentPhase" style="font-weight: 600; color: var(--primary-color);">Night 1</span>
-            <button id="resetPhaseBtn" class="btn btn-secondary">Reset Phase</button>
+
+
+        <!-- Session Controls -->
+        <div class="session-controls box-panel" style="margin-top: 1.5rem;">
+          <h3><i class="fa-solid fa-power-off"></i> Session Controls</h3>
+          <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+            <button id="restartGameBtn" class="btn btn-primary" style="flex: 1;"><i class="fa-solid fa-rotate"></i> Restart with Same Players</button>
+            <button id="endGameBtn" class="btn btn-outline" style="flex: 1; border-color: var(--danger); color: var(--danger);"><i class="fa-solid fa-skull"></i> End Game</button>
           </div>
         </div>
       </div>
     </div>
 
+    <!-- QRious CDN for actual QR generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
     <script src="script.js"></script>
   </body>
 </html>
