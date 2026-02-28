@@ -1669,3 +1669,232 @@ input:checked + .slider:before {
 .vote-count-badge.has-votes {
   color: var(--danger);
 }
+
+/* ===== RESPONSIVE DESIGN ===== */
+
+/* Tablet breakpoint */
+@media (max-width: 768px) {
+  body {
+    padding: 1rem 0.5rem;
+  }
+
+  .app-header {
+    padding: 2rem 1rem 1.5rem;
+  }
+
+  .app-header h1 {
+    font-size: 2.2rem;
+  }
+
+  .app-header h2 {
+    font-size: 1rem;
+  }
+
+  .header-logo {
+    width: 60px;
+    height: 60px;
+  }
+
+  .setup-form {
+    padding: 1.25rem;
+  }
+
+  .glass-panel-inner {
+    padding: 1rem;
+  }
+
+  .box-panel {
+    padding: 1rem;
+  }
+
+  /* Settings grids → single column */
+  .basic-settings-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .role-inputs-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  /* Player link cards → single column */
+  .player-links {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .player-link-card {
+    padding: 1rem;
+  }
+
+  .qr-code-container {
+    width: 160px;
+    height: 160px;
+  }
+
+  /* Tracking grid → stacked */
+  .tracking-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Player status items → stack controls below */
+  .player-status-item {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .status-controls {
+    justify-content: center;
+  }
+
+  /* Night Log action form → fully stacked */
+  .action-form {
+    flex-direction: column;
+  }
+
+  .action-form .custom-select-wrapper {
+    min-width: 100%;
+  }
+
+  .action-auto-label {
+    justify-content: center;
+  }
+
+  /* Summary cards */
+  .game-summary {
+    flex-direction: column;
+  }
+
+  .summary-card {
+    width: 100%;
+  }
+
+  /* Vote tally */
+  .vote-tally-item {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  /* Section headings */
+  .settings-section h3 {
+    font-size: 1.15rem;
+  }
+
+  h2 {
+    font-size: 1.3rem;
+  }
+
+  /* Stat boxes */
+  .stat-box {
+    padding: 1rem;
+  }
+
+  .stat-value {
+    font-size: 2rem;
+  }
+
+  .stat-box i {
+    font-size: 1.6rem;
+  }
+}
+
+/* Small phone breakpoint */
+@media (max-width: 480px) {
+  body {
+    padding: 0.5rem 0.25rem;
+  }
+
+  .app-header {
+    padding: 1.5rem 0.75rem 1rem;
+  }
+
+  .app-header h1 {
+    font-size: 1.75rem;
+  }
+
+  .app-header h2 {
+    font-size: 0.85rem;
+  }
+
+  .header-logo {
+    width: 48px;
+    height: 48px;
+  }
+
+  .setup-form {
+    padding: 0.75rem;
+  }
+
+  .glass-panel-inner {
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .box-panel {
+    padding: 0.75rem;
+  }
+
+  .role-input-group {
+    padding: 0.6rem 0.8rem;
+  }
+
+  .player-link-card h3 {
+    font-size: 1rem;
+  }
+
+  .qr-code-container {
+    width: 140px;
+    height: 140px;
+  }
+
+  .link-actions {
+    flex-direction: column;
+  }
+
+  .player-status-list {
+    max-height: 300px;
+  }
+
+  .player-avatar {
+    width: 32px;
+    height: 32px;
+    font-size: 0.85rem;
+  }
+
+  .player-name {
+    font-size: 0.95rem;
+  }
+
+  .player-role {
+    font-size: 0.75rem;
+  }
+
+  .status-btn {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.7rem;
+  }
+
+  .stat-value {
+    font-size: 1.6rem;
+  }
+
+  .stat-box i {
+    font-size: 1.3rem;
+  }
+
+  .stat-label {
+    font-size: 0.75rem;
+  }
+
+  .btn {
+    padding: 0.6rem 1rem;
+    font-size: 0.85rem;
+  }
+
+  .custom-select {
+    padding: 0.7rem 2rem 0.7rem 0.8rem;
+    font-size: 0.85rem;
+  }
+}
